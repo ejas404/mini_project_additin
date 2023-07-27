@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <header>
+       <%- include('../partials/navbar') %>
+    </header>
+    <main>
+        <div class="login-box">
+                <div>
+                    <h2><%= locals.h2 %></h2>
+                    <form action="<%= locals.url %> " method="post">
+                    
+                
+                    <label for="email">Email:</label><br>
+                    <input type="email" id="email" name="email" required><br>
+                
+                    <label for="password">Password:</label><br>
+                    <input type="password" id="password" name="password" required><br>
+                
+                   
+                    <input type="submit" value="Sign Up" class="sign-btn">
+                  </form>
+
+                  <p><%= locals.message %></p>
+                  <% if (!locals.isAdmin){%>
+                  <a href="/user/signup">dont have an accout? signup now</a>
+                  <%}%>
+                </div>
+
+        </div>
+    </main>
+        <%- include('../partials/footer')%>
+</body>
+</html>

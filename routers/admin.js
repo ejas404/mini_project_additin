@@ -1,30 +1,26 @@
 const express = require('express');
 const router = express.Router();
+const multer = require('multer')
 
-const {AdminCollection} = require('../dbs_collections/collections')
-router.get('/login', async (req,res)=>{
-    const {name , email, password } = req.body
-   try{
-        const admin = await AdminCollection.findOne({})
+const adminController = require('../Controller/admin_controller');
+const upload = multer({ dest: 'uploads/' })
+router.use(express.json())
+router.use(express.urlencoded({extended:true}))
+// const storage = multer.diskStorage({
+//     destination: function (req,file,cb){
+//         cb(null,'./public/assets')
+//     },
 
-        if(admin.name === name && admin.password === password){
-            res.send('welcome  admin')
-        }else{
-            res.send('invalid username or password')
-        }
-   }catch(e){
-        console.log(e)
-   }
-   
-})
+// })
 
-router.get('/add',async (req,res)=>{
-   
-    res.send('some admin')
-})
+router.get('/login',adminController.loginPage )
 
+router.post('/login',adminController.adminLogin)
 
+router.get('/userlist',adminController.userLists)
 
+router.get('/add-product',adminController.addProductPage)
+router.post('/add-product',upload.single('img-file'),adminController.addProduct)
 
 
 

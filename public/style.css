@@ -2,10 +2,11 @@
     font-family: Arial, Helvetica, sans-serif;
     --main:#003466;
     --white:#fff;
+    --secondary:#002442;
 }
 
 body{
-    padding: 0;
+    padding: 4rem 0 0 0;
     margin: 0;
     box-sizing: border-box;
 }
@@ -19,6 +20,9 @@ nav{
     border-bottom: 1px solid grey;
     display: flex;
     justify-content: space-between;
+    position: fixed;
+    top: 0;
+    
 }
 nav>.logo{
     height: inherit;
@@ -53,10 +57,47 @@ nav>.logo>img{
     background-color: #D9D9D9;
     border-radius: 50%;
 }
+/*-----------------------------------------------------dash board-------------------------------------------------*/
+
+.dashboard-container{
+    min-height:calc(100vh - 160px);
+    display: flex;
+
+}
+.admin-sidebar{
+    height:calc(100vh - 4rem);
+    width: 15vw;
+    border-right: 2px solid black;
+    position: fixed;
+    overflow-x: hidden;
+    z-index: -10;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+}
+.userlists-div{
+    padding:10px 10px 5px 16vw;
+}
+.admin-sidebar ul{
+   margin: 0;
+   margin-top: 10px;
+   padding: 0;
+}
+.admin-sidebar ul li{
+    list-style-type: none;
+    margin-left: 20px;
+    margin-right: 10px;
+    padding: 5px;
+}
+.admin-sidebar .logout-button{
+    margin-bottom :100px; 
+}
+
 /*-----------------------------------------------------sign up----------------------------------------------------*/
 
 main{
-    height:calc(100vh - 160px) ;
+    min-height:calc(100vh - 160px) ;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -65,31 +106,127 @@ main>.signup-box{
     background-color: var(--main);
     color: var(--white);
     min-width: 25vw;
-    height: 57vh;
+    height: 63vh;
     border: 1px solid black;
-    border-radius: 8px;
+    border-radius: 25px;
     padding: 20px;
 }
 main>.signup-box input{
-    margin-left: 25px;
-   
+    margin-left: 45px;
+    margin-top: 3px;
     margin-bottom: 10px;
     padding: 8px 5px;
-    width: 20vw;
+    width: 17vw;
+    border-radius: 19px;
+    border: 2px solid #47ABFF;
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    color:var(--white);
 }
 main>.signup-box label{
-    margin-left: 25px;
+    margin-left: 55px;
+    font-size: 12px;
 
 }
 main>.signup-box .sign-btn{
     margin-left: 50%;
     transform: translateX(-50%);
+    width: 18vw;
+    margin-top: 5px;
+    background-color: var(--secondary);
+    font-weight: bold;
+    cursor: pointer;
 }
 main>.signup-box>h2{
     margin-left: 50%;
     transform: translateX(-50%);
     margin-top: 0;
 }
+.signup-box a, .login-box a{
+    color:#47ABFF ;
+    font-size: 13px;
+    float: right;
+}
+
+/*-----------------------------------------------------login page-------------------------------------------------*/
+
+main>.login-box{
+    background-color: var(--main);
+    color: var(--white);
+    min-width: 25vw;
+    height: 63vh;
+    border: 1px solid black;
+    border-radius: 25px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+main>.login-box input{
+   
+    margin-bottom: 10px;
+    padding: 8px 5px;
+    width: 17vw;
+    border-radius: 19px;
+    border: 2px solid #47ABFF;
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    color:var(--white);
+}
+main>.login-box label{
+    margin-left: 10px;
+    font-size: 12px;
+
+}
+main>.login-box .sign-btn{
+    width: 18vw;
+    margin-top: 5px;
+    background-color: var(--secondary);
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/*-----------------------------------------------------add-product-form-------------------------------------------*/
+.addproduct-container{
+    min-height:calc(100vh - 160px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+.form-addproduct{
+    background-color: var(--main);
+    color: var(--white);
+    padding: 10px;
+}
+.form-addproduct h2{
+    margin-left: 50%;
+    transform: translateX(-50%);
+}
+.form-addproduct-inner{
+    display: flex;
+}
+.form-addproduct-inner .form-left,
+.form-addproduct-inner .form-right {
+    margin: 15px;
+}
+.form-addproduct #description{
+    width: 15rem;
+}
+.form-addproduct #file_uploader{
+    width: 15rem;
+    font-size: 12px;
+}
+.form-addproduct .submit-btn{
+    margin-left: 50%;
+    transform: translateX(-50%);
+    padding: 5px 4rem;
+    background-color: var(--secondary);
+    color: var(--white);
+    font-weight: bold;
+}
+
+
 /*-----------------------------------------------------footer-----------------------------------------------------*/
 
 footer{

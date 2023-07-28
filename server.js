@@ -15,6 +15,8 @@ app.use(express.urlencoded({extended:true}))
 app.use(express.static('public'))
 
 app.set('view engine','ejs')
+app.set('views','./views/user')
+app.set('views','./views/admin')
 //requests starts with /admin will be connected to adminRouter
 app.use('/admin', adminRouter);
 //requests starts with /user will be connected to user Router
@@ -25,7 +27,7 @@ app.use('/user',userRouter)
 
 
 app.get('/',(req,res)=>{
-    res.render('index')
+    res.send('home')
 })
 
 

@@ -303,6 +303,7 @@ main>.login-box .sign-btn{
 /*--------------------------------------------------admin products---------------------------------------------------*/
 .product-details-box .product{
    width: 70vw;
+   min-height: 12rem;
    margin-left: 5vw;
    display: flex;
    margin-bottom: 1rem;
@@ -319,6 +320,14 @@ main>.login-box .sign-btn{
     width: 100%;
     height: 100%;
     object-fit: contain;
+}
+.product .product-description p{
+    display: inline-block;
+    margin: 0 10px;
+}
+.product .product-description p span{
+    font-size: 15px;
+    font-weight: bold;
 }
 
 

@@ -37,6 +37,7 @@ router.post('/add-product',upload.single('img-file'),adminController.addProduct)
 
 router.get('/dashboard',adminMiddleWare.isAdmin,adminController.dashboard)
 router.get('/products',adminController.productsPage)
+router.get('/products/:id', adminController.filterProducts)
 
 
 module.exports = router;

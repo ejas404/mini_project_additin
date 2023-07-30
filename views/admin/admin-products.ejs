@@ -28,9 +28,9 @@
                 <h5>Filter:</h5>
                 <ul>
                     <li><a href="">All</a></li>
-                    <li><a href="">Dogs</a></li>
-                    <li><a href="">Cats</a></li>
-                    <li><a href="">Birds</a></li>
+                    <% for(let each of locals.categories) { %>
+                    <li><a href="/admin/products/<%= each.category_id %>"><%= each.categoryName %></a></li>
+                    <% } %>
                 </ul>
             </div>
             <div class="logout-button">
@@ -45,12 +45,16 @@
                         <img src="\<%= each.productImg.replace(/public\\/,'') %>" alt="">
                     </div>
                     <div class="product-description">
-                        <p>product name : <%= each.productName %></p>
-                        <p>Category : <%=  %></p>
-                        <p>Price : <%= each.productPrice %>/-</p>
-                        <p>Weight : <%= each.productWeight %> kg</p>
-                        <p>Quantity : <%= each.productQuantity %> pcs</p>
-                        <p>Description : <%= each.productDescription %></p>
+                        <p><span>Product Name :</span> <%= each.productName %></p>
+                        <p><span>Category :</span> <%= each.category[0].categoryName  %></p><br>
+                        <p><span>Price :</span> <%= each.productPrice %>/-</p>
+                        <p><span>Weight :</span> <%= each.productWeight %> kg</p>
+                        <p><span>Quantity :</span> <%= each.productQuantity %> pcs</p><br>
+                        <p><span>Description :</span> <%= each.productDescription %></p>
+                    </div>
+                    <div class="buttons">
+                        <a href="">edit</a><br>
+                        <a href="">delete</a>
                     </div>
                 </div>
                 <% } %>

@@ -1,7 +1,9 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose')
+const session = require('express-session')
 const PORT = 4400
+
 
 
 //importing admin router from routers/admin.js file
@@ -14,9 +16,15 @@ app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use(express.static('public'))
 
+app.use(session({
+    secret: "thisismysecrctekeyfhrgfgrfrty84fwir767",
+    saveUninitialized:true,
+    resave: false 
+}))
+
 app.set('view engine','ejs')
-app.set('views','./views/user')
-app.set('views','./views/admin')
+app.set('views',['./views/user','./views/admin'])
+
 //requests starts with /admin will be connected to adminRouter
 app.use('/admin', adminRouter);
 //requests starts with /user will be connected to user Router

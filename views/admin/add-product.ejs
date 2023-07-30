@@ -36,15 +36,17 @@
                     <label for="quantity">Quantity:</label><br>
                     <input type="number" id="quantity" name="quantity" required><br>
 
+                    <p class="<%= locals.class %>"><%= locals.message %></p>
+
                 </div>
                 <div class="form-right">
 
                     <label for="category">Category:</label><br>
                     <select id="category" name="category" >
                         <option value="" disabled selected>Select Category</option>
-                        <option value="electronics">Electronics</option>
-                        <option value="clothing">Clothing</option>
-                        <option value="home_appliances">Home Appliances</option>
+                        <% for (let each of locals.category) {%>
+                        <option value="<%= each.categoryName %>"><%= each.categoryName %></option>
+                        <%}%>
                         <!-- Add more categories as needed -->
                     </select><br>
 

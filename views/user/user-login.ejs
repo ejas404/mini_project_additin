@@ -13,8 +13,8 @@
     <main>
         <div class="login-box">
                 <div>
-                    <h2><%= locals.h2 %></h2>
-                    <form action="<%= locals.url %> " method="post">
+                    <h2>Login Now</h2>
+                    <form action="/user/login " method="post">
                     
                 
                     <label for="email">Email:</label><br>
@@ -27,10 +27,10 @@
                     <input type="submit" value="Sign Up" class="sign-btn">
                   </form>
 
-                  <p><%= locals.message %></p>
-                  <% if (!locals.isAdmin){%>
+                  <p class="error-message"><%= locals.message %></p>
+                 
                   <a href="/user/signup">dont have an accout? signup now</a>
-                  <%}%>
+                
                 </div>
 
         </div>

@@ -6,7 +6,8 @@ const userSchema = new Schema({
     user_id:{type:Number, required:true},
     name:{type:String , required:true},
     email:{type:String, required: true},
-    password:{type:String,required:true}
+    password:{type:String,required:true},
+    isBlocked:{type:Boolean, required:true}
 })
 
 const UserCollection = mongoose.model('user',userSchema)

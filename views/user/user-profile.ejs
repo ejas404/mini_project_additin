@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <header>
+       <%- include('../partials/navbar') %>
+    </header>
+    <div class="userprofile-main">
+       <div class="user-profile-box">
+            <div class="left-userdetails">
+               <div class="head-name">
+                     <h2><%= locals.user.name.toUpperCase() %></h2>
+                     <p><%= locals.user.email %></p>
+               </div>
+               <div class="address">
+                    <h4>Address</h4>
+                    <% for (let each of locals.address) { %>
+                        <div class="address-box">
+                            <p><%= each.houseName %>, <%= each.streetName %></p>
+                            <p><%= each.city %>, <%= each.state %></p>
+                            <p>postal code : <%= each.postalcode %></p>
+                            <p>mobile : <%= each.mobile %></p>
+                        </div>
+                    <% } %>
+                    <a href="/user/user-profile/add-address">add address</a>
+               </div>
+               <div class="edit-profile-btn">
+                    <a href="">edit profile</a>
+               </div>
+
+            </div>
+            <div class="user-sidebar">
+                <div class="profile-head">
+                    <div class="head"></div>
+                </div>
+                <div class="profile-lists">
+                    <ul>
+                        <li><a href="">Profile</a></li>
+                        <li><a href="">My Orders</a></li>
+                        <li><a href="">My Wishlist</a></li>
+                        <li><a href="">My Cart</a></li>
+                    </ul>
+                </div>
+                <div class="signout-btn-box"><a href="">logout</a></div>
+            </div>
+       </div>
+    </div>
+        <%- include('../partials/footer')%>
+</body>
+</html>

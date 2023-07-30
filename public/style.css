@@ -3,6 +3,7 @@
     --main:#003466;
     --white:#fff;
     --secondary:#002442;
+    --error : red;
 }
 
 body{
@@ -69,15 +70,16 @@ nav>.logo>img{
     width: 15vw;
     border-right: 2px solid black;
     position: fixed;
-    overflow-x: hidden;
-    z-index: -10;
+    z-index: 10;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 
 }
 .userlists-div{
+    min-height:calc(100vh - 160px) ;
     padding:10px 10px 5px 16vw;
+    z-index: -10;
 }
 .admin-sidebar ul{
    margin: 0;
@@ -93,6 +95,39 @@ nav>.logo>img{
 .admin-sidebar .logout-button{
     margin-bottom :100px; 
 }
+
+/*----------------------------------------------------user profile------------------------------------------------*/
+.userprofile-main{
+    min-height:calc(100vh - 160px) ;
+}
+.user-profile-box .left-userdetails{
+    padding: 2rem 25vw 5rem 2rem ;
+
+}
+.user-profile-box .user-sidebar {
+    height:calc(100vh - 14rem);
+    width: 20vw;
+    border: 2px solid black;
+    position: fixed;
+    right: 3rem;
+    top: 6rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+}
+
+.user-profile-box .address-box{
+    background-color: cornsilk;
+    width: 20vw;
+    padding: 10px;
+    margin-bottom: 5px;
+}
+.user-profile-box .address-box p{
+    padding: 0;
+    margin: 0;
+}
+
 
 /*-----------------------------------------------------sign up----------------------------------------------------*/
 
@@ -197,11 +232,14 @@ main>.login-box .sign-btn{
 .form-addproduct{
     background-color: var(--main);
     color: var(--white);
-    padding: 10px;
+    padding: 15px;
+    margin: 30px;
+    border-radius: 10px;
+    box-shadow: -10px 10px 20px  black;
 }
 .form-addproduct h2{
     margin-left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-40%);
 }
 .form-addproduct-inner{
     display: flex;
@@ -210,6 +248,11 @@ main>.login-box .sign-btn{
 .form-addproduct-inner .form-right {
     margin: 15px;
 }
+.form-addproduct-inner .form-left .green{
+    margin-top: 5px;
+    color: rgb(38, 255, 0);
+}
+
 .form-addproduct #description{
     width: 15rem;
 }
@@ -226,15 +269,78 @@ main>.login-box .sign-btn{
     font-weight: bold;
 }
 
+/*-------------------------------------------------category box---------------------------------------------------*/
+
+.category-addbox{
+    background-color: var(--main);
+    color: var(--white);
+    min-width: 20vw;
+    height: 50vh;
+    border: 1px solid black;
+    border-radius: 25px;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+.category-addbox input{
+    padding: 5px;
+    margin: 5px 0;
+}
+    .category-addbox label,textarea{
+    font-size: 13px;
+    padding-top: 10px;
+}
+.category-addbox .sign-btn{
+   background-color: var(--secondary);
+   color: var(--white);
+   width: 5rem;
+   margin-left: 50%;
+   transform: translateX(-50%);
+
+}
+/*--------------------------------------------------admin products---------------------------------------------------*/
+.product-details-box .product{
+   width: 70vw;
+   margin-left: 5vw;
+   display: flex;
+   margin-bottom: 1rem;
+   border: 2px solid grey;
+   align-items: center;
+}
+.product .product-image{
+    width: 10rem;
+    height: 10rem;
+    border: 1px solid black;
+    margin: 0 1rem;
+}
+.product .product-image img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+
+/*-----------------------------------------------------default-------------------------------------------------------*/
+
+.error-message{
+    color: var(--error);
+    margin-top: 5px;
+    font-size: 15px;
+
+}
 
 /*-----------------------------------------------------footer-----------------------------------------------------*/
 
 footer{
+    position: relative;
     display: flex;
     font-size: 12px;
     padding: 0 2rem;
     background-color: var(--main);
     color: var(--white);
+    z-index: 50;
 }
 
 footer>.description{

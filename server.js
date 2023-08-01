@@ -23,7 +23,7 @@ app.use(session({
 }))
 
 app.set('view engine','ejs')
-app.set('views',['./views/user','./views/admin'])
+app.set('views',['./views/user','./views/admin','./views'])
 
 //requests starts with /admin will be connected to adminRouter
 app.use('/admin', adminRouter);
@@ -35,7 +35,7 @@ app.use('/user',userRouter)
 
 
 app.get('/',(req,res)=>{
-    res.send('home')
+    res.render('index')
 })
 
 

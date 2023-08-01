@@ -22,12 +22,14 @@
                 
                     <label for="password">Password:</label><br>
                     <input type="password" id="password" name="password" required><br>
+
+                    <a onclick="getOtp()" href="">login with otp</a><br>
                 
                    
                     <input type="submit" value="Sign Up" class="sign-btn">
                   </form>
 
-                  <p class="error-message"><%= locals.message %></p>
+                  <p class="error-message" id="err-message"><%= locals.message %></p>
                  
                   <a href="/user/signup">dont have an accout? signup now</a>
                 
@@ -36,5 +38,37 @@
         </div>
     </main>
         <%- include('../partials/footer')%>
+        <script>
+            function getOtp(){
+                const errMsg = document.getElementById('err-message')
+                const email = document.getElementById('email').value
+                if(!email){
+                    // errMsg.className = 'error-message'
+                    errMsg.innerText = 'enter your email'
+                    
+                }
+                const body = {
+                    email : email
+                }
+                const url = 'http://localhost:4400/user/get-otp';
+                fetch(url,{
+                    method : 'POST',
+                    headers : {
+                        'Content-Type': 'application/json'
+                    },
+                    body : JSON.stringify(body)
+                }).
+                then((response)=>{
+                   return response.json()
+                }).then((response)=>{
+                    if(response.successMsg){
+                        window.location.href = response.redirect
+                    }else{
+                        errMsg.innerText = 'we dont have your number'
+                    }
+                })
+            }
+            
+        </script>
 </body>
 </html>

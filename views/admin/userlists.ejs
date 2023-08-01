@@ -16,10 +16,10 @@
     <div class="dashboard-container">
        <div class="admin-sidebar">
         <ul>
-            <li>Dashboard</li>
-            <li>Orders</li>
-            <li>Products</li>
-            <li>Users</li>
+          <li><a href="/admin/dashboard">Dashboard</a></li>
+          <li>Orders</li>
+          <li><a href="/admin/products">Products</a></li>
+          <li><a href="/admin/userlist">Users</a></li>
         </ul>
         <div class="logout-button">
             <a href="">Logout</a>
@@ -32,7 +32,8 @@
                 <th scope="col">sl no</th>
                 <th scope="col">Name</th>
                 <th scope="col">Email</th>
-                <th scope="col">Position</th>
+                <th></th>
+                <th></th>
                 <th></th>
                 <th scope="col"><a href=""><i class="bi bi-person-add"></i> </a></th>
               </tr>
@@ -40,17 +41,28 @@
             <tbody>
               <% let k = 0 %>
               <% for(let i=0;i< locals.datas.length;i++) { %>
-                <% if (datas[i].position === 'admin') { continue; } %>
-              <tr>
+                <% if (datas[i].isBlocked) { %>
+                  <tr class="table-active">
+                  <% } else { %>
+                  <tr>
+                  <% } %>
+               
+             
                 
                 <th scope="row"><%= ++k %></th>
                 <td><%= datas[i].name %> </td>
                 <td><%= datas[i].email %></td>
-                <td></td>
-                <td><a href=""><i class="bi bi-person-dash"></i></a></td>
-                <td><a href=""><i class="bi bi-pencil-square"></i></i></a></td>
+                <td><a href="/admin/user/more/<%= datas[i].user_id %>">more details</a></td>
+                <td><a href=""><i class="bi bi-pencil-square"></a></td>
+                <td><a href="/admin/user/delete/<%= datas[i].user_id %>"><i class="bi bi-person-dash"></i></a></td>
+                <% if (datas[i].isBlocked) { %>
+                <td><a href="/admin/user/unblock/<%= datas[i].user_id %>"><i style="color: red;" class="bi bi-person-lock"></i></a></td>
+                <% } else { %>
+                <td><a href="/admin/user/block/<%= datas[i].user_id %>"><i style="color: rgb(0, 196, 72);" class="bi bi-unlock"></i></a></td>
+                <% } %>
               </tr>
               <% } %>
+             
              
             </tbody>
           </table>

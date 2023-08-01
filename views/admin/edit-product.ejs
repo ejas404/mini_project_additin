@@ -18,21 +18,21 @@
         <div class="form-addproduct">
             <h2>Add Product</h2>
           
-            <form action="/admin/add-product" method="post" enctype="multipart/form-data">
+            <form action="/admin/products/edit/<%= locals.product[0].product_id %>" method="post" enctype="multipart/form-data">
 
                 <div class="form-addproduct-inner">
                 <div class="form-left">
                     <label for="product_name">Product Name:</label><br>
-                    <input type="text" id="product_name" name="product_name" required><br>
+                    <input type="text" id="product_name" name="product_name" value="<%= locals.product[0].productName %>"><br>
 
                     <label for="price">Price:</label><br>
-                    <input type="number" id="price" name="price" step="0.01" required><br>
+                    <input type="number" id="price" name="price" value="<%= locals.product[0].productPrice %>" step="0.01" required><br>
 
                     <label for="weight">Weight:</label><br>
-                    <input type="number" id="weight" name="weight" step="0.01" required><br>
+                    <input type="number" id="weight" name="weight" value="<%= locals.product[0].productWeight %>" step="0.01" required><br>
 
                     <label for="quantity">Quantity:</label><br>
-                    <input type="number" id="quantity" name="quantity" required><br>
+                    <input type="number" id="quantity" name="quantity" value="<%= locals.product[0].productQuantity %>" required><br>
 
                     <p class="<%= locals.class %>"><%= locals.message %></p>
 
@@ -41,7 +41,7 @@
 
                     <label for="category">Category:</label><br>
                     <select id="category" name="category" >
-                        <option value="" disabled selected>Select Category</option>
+                        <option value="" disabled selected><%= locals.product[0].category[0].categoryName %></option>
                         <% for (let each of locals.category) {%>
                         <option value="<%= each.categoryName %>"><%= each.categoryName %></option>
                         <%}%>
@@ -55,7 +55,7 @@
                     </select><br>
 
                     <label for="description">Description:</label><br>
-                    <textarea id="description" name="description" rows="4" cols="50"></textarea><br>
+                    <textarea id="description" name="description"  rows="4" cols="50"><%= locals.product[0].productDescription %></textarea><br>
 
                     <label for="file_uploader">File Uploader:</label><br>
                     <input type="file" id="file_uploader" name="img-file" accept=".jpg, .jpeg, .png" ><br>

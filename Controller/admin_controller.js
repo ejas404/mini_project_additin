@@ -1,5 +1,4 @@
 const AdminCollection = require('../Model/admin_details')
-const UserCollection = require('../Model/user_details')
 const ProductCollection = require('../Model/product')
 const CategoryCollection = require('../Model/category')
 const subCategoryCollection = require('../Model/sub_category')
@@ -35,38 +34,27 @@ module.exports = {
         res.render('dashboard')
     },
 
-    //to get user datas from the database
-    userLists: async (req, res) => {
-
-        try {
-            const userDatas = await UserCollection.find({})
-
-            res.render('userlists', { datas: userDatas })
-
-
-        } catch (e) {
-            console.log(e.message)
-        }
-
-    },
+  
     addProductPage: async (req, res) => {
         const category = await CategoryCollection.find({}, { categoryName: 1 })
-        res.render('add-product', { category: category })
+        res.render('add-product', { category})
     },
     addProduct: async (req, res) => {
         try {
+            console.log(req.body)
             console.log(req.body.category)
             const categoryDoc = await CategoryCollection.findOne({ categoryName: req.body.category })
             const productData = {
 
-                productName: req.body.product_name,
+                productName: req.body.product_name.toLowerCase(),
                 product_id: uuidv4(),
                 productPrice: req.body.price,
                 productWeight: req.body.weight,
                 productQuantity: req.body.quantity,
                 productCategory: categoryDoc.category_id,
                 productDescription: req.body.description,
-                productImg: req.file.path
+                productImg: req.file.path,
+                isAvailable : true
 
             }
 
@@ -122,9 +110,17 @@ module.exports = {
                     'foreignField': "category_id",
                     'as': "category"
                 }
-            }])
+                },
+                {
+                    $sort:{
+                        isAvailable : -1
+                    }
+                }
+            
+            
+            ])
             const categories = await CategoryCollection.find()
-            res.render('admin-products', { products, categories })
+            res.render('admin-products', { products, categories,grey:'product' })
         } catch (e) {
             console.log(e)
         }

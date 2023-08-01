@@ -1,5 +1,5 @@
 const UserCollection = require('../Model/user_details')
-const AddressCollection = require('../Model/addres_details')
+const AddressCollection = require('../Model/address_details')
 
 module.exports = {
     userSignUp : async (req,res)=>{
@@ -41,13 +41,13 @@ module.exports = {
         try{
             const existingUser = await UserCollection.findOne({email:email})
             if(!existingUser){
-                res.render('login',{message:'invalid user'})
+                res.render('user-login',{message:'invalid user'})
             }else{
                 if(existingUser.password === password && existingUser.email === email){
                     req.session.user = email;
                     res.redirect('/user/user-profile')
                 }else{
-                    res.render('login', {message:'incorrect user or password'})
+                    res.render('user-login', {message:'incorrect user or password'})
                 }
             }
         }catch(e){
@@ -110,6 +110,15 @@ module.exports = {
       catch(e){
         console.log(e)
       }
+    },
+    otpPage : (req,res)=>{
+        res.render('user-otp')
+    },
+    otpConfig : (req,res)=>{
+        console.log(String(req.session.otp))
+        console.log(req.body.otp)
+        console.log(req.body)
+        res.send('done')
     }
 
 }

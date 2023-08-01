@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <header>
+       <%- include('../partials/navbar') %>
+    </header>
+    <main>
+        <div class="confirm-box">
+            <p><%= locals.message %></p>
+           
+           <a href="<%= locals.confirm %>">confirm</a>
+           <a href="<%= locals.decline %>">decline</a>
+        </div>
+    </main>
+        <%- include('../partials/footer')%>
+</body>
+</html>

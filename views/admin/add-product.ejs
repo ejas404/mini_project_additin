@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    
-    <link rel="stylesheet" href="/style.css">
+    <%- include('../partials/bootstrap-styles') %>
+        <link rel="stylesheet" href="/style.css">
 
 </head>
 
@@ -14,62 +14,74 @@
     <header>
         <%- include('../partials/navbar') %>
     </header>
+    <div class="back-button">
+        <a href="/admin/products"><i class="bi bi-arrow-left-short"></i></a>
+    </div>
     <div class="addproduct-container">
+
         <div class="form-addproduct">
             <h2>Add Product</h2>
-          
-            <form action="/admin/add-product" method="post" enctype="multipart/form-data">
+
+            <form action="/admin/add-product" method="post" id="validation_form" enctype="multipart/form-data">
 
                 <div class="form-addproduct-inner">
-                <div class="form-left">
-                    <label for="product_name">Product Name:</label><br>
-                    <input type="text" id="product_name" name="product_name" required><br>
+                    <div class="form-left">
+                        <label for="product_name">Product Name:</label><br>
+                        <input type="text" id="product_name" name="product_name" required><br>
 
-                    <label for="price">Price:</label><br>
-                    <input type="number" id="price" name="price" step="0.01" required><br>
+                        <label for="price">Price:</label><br>
+                        <input type="number" id="price" name="price" step="0.01" required><br>
 
-                    <label for="weight">Weight:</label><br>
-                    <input type="number" id="weight" name="weight" step="0.01" required><br>
+                        <label for="weight">Weight:</label><br>
+                        <input type="number" id="weight" name="weight" step="0.01" required><br>
 
-                    <label for="quantity">Quantity:</label><br>
-                    <input type="number" id="quantity" name="quantity" required><br>
+                        <label for="quantity">Quantity:</label><br>
+                        <input type="number" id="quantity" name="quantity" required><br>
 
-                    <p class="<%= locals.class %>"><%= locals.message %></p>
+                        <p id="error" class="<%= locals.class %>">
+                            <%= locals.message %>
+                        </p>
 
+                    </div>
+                    <div class="form-right">
+
+                        <label for="category">Category:</label><br>
+                        <select id="category" name="category" required>
+                            <option value="" disabled selected>Select Category</option>
+                            <% for (let each of locals.category) {%>
+                                <option value="<%= each.categoryName %>">
+                                    <%= each.categoryName %>
+                                </option>
+                                <%}%>
+                                    <!-- Add more categories as needed -->
+                        </select> <a
+                            style="background-color: #fff; padding: 2px 5px; font-size: 13px; text-decoration: none;"
+                            href="/admin/add-category">add category</a><br>
+
+                        <label for="subcategory">Subcategory:</label><br>
+                        <select id="subcategory" name="subcategory">
+                            <option value="" disabled selected>Select Subcategory</option>
+                            <!-- Add subcategories based on the selected category using JavaScript or fetch from the server -->
+                        </select><br>
+
+                        <label for="description">Description:</label><br>
+                        <textarea id="description" name="description" rows="4" cols="50" maxlength="499"></textarea><br>
+
+                        <label for="file_uploader">File Uploader:</label><br>
+                        <input type="file" id="file_uploader" name="img-file" accept=".jpg, .jpeg, .png" multiple><br>
+
+                    </div>
                 </div>
-                <div class="form-right">
-
-                    <label for="category">Category:</label><br>
-                    <select id="category" name="category" >
-                        <option value="" disabled selected>Select Category</option>
-                        <% for (let each of locals.category) {%>
-                        <option value="<%= each.categoryName %>"><%= each.categoryName %></option>
-                        <%}%>
-                        <!-- Add more categories as needed -->
-                    </select><br>
-
-                    <label for="subcategory">Subcategory:</label><br>
-                    <select id="subcategory" name="subcategory" >
-                        <option value="" disabled selected>Select Subcategory</option>
-                        <!-- Add subcategories based on the selected category using JavaScript or fetch from the server -->
-                    </select><br>
-
-                    <label for="description">Description:</label><br>
-                    <textarea id="description" name="description" rows="4" cols="50"></textarea><br>
-
-                    <label for="file_uploader">File Uploader:</label><br>
-                    <input type="file" id="file_uploader" name="img-file" accept=".jpg, .jpeg, .png" ><br>
-
-                </div>
-            </div>
                 <input type="submit" value="Submit" class="submit-btn">
             </form>
-            
+
         </div>
     </div>
-    <%- include('../partials/footer')%>
+    <script src="/scripts/validate_num.js"></script>
+    <%- include('../partials/bootstrap-script') %>
+        <%- include('../partials/footer')%>
 
-      
+
 </body>
 
 </html>

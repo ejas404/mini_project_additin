@@ -17,6 +17,7 @@
         <%- include('../partials/navbar') %>
     </header>
     <div class="dashboard-container">
+       
         <div class="admin-sidebar">
             <ul>
                 <li><a href="/admin/dashboard">Dashboard</a></li>
@@ -25,10 +26,13 @@
                 <li><a href="/admin/userlist">Users</a></li>
             </ul>
             <div class="logout-button">
-                <a href="">Logout</a>
+                <a href="/admin/logout">Logout</a>
             </div>
         </div>
         <div class="userlists-div">
+            <div class="back-button">
+                <a href="/admin/userlist"><i  class="bi bi-arrow-left-short"></i></a>
+            </div>
             <div class="head-name">
                 <h2>
                     <%= locals.user[0].name.toUpperCase() %>

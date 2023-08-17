@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <%- include('../partials/bootstrap-styles') %>
     <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-    <header>
+    <header style="position: fixed; top: 0;">
        <%- include('../partials/navbar') %>
     </header>
-    <main>
+    <main class="d-flex">
         <div class="login-box">
                 <div>
                     <h2>Login Now</h2>
@@ -19,18 +20,23 @@
                 
                     <label for="email">Email:</label><br>
                     <input type="email" id="email" name="email" required><br>
+
+                    <a onclick="getOtp()" href="">login with otp</a><br>
                 
                     <label for="password">Password:</label><br>
                     <input type="password" id="password" name="password" required><br>
 
-                    <a onclick="getOtp()" href="">login with otp</a><br>
+                    <a  href="/user/email">forget password?</a><br>
+
+                    <p class="error-message" id="err-message"><%= locals.message %></p>
+                    <!-- <p style="color: green; font-size: 13px;"><%= locals.completed %></p> -->
                 
                    
-                    <input type="submit" value="Sign Up" class="sign-btn">
+                    <input style="background-color: 002442;" type="submit" value="Log in" class="sign-btn">
                   </form>
 
-                  <p class="error-message" id="err-message"><%= locals.message %></p>
                  
+            
                   <a href="/user/signup">dont have an accout? signup now</a>
                 
                 </div>
@@ -38,37 +44,7 @@
         </div>
     </main>
         <%- include('../partials/footer')%>
-        <script>
-            function getOtp(){
-                const errMsg = document.getElementById('err-message')
-                const email = document.getElementById('email').value
-                if(!email){
-                    // errMsg.className = 'error-message'
-                    errMsg.innerText = 'enter your email'
-                    
-                }
-                const body = {
-                    email : email
-                }
-                const url = 'http://localhost:4400/user/get-otp';
-                fetch(url,{
-                    method : 'POST',
-                    headers : {
-                        'Content-Type': 'application/json'
-                    },
-                    body : JSON.stringify(body)
-                }).
-                then((response)=>{
-                   return response.json()
-                }).then((response)=>{
-                    if(response.successMsg){
-                        window.location.href = response.redirect
-                    }else{
-                        errMsg.innerText = 'we dont have your number'
-                    }
-                })
-            }
-            
-        </script>
+        <%- include('../partials/bootstrap-script') %>
+        <script src="/scripts/get_otp.js"></script>
 </body>
 </html>

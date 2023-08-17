@@ -1,8 +1,11 @@
 const express = require('express');
 const app = express();
-const mongoose = require('mongoose')
 const session = require('express-session')
-const PORT = 4400
+const nocache = require('nocache')
+require('dotenv').config();
+const PORT = process.env.PORT || 4400
+
+const db  = require('./config/db')
 
 
 
@@ -10,16 +13,18 @@ const PORT = 4400
 const adminRouter = require('./routers/admin')
 
 //importing user router from routers/user.js file
-const userRouter = require('./routers/user')
+const userRouter = require('./routers/user');
+const homepageController = require('./Controller/homepage_controller');
 
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use(express.static('public'))
+//app.use(nocache())
 
 app.use(session({
-    secret: "thisismysecrctekeyfhrgfgrfrty84fwir767",
+    secret: process.env.SECRET,
     saveUninitialized:true,
-    resave: false 
+    resave: true 
 }))
 
 app.set('view engine','ejs')
@@ -31,22 +36,20 @@ app.use('/admin', adminRouter);
 app.use('/user',userRouter)
 
 
+app.get('/', homepageController.homepage)
+app.get('/products',homepageController.productsPage)
+app.get('/products/filter',homepageController.filter)
+app.get('/singleproduct/:id',homepageController.singleProductPage)
+app.get('/products/:num',homepageController.pagination)
 
 
 
-app.get('/',(req,res)=>{
-    res.render('index')
-})
-
-
-
-
-mongoose.connect('mongodb://127.0.0.1:27017/additin')
-.then(
-    app.listen(PORT ,()=>{
-        console.log('server started at 4400')
+db.once('open', () => {
+    app.listen(PORT, () => {
+      console.log(`Server listening to port ${PORT}`)
     })
-).catch((e)=>{
-    console.log(e)
-})
+  })
+
+
+
 

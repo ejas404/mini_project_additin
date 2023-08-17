@@ -1,34 +1,53 @@
 const UserCollection = require('../Model/user_details')
 const AddressCollection = require('../Model/address_details')
+const ProductCollection = require('../Model/product')
+
+const titleUpperCase = require('../public/scripts/title_uppercase')
+const nodemailer = require('nodemailer')
+
+//email configuration of sender
+const senderConfig = {
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
+   
+    auth: {
+      user: process.env.EMAILID,
+      pass: process.env.EMAILPASSWORD
+    }
+  };
+
+// random otp generator
+function generateOTP() {
+    // Generate a random 6-digit number between 100000 and 999999
+    const otp = Math.floor(Math.random() * 900000) + 100000;
+    return otp;
+  }
 
 module.exports = {
     userSignUp : async (req,res)=>{
-        const {name , email, password,password2} = req.body
-        console.log(req.query)
-        if(password2 !== password){
-            return res.send('confirmed password is not same as first')
-        }
-        try{
+        const {name , email, password} = req.body
+         try{
             const existingUser = await UserCollection.findOne({email: email})
             if(existingUser){
-                return res.send('user already existing')
+                return res.render('signup',{message:'alredy have a user with this id'})
             }else{
                 let userCount = await UserCollection.findOne().sort({_id:-1})
                 let starter_id =100;
                 if(userCount){
-                    starter_id = userCount.user_id
+                    starter_id = Number(userCount.user_id)
                 } 
      
                 const newUser = await UserCollection.create({
-                    user_id: starter_id+1,
+                    user_id:String(starter_id+1),
                     name: name,
                     email:email,
                     password : password,
-                    isBlock : false
+                    isBlocked : false
     
                 })
                 console.log(newUser)
-                res.send('user created successfully')
+                res.render('user-login',{message : 'user created successfully'})
             }
         }catch(e){
             console.log(e)
@@ -45,7 +64,7 @@ module.exports = {
             }else{
                 if(existingUser.password === password && existingUser.email === email){
                     req.session.user = email;
-                    res.redirect('/user/user-profile')
+                    res.redirect('/')
                 }else{
                     res.render('user-login', {message:'incorrect user or password'})
                 }
@@ -54,6 +73,7 @@ module.exports = {
             console.log(e)
         }
     },
+    
 
     signUpPage: async (req,res)=>{
         res.render('signup')
@@ -114,11 +134,96 @@ module.exports = {
     otpPage : (req,res)=>{
         res.render('user-otp')
     },
-    otpConfig : (req,res)=>{
-        console.log(String(req.session.otp))
-        console.log(req.body.otp)
+    email : (req,res)=>{
+        res.render('emailenter')
+    },
+    emailotp : async (req,res)=>{
+        try{
+            const isExist = await UserCollection.findOne({email:req.body.email})
+            if(isExist){
+                const transporter = nodemailer.createTransport(senderConfig);
+                const otp = generateOTP()
+                
+                req.session.otp = String(otp)
+                const mailOptions = {
+                    from: senderConfig.auth.user,
+                    to: isExist.email,
+                    subject: 'resetting password',
+                    text: `your otp for resetting password is ${otp}`
+                  }
+
+                  await transporter.sendMail(mailOptions);
+                 req.session.user = req.body.email
+                 res.render('user-otp')
+            }else{
+                res.render('emailenter',{message : 'no such user with this email'})
+            }
+        }catch(e){
+            console.log(e)
+        }
+
+       
+    },
+    logout : (req,res)=>{
+        req.session.destroy((err)=>{
+            if(err){
+                console.log(err.message)
+            }else{
+                console.log('destroyed successfully')
+            }
+        })
+        res.redirect('/')
+    },
+    singleProduct : async (req,res)=>{
+        try{
+            console.log('hai')
+            req.session.product_id = req.params.id
+            const product_id = req.params.id
+            const product = await ProductCollection.findOne({ product_id })
+            res.redirect('/user/' + product.productName)
+        }catch(e){
+            console.log(e)
+        }
+       
+
+    }, 
+    singleProductPage : async (req,res)=>{
+        const product_id = req.session.product_id
+        const product = await ProductCollection.aggregate([
+            {
+                $match : {
+                   product_id
+                }
+             },
+             {
+                $lookup : {
+                    from : 'categories',
+                    localField : 'productCategory',
+                    foreignField : 'category_id',
+                    as : 'category'
+                }
+            }
+           
+
+        ])
+        console.log(product)
+        const productName = (titleUpperCase(product[0].productName))
+        res.render('user-single-product',{product,productName})
+    },
+    resetPassword : async (req,res)=>{
+      try{
         console.log(req.body)
-        res.send('done')
+        console.log(req.session.user)
+        const resetPassword = await UserCollection.findOneAndUpdate({email : req.session.user},{$set:{password:req.body.password}})
+        console.log(resetPassword)
+        res.render('user-login',{message:'password reset successfully'})
+      }
+      catch(e){
+        console.log(e)
+        res.render('user-login',{message:'some error occured try after some time'})
+        console.log('resetted')
+     }
     }
+   
 
 }

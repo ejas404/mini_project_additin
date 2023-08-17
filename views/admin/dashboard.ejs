@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <%- include('../partials/bootstrap-styles') %>
     <link rel="stylesheet" href="/style.css">
 </head>
 <body>
@@ -13,30 +14,21 @@
     <div class="dashboard-container">
        <div class="admin-sidebar">
         <ul>
-            <li><a href="/admin/dashboard">Dashboard</a></li>
-            <li>Orders</li>
+            <li style="border-bottom:4px solid #003466;"><a href="/admin/dashboard" style="color: blue;">Dashboard</a></li>
+            <li><a href="">Orders</a></li>
             <li><a href="/admin/products">Products</a></li>
-            <li><a href="/admin/userlist">Users</a></li>
+            <li><a href="/admin/userlists">Users</a></li>
+            <li><a href="/admin/others">Other</a></li>
         </ul>
         <div class="logout-button">
-            <a href="">Logout</a>
+            <a href="/admin/logout">Logout</a>
         </div>
        </div>
-       <div class="userlists-div">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Itaque, earum quae placeat nihil consectetur repellat accusantium vitae qui, reprehenderit laborum ab quam optio molestiae facilis? Architecto corrupti possimus ipsum nobis.
-            Modi aliquam explicabo repellat eaque deleniti laborum nesciunt error blanditiis atque quidem necessitatibus pariatur debitis, ex impedit repudiandae sequi eligendi vitae libero? Est atque vel itaque? Possimus quo cum voluptatum.
-            Non rem similique esse ut nulla necessitatibus aliquam maxime consectetur minima, ad velit impedit id error nostrum, nobis magni a provident eveniet corporis veritatis temporibus! Numquam dolorem dolor hic officiis?
-            Excepturi inventore sunt ex, cupiditate at ipsa dolorem et eum nemo voluptas enim quos possimus accusantium! Quo quibusdam quisquam dolor laborum consequatur voluptas dolore blanditiis quaerat minus, accusamus, adipisci maxime!
-            Id nostrum ab consequuntur, harum, molestias voluptas et, fuga eaque ea laudantium assumenda. Nobis iste natus vitae atque reprehenderit mollitia itaque iure libero esse. Quisquam perferendis mollitia dolorum! Cum, dolores?
-            Nihil cumque eaque illum in dicta rerum hic nam veritatis. Quo quia ratione, dolor minus distinctio beatae eos vel labore hic ducimus, obcaecati error, esse consequatur! Velit, officia incidunt? Hic.
-            Soluta eum recusandae ad dolore! Praesentium quis accusamus natus, in maiores nihil perspiciatis error laudantium illum quae asperiores quia atque minima ullam delectus hic, ratione quibusdam modi exercitationem nam. Consequatur.
-            Natus culpa saepe alias voluptatem ipsa ullam voluptas voluptatum, porro odit eius odio! Cupiditate vel eligendi fuga? Recusandae reiciendis voluptatibus, vitae sed maiores iste voluptates quos eaque neque, dolorem harum?
-            Eum provident voluptatum odit quaerat doloremque id necessitatibus corrupti temporibus tenetur. Libero, recusandae porro doloremque neque enim dolorem debitis pariatur saepe, architecto ullam earum placeat ducimus eius deleniti magnam? Officia.
-            Deserunt, dicta repellat est, omnis earum modi, esse aut quis porro sapiente hic atque mollitia velit corporis? Minima recusandae dolor ab deleniti exercitationem fugiat, labore reprehenderit ducimus nesciunt ad alias.
-            Facere labore excepturi soluta! Eius enim dignissimos iste, ut vero consequatur itaque optio quas voluptas. Modi id ratione consectetur enim facere, animi fuga quas? Voluptates eos labore ut possimus modi!
-          
+       <div class="userlists-div text-center" style="max-height: calc(100vh );">
+           <img src="/assets/admin dashboard img.PNG" alt="">
        </div>
     </div>
         <%- include('../partials/footer')%>
+        <%- include('../partials/bootstrap-script') %>
 </body>
 </html>

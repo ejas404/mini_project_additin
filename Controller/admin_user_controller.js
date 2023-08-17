@@ -22,15 +22,16 @@ module.exports = {
 
         ])
         console.log(moreDetails)
-        res.render('single-user',{user:moreDetails})
+        res.render('single-user',{user:moreDetails,isAdmin : true})
     },
       //to get user datas from the database
       userLists: async (req, res) => {
+        console.log('hai')
 
         try {
             const userDatas = await UserCollection.find({})
 
-            res.render('userlists', { datas: userDatas })
+            res.render('userlists', { datas: userDatas ,isAdmin : true})
 
 
         } catch (e) {
@@ -44,7 +45,7 @@ module.exports = {
             isBlocked : false
         }
         const unblock = await UserCollection.findOneAndUpdate({user_id},{$set:toUpdate})
-        res.redirect('/admin/userlist')
+        res.redirect('/admin/userlists')
 
    },
    blockUser : async (req,res)=>{
@@ -53,7 +54,7 @@ module.exports = {
         isBlocked : true
     }
     const block = await UserCollection.findOneAndUpdate({user_id},{$set:toUpdate})
-    res.redirect('/admin/userlist')
+    res.redirect('/admin/userlists')
 
 },
 }

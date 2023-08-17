@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <%- include('../partials/bootstrap-styles') %>
     <link rel="stylesheet" href="/style.css">
 </head>
 <body>
@@ -17,7 +18,7 @@
                      <h2><%= locals.user.name.toUpperCase() %></h2>
                      <p><%= locals.user.email %></p>
                </div>
-               <div class="address">
+               <div  class="address">
                     <h4>Address</h4>
                     <% for (let each of locals.address) { %>
                         <div class="address-box">
@@ -27,29 +28,33 @@
                             <p>mobile : <%= each.mobile %></p>
                         </div>
                     <% } %>
-                    <a href="/user/user-profile/add-address">add address</a>
+                    <div class="add-address-btn my-3">
+                        <a href="/user/user-profile/add-address">+add address</a>
+                    </div>
                </div>
-               <div class="edit-profile-btn">
+               <div class="edit-profile-btn mt-3">
                     <a href="">edit profile</a>
                </div>
 
             </div>
             <div class="user-sidebar">
-                <div class="profile-head">
-                    <div class="head"></div>
+                <div class="profile-head text-center">
+                    <div class="head"><i style="font-size: 6em;" class="bi bi-person-circle"></i></div>
+                    <p class="p-0"><%= locals.user.name.toUpperCase() %></p>
                 </div>
                 <div class="profile-lists">
                     <ul>
-                        <li><a href="">Profile</a></li>
+                        <li style="border-color: white;" ><a href="">Profile</a></li>
                         <li><a href="">My Orders</a></li>
                         <li><a href="">My Wishlist</a></li>
                         <li><a href="">My Cart</a></li>
                     </ul>
                 </div>
-                <div class="signout-btn-box"><a href="">logout</a></div>
+                <div class="signout-btn-box text-center mt-3 mb-2"><a href="/user/logout">logout</a></div>
             </div>
        </div>
     </div>
         <%- include('../partials/footer')%>
+        <%- include('../partials/bootstrap-script') %>
 </body>
 </html>

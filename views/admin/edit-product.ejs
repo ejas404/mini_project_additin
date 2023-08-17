@@ -16,14 +16,14 @@
     </header>
     <div class="addproduct-container">
         <div class="form-addproduct">
-            <h2>Add Product</h2>
+            <h2>Edit Now</h2>
           
             <form action="/admin/products/edit/<%= locals.product[0].product_id %>" method="post" enctype="multipart/form-data">
 
                 <div class="form-addproduct-inner">
                 <div class="form-left">
                     <label for="product_name">Product Name:</label><br>
-                    <input type="text" id="product_name" name="product_name" value="<%= locals.product[0].productName %>"><br>
+                    <input type="text" id="product_name" name="product_name" value="<%= locals.product[0].productName %>" required><br>
 
                     <label for="price">Price:</label><br>
                     <input type="number" id="price" name="price" value="<%= locals.product[0].productPrice %>" step="0.01" required><br>
@@ -62,14 +62,14 @@
 
                 </div>
             </div>
-                <input type="submit" value="Submit" class="submit-btn">
+                <input type="submit" value="Update  " class="submit-btn">
             </form>
             
         </div>
     </div>
     <%- include('../partials/footer')%>
 
-      
+
 </body>
 
 </html>

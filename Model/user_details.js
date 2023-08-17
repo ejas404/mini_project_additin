@@ -3,13 +3,30 @@ const Schema = mongoose.Schema
 
 
 const userSchema = new Schema({
-    user_id:{type:String, required:true},
-    name:{type:String , required:true},
-    email:{type:String, required: true},
-    password:{type:String,required:true},
-    isBlocked:{type:Boolean, required:true}
+    user_id: { type: String, required: true },
+    name: { type: String, required: true },
+    email: { type: String, required: true },
+    password: { type: String, required: true },
+    isBlocked: { type: Boolean, required: true },
+    cart: {
+        type: [{
+            product_id: {
+                type: String,
+            },
+            quantity: { type: Number },
+            price: { type: Number }
+        }]
+    },
+    wishlist : {
+        type : [{
+            product_id : {
+                type : mongoose.Schema.Types.ObjectId,
+                ref : 'product'
+            }
+        }]
+    }
 })
 
-const UserCollection = mongoose.model('user',userSchema)
+const UserCollection = mongoose.model('user', userSchema)
 
 module.exports = UserCollection

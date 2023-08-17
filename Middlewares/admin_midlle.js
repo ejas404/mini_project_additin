@@ -1,3 +1,9 @@
+const multer = require('multer')
+
+//multer for storing image files
+const multerStorage = require('../storage/multer')
+
+ 
 
 module.exports = {
     isAdmin : (req,res,next)=>{
@@ -5,21 +11,26 @@ module.exports = {
         if(req.session.isAdmin){
              next()
         }else{
-            res.render('admin-login')
+            res.redirect('/admin/login')
         }
 
     },
     islogin : async (req,res,next)=>{
        
         if(req.session.isAdmin){
-            console.log("session");
-            res.redirect('/admin/dashboard');
+            next()
         }
             
         else{
-            console.log("no session");
-            next();
+            res.redirect('/admin/login')
         }
            
-    }
+    },
+    uploadProductImg : multer({
+        storage: multerStorage.productStorage
+    }),
+    bannerUpload : multer ({
+        storage : multerStorage.bannerStorage
+    })
+  
 }

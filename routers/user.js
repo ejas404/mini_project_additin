@@ -33,6 +33,7 @@ userRouter.post('/get-otp',userMiddleware.isNumber)
 userRouter.get('/email',userController.email)
 userRouter.post('/emailotp',userController.emailotp)
 
+userRouter.get('/cart',userProductController.cartPage)
 userRouter.get('/add-to-cart/:id',userProductController.addToCart)
 
 userRouter.get('/singleproduct/:id',userMiddleware.isLoggedin,userMiddleware.isBlockedMid,userController.singleProduct)

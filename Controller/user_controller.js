@@ -89,7 +89,7 @@ module.exports = {
                 const user = await UserCollection.findOne({email:req.session.user})
                 const address = await AddressCollection.find({user_id : user.user_id})
                 console.log(address)
-                res.render('user-profile',{user,address})
+                res.render('user-profile',{user,address,dest :'profile'})
             }else{
                 res.send('please login')
             }

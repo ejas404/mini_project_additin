@@ -1,60 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <%- include('../partials/bootstrap-styles') %>
-    <link rel="stylesheet" href="/style.css">
+        <link rel="stylesheet" href="/style.css">
 </head>
+
 <body>
     <header>
-       <%- include('../partials/navbar') %>
+        <%- include('../partials/navbar') %>
     </header>
     <div class="userprofile-main">
-       <div class="user-profile-box">
+        <div class="user-profile-box">
             <div class="left-userdetails">
-               <div class="head-name">
-                     <h2><%= locals.user.name.toUpperCase() %></h2>
-                     <p><%= locals.user.email %></p>
-               </div>
-               <div  class="address">
+                <div class="head-name">
+                    <h2>
+                        <%= locals.user.name.toUpperCase() %>
+                    </h2>
+                    <p>
+                        <%= locals.user.email %>
+                    </p>
+                </div>
+                <div class="address">
                     <h4>Address</h4>
                     <% for (let each of locals.address) { %>
                         <div class="address-box">
-                            <p><%= each.houseName %>, <%= each.streetAddress %></p>
-                            <p><%= each.city %>, <%= each.state %></p>
-                            <p>postal code : <%= each.postalcode %></p>
-                            <p>mobile : <%= each.mobile %></p>
+                            <p>
+                                <%= each.houseName %>, <%= each.streetAddress %>
+                            </p>
+                            <p>
+                                <%= each.city %>, <%= each.state %>
+                            </p>
+                            <p>postal code : <%= each.postalcode %>
+                            </p>
+                            <p>mobile : <%= each.mobile %>
+                            </p>
                         </div>
-                    <% } %>
-                    <div class="add-address-btn my-3">
-                        <a href="/user/user-profile/add-address">+add address</a>
-                    </div>
-               </div>
-               <div class="edit-profile-btn mt-3">
+                        <% } %>
+                            <div class="add-address-btn my-3">
+                                <a href="/user/user-profile/add-address">+add address</a>
+                            </div>
+                </div>
+                <div class="edit-profile-btn mt-3">
                     <a href="">edit profile</a>
-               </div>
+                </div>
 
             </div>
-            <div class="user-sidebar">
-                <div class="profile-head text-center">
-                    <div class="head"><i style="font-size: 6em;" class="bi bi-person-circle"></i></div>
-                    <p class="p-0"><%= locals.user.name.toUpperCase() %></p>
-                </div>
-                <div class="profile-lists">
-                    <ul>
-                        <li style="border-color: white;" ><a href="">Profile</a></li>
-                        <li><a href="">My Orders</a></li>
-                        <li><a href="">My Wishlist</a></li>
-                        <li><a href="">My Cart</a></li>
-                    </ul>
-                </div>
-                <div class="signout-btn-box text-center mt-3 mb-2"><a href="/user/logout">logout</a></div>
-            </div>
-       </div>
+
+            <%- include('../partials/user-sidebar') %>
+        </div>
     </div>
-        <%- include('../partials/footer')%>
+    <%- include('../partials/footer')%>
         <%- include('../partials/bootstrap-script') %>
 </body>
+
 </html>

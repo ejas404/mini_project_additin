@@ -1,0 +1,21 @@
+<div class="user-sidebar">
+    <div class="profile-head text-center">
+        <div class="head"><i style="font-size: 6em;" class="bi bi-person-circle"></i></div>
+        <p class="p-0">
+            <%= locals.user.name.toUpperCase() %>
+        </p>
+    </div>
+    <div class="profile-lists">
+        <ul>
+            <ul>
+                <li class="<%= dest === 'profile' ? 'border-white' : '' %>"><a href="/user/user-profile">Profile</a></li>
+                <li class="<%= dest === 'myOrder' ? 'border-white' : '' %>"><a href="/user/orders">My Orders</a></li>
+                <li class="<%= dest === 'myCart' ? 'border-white' : '' %>"><a href="/user/cart">My Cart</a></li>
+                <li class="<%= dest === 'wishlist' ? 'border-white' : '' %>"><a href="/user/wishlist">Wishlist</a></li>
+
+            </ul>
+
+        </ul>
+    </div>
+    <div class="signout-btn-box text-center mt-3 mb-2"><a href="/user/logout">logout</a></div>
+</div>

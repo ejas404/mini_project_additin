@@ -86,11 +86,24 @@ module.exports = {
             res.redirect('/user/login')
         }
     },
+    isLoggedinMid : (req,res,next)=>{
+        if(req.session.user){
+            next()
+        }else{
+          return  res.json({
+                redirect : '/user/login',
+                message : 'please login first'
+            })
+        }
+    },
     isBlockedMid : async (req,res,next)=>{
         const email = req.session.user
         const check = await UserCollection.findOne({email})
         if(check.isBlocked){
-            return res.render('user-login',{message:'Entry restricted contact helpline !'})
+            return  res.json({
+                redirect : '/user/login',
+                message : 'entry prohibited please contact authority'
+            })
         }
         next()
     }

@@ -58,9 +58,9 @@
                                 aria-expanded="false" aria-controls="inner-box" id="out" onclick="outerFilter()"> <span
                                     class="fas fa-plus"></span>
                             </button> </div>
-                        <div id="inner-box" class="collapse mt-2 mr-1">
+                        <div id="inner-box" class="collapse ms-2 mt-2 mr-1">
                             <% for (let each of locals.categories) { %>
-                                <div class="form-check">
+                                <div class="form-check ms-2">
                                     <input class="form-check-input" type="checkbox" id="birdsCheckbox"
                                         name="categoryName" value="<%= each.category_id %>">
                                     <label class="form-check-label" for="birdsCheckbox">
@@ -78,6 +78,11 @@
                         <div id="inner-box2" class="collapse mt-2 mr-1">
                             <div class="mb-3 ml-2">
                                 <label class="form-label">Select Price Range:</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="priceRange" id="range1"
+                                        value="above-10000" style="visibility: visible;">
+                                    <label class="form-check-label" for="range1">above 10000</label>
+                                </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="priceRange" id="range1"
                                         value="5000-10000" style="visibility: visible;">
@@ -138,7 +143,7 @@
                         <div class="empty-message text-center">
                             <h1>Sorry No Products Please Check after some time</h1>
                         </div>
-                        <% } %>
+                        <% } else { %>
                             <% for(let each of locals.products) { %>
 
                                 <div class="col-lg-4 col-md-6 pt-md-0 pt-3 position-relative">
@@ -164,9 +169,9 @@
                                             </div>
                                         </div>
                                     </a>
-                                    <div class="productButtons position-absolute d-flex justify-content-between" 
+                                    <div class="productButtons ps-2 position-absolute d-flex justify-content-between" 
                                     style="top: 90%; width: 90%;">
-                                    <% if (locals.cart[0]?.productIds.includes(each.product_id)) { %>
+                                        <% if (locals.cart && locals.cart[0]?.productIds.includes(each.product_id)) { %>
                                         <a class="default-button px-2 rounded d-block" href="">Go to Cart -></a>
                                         <% } else { %>
                                         <div class="pb-1 add-to-cart-btn"  onclick="addToCart('<%= each.product_id %>')"><i class="fa-solid fa-cart-plus" style="font-size: 25px;"></i></div>
@@ -180,6 +185,7 @@
     
                                 </div>
 
+                                <% } %>
                                 <% } %>
 
                 </div>

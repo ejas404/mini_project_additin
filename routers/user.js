@@ -11,6 +11,8 @@ const userMiddleware = require('../Middlewares/user_middle')
 
 //userRouter.post('/otp-configure',userController.otpConfig)
 
+
+
 userRouter.get('/login',userController.loginPage)
 userRouter.post('/login',userMiddleware.isBlocked,userController.userLogin)
 
@@ -21,22 +23,27 @@ userRouter.post('/signup',userController.userSignUp)
 
 userRouter.post('/resetpass',userController.resetPassword)
 
-
-userRouter.get('/user-profile',userMiddleware.isLoggedin,userMiddleware.isBlockedMid,userController.profilePage)
-userRouter.get('/user-profile/add-address',userMiddleware.isLoggedin,userMiddleware.isBlockedMid,userController.addAddressPage)
-userRouter.post('/user-profile/add-address',userMiddleware.isLoggedin,userMiddleware.isBlockedMid,userController.addAddress)
-
-
 userRouter.get('/enter-otp',userController.otpPage)
 userRouter.post('/otp-configure',userMiddleware.otpConfig )
 userRouter.post('/get-otp',userMiddleware.isNumber)
 userRouter.get('/email',userController.email)
 userRouter.post('/emailotp',userController.emailotp)
 
-userRouter.get('/cart',userProductController.cartPage)
-userRouter.get('/add-to-cart/:id',userProductController.addToCart)
 
-userRouter.get('/singleproduct/:id',userMiddleware.isLoggedin,userMiddleware.isBlockedMid,userController.singleProduct)
+userRouter.get('/add-to-cart/:id',userMiddleware.isLoggedinMid,userMiddleware.isBlockedMid,userProductController.addToCart)
+userRouter.delete('/delete-cart-item/:id',userMiddleware.isLoggedinMid,userMiddleware.isBlockedMid,userProductController.deleteCartItem)
+
+userRouter.use(userMiddleware.isLoggedin,userMiddleware.isBlocked)
+
+userRouter.get('/user-profile',userController.profilePage)
+userRouter.get('/user-profile/add-address',userController.addAddressPage)
+userRouter.post('/user-profile/add-address',userController.addAddress)
+userRouter.get('/singleproduct/:id',userController.singleProduct)
+userRouter.get('/cart',userProductController.cartPage)
+
+
+
+
 //userRouter.get('/:productName',userMiddleware.isLoggedin,userMiddleware.isBlockedMid,userController.singleProductPage)
 
 module.exports = userRouter

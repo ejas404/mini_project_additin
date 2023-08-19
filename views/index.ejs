@@ -114,8 +114,7 @@
                     </div> -->
 
                             <div class="col-lg-4 col-md-6 pt-md-0 pt-3 text-center position-relative">
-                                <a style="text-decoration: none;" class=""
-                                    href="/singleproduct/<%= each.product_id %>">
+                                <a style="text-decoration: none;" class="" href="/singleproduct/<%= each.product_id %>">
                                     <div style="height: 350px;" class="card d-flex flex-column align-items-center ">
 
                                         <div class="card-img"> <img src="<%= each.productImg[0] %>" alt="" height="100"
@@ -139,16 +138,19 @@
 
                                     </div>
                                 </a>
-                                <div class="productButtons position-absolute d-flex justify-content-between" 
-                                style="width: 22.5rem;top: 88%; padding: 0 10px;">
-                                  
+                                <div class="productButtons position-absolute d-flex justify-content-between"
+                                    style="width: 22.5rem;top: 88%; padding: 0 10px;">
+
                                     <% if (locals.cart && locals.cart[0]?.productIds.includes(each.product_id)) { %>
-                                    <a class="default-button px-2 rounded d-block" href="">Go to Cart -></a>
-                                    <% } else { %>
-                                    <div class="pb-1 add-to-cart-btn"  onclick="addToCart('<%= each.product_id %>')"><i class="fa-solid fa-cart-plus" style="font-size: 25px;"></i></div>
-                                    <% } %>
-        
-                                    <a class="buy-now-btn d-block rounded" style="text-decoration: none;"  href="">Buy Now -></a>
+                                        <a class="default-button px-2 rounded d-block" href="">Go to Cart -></a>
+                                        <% } else { %>
+                                            <div class="pb-1 add-to-cart-btn"
+                                                onclick="addToCart('<%= each.product_id %>')"><i
+                                                    class="fa-solid fa-cart-plus" style="font-size: 25px;"></i></div>
+                                            <% } %>
+
+                                                <a class="buy-now-btn d-block rounded" style="text-decoration: none;"
+                                                    href="">Buy Now -></a>
 
                                 </div>
                                 <div class="wishlist position-absolute top-0">
@@ -191,23 +193,30 @@
 
     </div>
     <script>
-        function addToCart(id){
-            fetch(`/user/add-to-cart/${id}`)
-            .then((res)=>{
-                return res.json()
-            })
-            .then((res)=>{
-                if(res.successMsg){
-                    window.location.href = res.redirect
-                    alert('product added to cart successfully')
-                }else{
-                    alert('try again later')
+        function addToCart(id) {
+            fetch(`/user/add-to-cart/${id}`, {
+                method: 'GET',
+                headers: {
+                    'Content-type': 'application/json'
                 }
-            }).catch((e)=>{
-                if(e){
-                    alert(e.message)
-                }
+
             })
+                .then((res) => {
+                    return res.json()
+                })
+                .then((res) => {
+                    if (res.successMsg) {
+                        location.reload()
+                        alert('product added to cart successfully')
+                    } else {
+                        window.location.href = res.redirect
+                        alert(res.message)
+                    }
+                }).catch((e) => {
+                    if (e) {
+                        console.log(e)
+                    }
+                })
         }
     </script>
     <%- include('../partials/bootstrap-script') %>

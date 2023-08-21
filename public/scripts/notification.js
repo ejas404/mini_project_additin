@@ -25,7 +25,7 @@ function showMessage() {
 
 // function generating a message with a random title and text
 function generateMessage(title,text) {
-   
+        console.log('generation started')
         const message = document.querySelector('.notification__message');
 
         message.querySelector('h1').textContent = title;

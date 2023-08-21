@@ -38,8 +38,8 @@
                     <h1 class="my-3">
                         <%= locals?.productName %>
                     </h1>
-                    <h4 class="my-3">&#x20B9;<%= locals.product[0].productPrice %>
-                    </h4>
+                    <h2 class="ind-rs my-3"> <span><%= locals.product[0].productPrice %></h2>
+                    <div class="del"><h3 class="ind-rs" style="color: black;"><%= Number(locals.product[0].productPrice) + 1000 %></h3></div>
                     <p class="my-2 w-75">
                         <%= locals.product[0].productDescription %>
                     </p>
@@ -55,9 +55,9 @@
                     </div>
 
                     <div class="buttons">
-                        <input type="number" style="width: 3rem;">
-                        <input type="button" value="Add to cart" style="background-color:#002442 ; color: #fff; font-weight: bold;">
-                        <input type="button" value="Buy Now" style="background-color: #fff; border: 2px solid #002442; font-weight: bold;">
+                        <input class="py-1 ps-4"  type="number" min="1" value="1" style="width: 4rem;">
+                        <input class="default-button" onclick="addToCart('<%= locals.product[0].product_id %>')" type="button" value="Add to cart" >
+                        <input  class="default-button" type="button" value="Buy Now" style="background-color: #fff; border: 2px solid #002442; color:#002442 ;">
                     </div>
 
 
@@ -70,6 +70,7 @@
         <script src="/scripts/products.js"></script>
         <script src="/scripts/zoom.js"></script>
         <script src="/scripts/zoomsl.js"></script>
+        <script defer src="/scripts/add_to.js"></script>
 </body>
 
 </html>

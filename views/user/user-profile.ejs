@@ -13,40 +13,48 @@
     <header>
         <%- include('../partials/navbar') %>
     </header>
+    <%- include('../partials/custom-alert') %>
     <div class="userprofile-main">
         <div class="user-profile-box">
             <div class="left-userdetails">
-                <div class="head-name">
-                    <h2>
-                        <%= locals.user.name.toUpperCase() %>
-                    </h2>
-                    <p>
-                        <%= locals.user.email %>
-                    </p>
+                <div class="user-top d-flex justify-content-between">
+                    <div class="head-name">
+                        <h2>
+                            <%= locals.user.name.toUpperCase() %>
+                        </h2>
+                        <p>
+                            <%= locals.user.email %>
+                        </p>
+                    </div>
+                    <div class="d-flex align-items-end mb-2">
+                        <a class="default-button d-block" href="">edit profile</a>
+                    </div>
                 </div>
                 <div class="address">
                     <h4>Address</h4>
                     <% for (let each of locals.address) { %>
                         <div class="address-box">
-                            <p>
-                                <%= each.houseName %>, <%= each.streetAddress %>
-                            </p>
-                            <p>
-                                <%= each.city %>, <%= each.state %>
-                            </p>
-                            <p>postal code : <%= each.postalcode %>
-                            </p>
-                            <p>mobile : <%= each.mobile %>
-                            </p>
+                            <div class="address-details">
+                                <p>
+                                    <%= each.houseName %>, <%= each.streetAddress %>
+                                </p>
+                                <p><%= each.city %></p>
+                                <p> <%= each.state %></p>
+                                <p>postal code : <%= each.postalcode %>
+                                </p>
+                                <p>mobile : <%= each.mobile %></p>
+                            </div>
+                            <div class="deleteButton">
+                                <p onclick="deleteAddress('<%= each._id %>',this.parentNode)" ><i class="bi bi-file-earmark-minus-fill button-color"></i></p>
+                            </div>
+    
                         </div>
-                        <% } %>
+                    <% } %>
                             <div class="add-address-btn my-3">
-                                <a href="/user/user-profile/add-address">+add address</a>
+                                <a class="default-button" href="/user/user-profile/add-address">+add address</a>
                             </div>
                 </div>
-                <div class="edit-profile-btn mt-3">
-                    <a href="">edit profile</a>
-                </div>
+               
 
             </div>
 
@@ -54,7 +62,9 @@
         </div>
     </div>
     <%- include('../partials/footer')%>
-        <%- include('../partials/bootstrap-script') %>
+    <%- include('../partials/bootstrap-script') %>
+    <script defer src="/scripts/notification.js"></script>
+    <script defer src="/scripts/userProfile.js"></script>
 </body>
 
 </html>

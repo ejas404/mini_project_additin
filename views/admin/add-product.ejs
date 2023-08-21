@@ -27,7 +27,7 @@
                 <div class="form-addproduct-inner">
                     <div class="form-left">
                         <label for="product_name">Product Name:</label><br>
-                        <input type="text" id="product_name" name="product_name" required><br>
+                        <input type="text" id="product_name" name="product_name" pattern="/^[a-zA-Z0-9][a-zA-Z0-9\s]+$/" required><br>
 
                         <label for="price">Price:</label><br>
                         <input type="number" id="price" name="price" step="0.01" required><br>

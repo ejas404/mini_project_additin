@@ -16,7 +16,7 @@ function generateOTP() {
 module.exports = {
     isBlocked : async (req,res,next)=>{
       try{
-        const email = req.body.email
+        const email = req.body.email ? req.body.email : req.session.user;
         const check = await UserCollection.findOne({email})
         if(check.isBlocked){
             return res.render('user-login',{message:'Entry restricted contact helpline !'})

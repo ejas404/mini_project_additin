@@ -26,10 +26,9 @@ body {
     font-family: 'Poppins', Arial, Helvetica, sans-serif!important;
 
 }
-a{
+* a {
     text-decoration: none;
 }
-
 .poppins {
     font-family: 'Poppins', sans-serif;
 }
@@ -254,9 +253,7 @@ nav img {
 
 .user-profile-box .left-userdetails {
     flex: 1 0 auto;
-    padding: 10px;
-    padding-right: 20px;
-    height: 2000px;
+    padding: 10px 15rem;
 
 }
 
@@ -275,13 +272,14 @@ nav img {
 
 }
 
-.userlists-div .address-box,
 .user-profile-box .address-box,
 .userlists-div .address-box {
     background-color: var(--white);
     width: 100%;
     padding: 10px;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
 }
 
 .user-profile-box .address-box p,
@@ -327,13 +325,9 @@ nav img {
     padding: 10px 20px;
 }
 
-.left-userdetails a {
+.userprofile-main a {
     text-decoration: none;
-    background-color: var(--secondaryMain);
-    color: var(--white);
-    padding: 5px;
 }
-
 /*-----------------------------------------------------sign up----------------------------------------------------*/
 
 main {
@@ -447,6 +441,31 @@ main>.login-box .sign-btn {
     background-color: var(--secondaryMain);
     font-weight: bold;
     cursor: pointer;
+}
+/*--------------------------------------------------add address user ---------------------------------------------*/
+
+main>.add-address {
+
+    box-sizing: border-box;
+    background-color: var(--main);
+    color: var(--white);
+    min-width: 25%;
+    min-height: 63vh;
+    border: 1px solid black;
+    border-radius: 25px;
+    padding: 20px 30px;
+}
+
+
+main>.add-address input {
+
+    margin-bottom: 10px;
+    padding: 8px 5px;
+    border-radius: 19px;
+    border: 2px solid #47ABFF;
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    color: var(--white);
 }
 
 /*-----------------------------------------------------add-product-form-------------------------------------------*/
@@ -987,6 +1006,7 @@ h1{
     font-size: 15px;
     font-weight: bold;
     cursor: pointer;
+    text-decoration: none;
 }
 
 .buy-now-btn {
@@ -1038,7 +1058,19 @@ h1{
     width: 100%;
     text-align: center;
 }
-
+.wishlist-icon{
+    font-size: 20px;
+    color:var(--secondaryMain);
+    stroke:var(--white);
+    cursor: pointer;
+   
+}
+.button-color {
+    color: var(--secondaryMain);
+    &:hover{
+        color: blue;
+    }
+}
 /*-----------------------------------------------------footer-----------------------------------------------------*/
 
 .footer {

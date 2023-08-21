@@ -172,7 +172,7 @@
                                     <div class="productButtons ps-2 position-absolute d-flex justify-content-between" 
                                     style="top: 90%; width: 90%;">
                                         <% if (locals.cart && locals.cart[0]?.productIds.includes(each.product_id)) { %>
-                                        <a class="default-button px-2 rounded d-block" href="">Go to Cart -></a>
+                                        <a class="default-button px-2 rounded d-block" href="/user/cart">Go to Cart -></a>
                                         <% } else { %>
                                         <div class="pb-1 add-to-cart-btn"  onclick="addToCart('<%= each.product_id %>')"><i class="fa-solid fa-cart-plus" style="font-size: 25px;"></i></div>
                                         <% } %>
@@ -193,7 +193,8 @@
         </div>
     </div>
     <%- include('../partials/bootstrap-script') %>
-        <script src="/scripts/productsfilter.js"></script>
+    <script src="/scripts/productsfilter.js"></script>
+    <script src="/scripts/add_to.js"></script>
 </body>
 
 </html>

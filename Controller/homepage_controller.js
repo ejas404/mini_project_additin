@@ -13,7 +13,7 @@ module.exports = {
             const topBanners = await BannerCollection.find({name : 'homepage_top_banner'})
 
             if (req.session.user) {
-                const cart = await UserCollection.aggregate([
+                const cartAndWish = await UserCollection.aggregate([
                     {
                         $match : {
                             email : req.session.user
@@ -22,12 +22,14 @@ module.exports = {
                     },
                     {
                         $project : {
-                            productIds : '$cart.product_id'
+                            cartIds : '$cart.product_id',
+                            wishListIds : '$wishlist.product_id'
                         }
                     }
                 ])
-                console.log(cart)
-                res.render('index', { isUser: true, products, count,topBanners,cart})
+                console.log('hai')
+                console.log(cartAndWish)
+                res.render('index', { isUser: true, products, count,topBanners,cartAndWish})
             } else {
                 res.render('index', { products, count,topBanners })
             }

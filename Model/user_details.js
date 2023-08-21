@@ -19,10 +19,7 @@ const userSchema = new Schema({
     },
     wishlist : {
         type : [{
-            product_id : {
-                type : mongoose.Schema.Types.ObjectId,
-                ref : 'product'
-            }
+            product_id : {type:String}
         }]
     }
 })

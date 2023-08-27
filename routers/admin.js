@@ -50,5 +50,8 @@ router.post('/products/edit/:id',adminMiddleWare.isAdmin,adminMiddleWare.uploadP
 router.get('/product-details/:id',adminMiddleWare.isAdmin,adminProductController.singleProduct)
 router.get('/product/:productname',adminMiddleWare.isAdmin, adminProductController.singleProductPage)
 
+router.get('/create-coupon',adminUserController.createCouponPage)
+router.post('/create-coupon',adminUserController.createCoupon)
+
 
 module.exports = router;

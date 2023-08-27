@@ -31,7 +31,7 @@
             <div class="product-details">
                 <div class="product-details-inner">
                     <h1 class="my-3"><%= locals?.productName %></h1>
-                    <h4 class="my-3">&#x20B9;<%= locals.product[0].productPrice %></h4>
+                    <h4 class="ind-rs my-3"><%= locals.product[0].productPrice %></h4>
                     <p class="my-2 w-75"><%= locals.product[0].productDescription %></p>
                     <p >category : <span><%= locals.product[0].category[0].categoryName %></span></p>
                     <p >weight : <span><%= locals.product[0].productWeight %></span> kg</p>
@@ -39,7 +39,7 @@
                     <% if (product[0].isAvailable) { %>
                     <p>status : available</p>
                     <% } else { %>
-                    <p>status : not available</p>
+                    <p>status : <i style="color: red;">not available</i></p>
                     <% } %>   
                 </div>
             </div>

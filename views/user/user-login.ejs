@@ -28,7 +28,7 @@
 
                     <a  href="/user/email">forget password?</a><br>
 
-                    <p class="error-message" id="err-message"><%= locals.message %></p>
+                    <p class="<%= locals.success ? 'green' : 'error-message' %>" id="err-message"><%= locals.message %></p>
                     <!-- <p style="color: green; font-size: 13px;"><%= locals.completed %></p> -->
                 
                    

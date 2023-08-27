@@ -150,6 +150,9 @@ module.exports = {
         }
     },
     otpPage: (req, res) => {
+        if(req.session.loginOtp){
+
+        }
         res.render('user-otp')
     },
     email: (req, res) => {
@@ -162,7 +165,7 @@ module.exports = {
                 const transporter = nodemailer.createTransport(senderConfig);
                 const otp = generateOTP()
 
-                req.session.otp = String(otp)
+                req.session.emailOtp = String(otp)
                 const mailOptions = {
                     from: senderConfig.auth.user,
                     to: isExist.email,
@@ -190,56 +193,21 @@ module.exports = {
                 console.log('destroyed successfully')
             }
         })
-        res.redirect('/')
-    },
-    singleProduct: async (req, res) => {
-        try {
-            console.log('hai')
-            req.session.product_id = req.params.id
-            const product_id = req.params.id
-            const product = await ProductCollection.findOne({ product_id })
-            res.redirect('/user/' + product.productName)
-        } catch (e) {
-            console.log(e)
-        }
-
-
-    },
-    singleProductPage: async (req, res) => {
-        const product_id = req.session.product_id
-        const product = await ProductCollection.aggregate([
-            {
-                $match: {
-                    product_id
-                }
-            },
-            {
-                $lookup: {
-                    from: 'categories',
-                    localField: 'productCategory',
-                    foreignField: 'category_id',
-                    as: 'category'
-                }
-            }
-
-
-        ])
-        console.log(product)
-        const productName = (titleUpperCase(product[0].productName))
-        res.render('user-single-product', { product, productName })
+        res.redirect('/user/login')
     },
     resetPassword: async (req, res) => {
         try {
             console.log(req.body)
             console.log(req.session.user)
+            if(req.body.password !== req.body.confirmPassword){
+                return res.render('confirm-password',{msg:`second password is not matching as first`})
+            }
             const resetPassword = await UserCollection.findOneAndUpdate({ email: req.session.user }, { $set: { password: req.body.password } })
-            console.log(resetPassword)
-            res.render('user-login', { message: 'password reset successfully' })
+            res.render('user-login', { message: 'password reset successfully',success : true})
         }
         catch (e) {
             console.log(e)
             res.render('user-login', { message: 'some error occured try after some time' })
-            console.log('resetted')
         }
     }
 

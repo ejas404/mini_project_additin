@@ -40,6 +40,9 @@ function deleteItem(elem,id){
             shippingCharge.className = " "
             shippingCharge.innerText = 'free shipping'
             totalSum.innerText = total
+          }else if(total == 0){
+            shippingCharge.innerText = 0
+            totalSum.innerText = 0
           }else{
             shippingCharge.innerText = 40
             totalSum.innerText = total+40
@@ -71,6 +74,9 @@ function quantityChange(elem){
                   shippingCharge.className = " "
                   shippingCharge.innerText = 'free shipping'
                   totalSum.innerText = total
+                }else if(total == 0){
+                  shippingCharge.innerText = 0
+                  totalSum.innerText = 0
                 }else{
                   shippingCharge.innerText = 40
                   totalSum.innerText = total+40

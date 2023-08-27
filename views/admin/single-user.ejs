@@ -17,7 +17,7 @@
         <%- include('../partials/navbar') %>
     </header>
     <div class="dashboard-container">
-       
+
         <div class="admin-sidebar">
             <ul>
                 <li><a href="/admin/dashboard">Dashboard</a></li>
@@ -31,7 +31,7 @@
         </div>
         <div class="userlists-div">
             <div class="back-button">
-                <a href="/admin/userlist"><i  class="bi bi-arrow-left-short"></i></a>
+                <a href="/admin/userlists"><i class="bi bi-arrow-left-short"></i></a>
             </div>
             <div class="head-name">
                 <h2>
@@ -44,7 +44,7 @@
             <div class="address">
                 <h4>Address</h4>
                 <% for (let each of locals.user[0].address) { %>
-                    <div class="address-box">
+                    <div class="address-box d-block">
                         <p>
                             <%= each.houseName %>, <%= each.streetAddress %>
                         </p>
@@ -57,6 +57,20 @@
                         </p>
                     </div>
                     <% } %>
+            </div>
+            <div class="coupons my-4 mx-3">
+                <h4 class="my-3">Coupons</h4>
+                <div class=" row coupon-list">
+                    <% for (let each of locals.coupons) { %>
+                    <div class="col-sm-4 d-flex">
+                        <div class="card px-3 py-4 text-center" style="width: 15rem;">
+                            <h5><%= each.couponCode %></h5>
+                            <p ><%= each.couponType === 'percent'? `flat ${each.couponValue}% discount on purchase above Rs.2000`:`flat ${each.couponValue} discount on any purchase`;  %></p>
+                        </div>
+                    </div>
+                    <% } %>
+                </div>
+
             </div>
 
         </div>

@@ -29,6 +29,7 @@ module.exports = {
       }
     },
     isNumber : async(req,res)=>{
+        req.session.email = req.body.email
         const numberAvailable = await UserCollection.aggregate([
             {
                 $match : {
@@ -54,28 +55,32 @@ module.exports = {
             req.session.user = req.body.email
             const number = numberAvailable[0].address[0].mobile
             const otp = generateOTP();
-            req.session.otp = String(otp)
+            console.log(`this is otp ${otp}`)
+            req.session.loginOtp = String(otp)
 
-            client.messages
-                .create({
-                    body: `your otp is ${otp}`,
-                    to: `+91${number}`, // Text your number
-                    from: '+17623006956', // From a valid Twilio number
-                })
-                .then((message) => console.log(message.sid));
+            // client.messages
+            //     .create({
+            //         body: `your otp is ${otp}`,
+            //         to: `+91${number}`, // Text your number
+            //         from: '+17623006956', // From a valid Twilio number
+            //     })
+            //     .then((message) => console.log(message.sid));
            
            return  res.json({
                 successMsg: true,
-                redirect: 'http://localhost:4400/user/enter-otp'
+                redirect: '/user/enter-otp'
             })
         }
        
     },
     otpConfig : (req,res)=>{
-        console.log(req.session.otp)
         console.log(req.body.otp)
-       if(req.session.otp === req.body.otp){
-         return  res.render('confirm-password')
+       if(req.session.emailOtp === req.body.otp){
+            return  res.render('confirm-password')
+       }else if (req.session.loginOtp === req.body.otp) {
+            req.session.user = req.session.email
+            req.session.email = null;
+            return res.redirect('/')
        }
        res.render('user-otp',{message : 'otp doesnt match'})
     },

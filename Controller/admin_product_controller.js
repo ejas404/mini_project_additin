@@ -234,7 +234,7 @@ module.exports = {
         try{
         const topBanners = await BannerCollection.findOne({name : 'homepage_top_banner'})
         console.log(topBanners)
-        res.render('others',{topBanners})
+        res.render('others',{topBanners,isAdmin:true})
         }catch(e){
             console.log(e)
         }

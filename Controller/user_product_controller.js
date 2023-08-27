@@ -60,6 +60,13 @@ module.exports = {
        try{
         const product_id = req.params.id
         const email = req.session.user
+        const isCartItem = await UserCollection.findOne({email, 'cart.product_id' : product_id})
+        // if(isCartItem){
+        //     return res.json({
+        //         msg : 'product alredy exist',
+        //         success : true
+        //     })
+        // }
         const product = await ProductCollection.findOne({product_id})
         const cart = {
             product_id : product.product_id,
@@ -128,7 +135,10 @@ module.exports = {
                 console.log('hai')
                 console.log(cartItems)
                 const cartSum = await getTotalSum(email)
-                const total = cartSum[0].total
+                let total = cartSum[0]?.total
+                if(!total){
+                    total = 0
+                }
                 res.render('my-cart',{user,dest :'myCart', cartItems,total})
             }else{
                 res.redirect('/user/login')
@@ -152,9 +162,14 @@ module.exports = {
             }
             const deletCartItem = await UserCollection.findOneAndUpdate({email},updateQuery)
             const updateTotal = await getTotalSum(email)
+            let total = updateTotal[0]?.total
+            if(!total){
+                total = 0
+            }
+            
             res.json({
                 success : true,
-                total : updateTotal[0].total
+                total 
             })
           
         }catch(e){
@@ -225,5 +240,79 @@ module.exports = {
                 console.log(e)
                 return res.json({error : e.message})
            }
+    },
+    wishListPage : async (req,res)=>{
+        try{
+            const email = req.session.user
+        const userWishlist = await UserCollection.aggregate([
+            {
+                $match : {
+                    email
+                },
+                
+            },
+            {
+                $lookup : {
+                    from : 'products',
+                    localField : 'wishlist.product_id',
+                    foreignField : 'product_id',
+                    as : 'wishListItems'
+                }
+            },
+            {
+                $project : {
+                    userDetails : {
+                        name : '$name',
+                        email : '$email'
+                    },
+                    cartIds : '$cart.product_id',
+                    wishListItems : 1,
+                }
+            }
+        ])
+
+        console.log(userWishlist)
+        res.render('wishlist',{user : userWishlist[0].userDetails,
+            dest :'wishlist', wishListItems : userWishlist[0].wishListItems,
+            cartIds : userWishlist[0].cartIds})
+        }catch(e){
+            console.log(e)
+        }
+    }, singleProduct: async (req, res) => {
+        try {
+            console.log('hai')
+            req.session.product_id = req.params.id
+            const product_id = req.params.id
+            const product = await ProductCollection.findOne({ product_id })
+            res.redirect('/user/' + product.productName)
+        } catch (e) {
+            console.log(e)
+        }
+
+
+    },
+    singleProductPage: async (req, res) => {
+        const product_id = req.session.product_id
+        const product = await ProductCollection.aggregate([
+            {
+                $match: {
+                    product_id
+                }
+            },
+            {
+                $lookup: {
+                    from: 'categories',
+                    localField: 'productCategory',
+                    foreignField: 'category_id',
+                    as: 'category'
+                }
+            }
+
+
+        ])
+        console.log(product)
+        const productName = (titleUpperCase(product[0].productName))
+        res.render('user-single-product', { product, productName })
     }
-}
+   
+} 

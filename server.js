@@ -6,6 +6,7 @@ require('dotenv').config();
 const PORT = process.env.PORT || 4400
 
 const db  = require('./config/db')
+const exp = require('./config/deleteExpiry')
 
 
 
@@ -40,15 +41,17 @@ app.get('/', homepageController.homepage)
 app.get('/products',homepageController.productsPage)
 app.get('/products/filter',homepageController.filter)
 app.get('/singleproduct/:id',homepageController.singleProductPage)
-app.get('/products/:num',homepageController.pagination)
+app.get('/paginate/:num',homepageController.pagination)
 
 
 
 db.once('open', () => {
     app.listen(PORT, () => {
       console.log(`Server listening to port ${PORT}`)
+      //exp()
     })
   })
+
 
 
 

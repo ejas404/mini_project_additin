@@ -1,5 +1,5 @@
 function deleteAddress(id, elem) {
-    // if (confirm('are youe sure to delete this address')) {
+     if (confirm('are youe sure to address this address ?')) {
         let toDelete = elem.closest('.address-box')
         let delAdressUrl = `/user/delete-address/${id}`
         let reqOption = {
@@ -14,10 +14,12 @@ function deleteAddress(id, elem) {
                 if (res.success) {
                     toDelete.style.display = 'none'
                     generateMessage('success', 'address deleted successfully')
-                } 
+                }else{
+                    window.location.herf= res.redirect
+                }
             })
             .catch((e) => {
                 generateMessage('danger', 'some error occured try again')
             })
-    }
-// }
+        }
+     }

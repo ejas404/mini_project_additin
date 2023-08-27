@@ -1,4 +1,5 @@
-function addToCart(id) {
+function addToCart(id,elem) {
+    console.log('hai')
     fetch(`/user/add-to-cart/${id}`, {
         method: 'GET',
         headers: {
@@ -11,11 +12,16 @@ function addToCart(id) {
         })
         .then((res) => {
             if (res.successMsg) {
-                location.reload()
-                alert('product added to cart successfully')
+                let newElement = document.createElement('a')
+                newElement.className = 'default-button px-2s'
+                newElement.textContent = 'Go to Cart->'
+                newElement.href = '/user/cart'
+                
+                elem.removeAttribute('onclick')
+                elem.replaceChild(newElement , elem.firstChild)
+                generateMessage('success','added to cart successfully')
             } else {
-                window.location.href = res.redirect
-                alert(res.message)
+                location.reload()
             }
         }).catch((e) => {
             if (e) {
@@ -48,6 +54,8 @@ function addToWishList(id,icon){
                 icon.classList.add('bi-heart');
                 generateMessage('success','product removed from wishlist')
             }
+        }else{
+            window.location.href = res.redirect
         }
     })
     .catch((e)=>{

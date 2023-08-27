@@ -64,9 +64,47 @@ module.exports = {
         }
         res.render('user-single-product', { product, productName })
     },
-    pagination: (req, res) => {
-        req.session.num = req.params.num
-        res.redirect('/')
+    pagination: async (req, res) => {
+        try{
+            console.log('hai')
+        const num = req.params.num
+        const products = await ProductCollection.find({ isAvailable: true }).skip(num * 3).limit(3)
+        if (req.session.user) {
+            const cartAndWish = await UserCollection.aggregate([
+                {
+                    $match : {
+                        email : req.session.user
+                    }
+                   
+                },
+                {
+                    $project : {
+                        cartIds : '$cart.product_id',
+                        wishListIds : '$wishlist.product_id'
+                    }
+                }
+            ])
+            let cart = cartAndWish[0].cartIds
+            let wishlist = cartAndWish[0].wishListIds
+            return res.json({
+                success : true,
+                isUser : true,
+                products,
+                cart,
+                wishlist, 
+            })
+
+        }
+        return res.json({
+            success : true,
+            products 
+        })
+        } catch (e){
+            console.log(e)
+            res.json({
+                err : e.message
+            })
+        }
     },
     productsPage: async (req, res) => {
         const num = req.session?.num ? Number(req.session.num) : 0;
@@ -75,7 +113,7 @@ module.exports = {
             const count = await ProductCollection.countDocuments({ isAvailable: true })
             const categories = await CategoryCollection.find()
             if (req.session.user) {
-                const cart = await UserCollection.aggregate([
+                const cartAndWish = await UserCollection.aggregate([
                     {
                         $match : {
                             email : req.session.user
@@ -84,11 +122,12 @@ module.exports = {
                     },
                     {
                         $project : {
-                            productIds : '$cart.product_id'
+                            cartIds : '$cart.product_id',
+                            wishListIds : '$wishlist.product_id'
                         }
                     }
                 ])
-                res.render('products', { isUser: true, products, count, categories ,cart})
+                res.render('products', { isUser: true, products, count, categories ,cartAndWish})
             } else {
                 res.render('products', { products, count, categories })
             }
@@ -117,6 +156,9 @@ module.exports = {
             let priceQuery;
 
             switch (priceRange) {
+                case 'above-10000':
+                    priceQuery = { $gt: 10000 };
+                    break;
                 case '5000-10000':
                     priceQuery = { $gt: 5000, $lte: 10000 };
                     break;
@@ -147,10 +189,25 @@ module.exports = {
                 price = {productPrice: { $exists: true }}
             }
 
+            const cartAndWish = await UserCollection.aggregate([
+                {
+                    $match : {
+                        email : req.session.user
+                    }
+                   
+                },
+                {
+                    $project : {
+                        cartIds : '$cart.product_id',
+                        wishListIds : '$wishlist.product_id'
+                    }
+                }
+            ])
+
             const products = await ProductCollection.find({ ...price,...category,...{ isAvailable: true } })
             console.log(products)
             const categories = await CategoryCollection.find()
-            res.render('products', { products, categories })
+            res.render('products', { products, categories,isUser : true,cartAndWish})
         } catch (e) {
             console.log(e)
         }

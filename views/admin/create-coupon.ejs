@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <%- include('../partials/bootstrap-styles') %>
+        <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+    <header>
+        <%- include('../partials/navbar') %>
+    </header>
+    <div class="dashboard-container">
+        <div class="admin-sidebar">
+            <ul>
+                <li><a href="/admin/dashboard">Dashboard</a></li>
+                <li><a href="">Orders</a></li>
+                <li><a href="/admin/products">Products</a></li>
+                <li><a href="/admin/userlists">Users</a></li>
+                <li style="border-bottom:4px solid #003466;"><a style="color: blue;" href="/admin/others">Other</a></li>
+            </ul>
+            <div class="logout-button">
+                <a href="/admin/logout">Logout</a>
+            </div>
+        </div>
+        <div class="userlists-div" style="max-height: calc(100vh );">
+            <div class="top-banner-lists">
+                <h1>Create Coupon</h1>
+                <form action="/admin/create-coupon" method="post">
+
+                    <label for="couponName">Coupon Code Name:</label>
+                    <input type="text" id="couponName" name="couponName">
+                    <br><br>
+
+                    <label for="couponValue">Coupon Code Value:</label>
+                    <input type="number" id="couponValue" name="couponValue" min="1">
+                    <br><br>
+
+
+                    <label for="users">Select Users:</label>
+                    <select id="users" name="users" style="color: black;" multiple>
+                        <option value="user1">All</option>
+                        <% for (let each of locals.users) { %>
+                        <option value="<%= each.email %>"><%= each.email %></option>
+                        <% } %>
+                    
+                    </select>
+                    <br><br>
+
+                    <label>Coupon Type:</label> <br>
+                    <input type="radio" id="percent" name="couponType" value="percent">
+                    <label for="percent">Percent</label>
+                    <input type="radio" id="flat" name="couponType" value="flat">
+                    <label for="flat">Flat Price</label>
+                    <br><br>
+
+                    <label for="expiryDays">Expiry Date (in days):</label>
+                    <input type="number" id="expiryDays" name="expiryDays" min="1">
+                    <br><br>
+
+                    
+                    <input type="submit" value="Create Coupon">
+                </form>
+            </div>
+        </div>
+    </div>
+    <%- include('../partials/footer')%>
+        <%- include('../partials/bootstrap-script') %>
+</body>
+
+</html>

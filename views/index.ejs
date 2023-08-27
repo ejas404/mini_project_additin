@@ -91,7 +91,10 @@
         </div>
 
         <div class="product-cards container py-5">
-            <div class="row">
+            <div class=" text-center">
+                <h1 class="double-underline poppins mb-5">Our Products</h1>
+            </div>
+            <div class="row" id="pagination-row" data-page-num="0">
                 <% if (! locals.products[0]) {%>
                     <div class="empty-message text-center">
                         <h1>Sorry No Products Please Check after some time</h1>
@@ -125,25 +128,32 @@
                                 </a>
                                 <div class="productButtons position-absolute d-flex justify-content-between"
                                     style="width: 22.5rem;top: 88%; padding: 0 10px;">
-
-                                    <% if (locals.cartAndWish && locals.cartAndWish[0]?.cartIds.includes(each.product_id)) { %>
+                              
+                                    <% if (locals.cartAndWish && locals?.cartAndWish[0]?.cartIds?.includes(each.product_id)) { %>
                                         <a class="default-button px-2 rounded d-block" href="/user/cart">Go to Cart -></a>
                                         <% } else { %>
                                             <div class="pb-1 add-to-cart-btn"
-                                                onclick="addToCart('<%= each.product_id %>')"><i
+                                                onclick="addToCart('<%= each.product_id %>',this)"><i
                                                     class="fa-solid fa-cart-plus" style="font-size: 25px;"></i></div>
-                                            <% } %>
+                                            <% } %>  
+
 
                                                 <a class="buy-now-btn d-block rounded" style="text-decoration: none;"
                                                     href="">Buy Now -></a>
 
                                 </div>
                                 <div  class="wishlist position-absolute top-0 ms-1">
-                                    <% if (locals.cartAndWish && locals.cartAndWish[0]?.wishListIds.includes(each.product_id)) { %>
+
+                                
+                                    <% if (locals.cartAndWish && locals.cartAndWish[0]?.wishListIds?.includes(each.product_id)) { %>
                                     <i  onclick="addToWishList('<%= each.product_id %>',this)" id="biHrt" class="bi bi-heart-fill wishlist-icon"></i>
                                     <% } else { %>
                                     <i  onclick="addToWishList('<%= each.product_id %>',this)" id="biHrt" class="bi bi-heart wishlist-icon"></i>
                                     <% } %>
+    
+
+
+                                  
                                 </div>
 
                             </div>
@@ -155,22 +165,20 @@
                     <nav aria-label="Page navigation example">
                         <ul class="pagination">
                             <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Previous">
+                                <p class="page-link" onclick="paginatePrev()" aria-label="Previous">
                                     <span aria-hidden="true">&laquo;</span>
 
-                                </a>
+                                </p>
                             </li>
 
                             <% for (let i=0; i < Math.ceil(locals.count/3) ; i++) { %>
-                                <li class="page-item"><a class="page-link" href="/products/<%= i %>">
-                                        <%= i+1 %>
-                                    </a></li>
+                                <li class="page-item paginate-buttons" > <p onclick="paginate('<%= i %>',this)" class="page-link" ><%= i+1 %></p> </li>
                                 <% } %>
 
                                     <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Next">
+                                        <p class="page-link" onclick="paginateNext()" aria-label="Next">
                                             <span aria-hidden="true">&raquo;</span>
-                                        </a>
+                                        </p>
                                     </li>
                         </ul>
                     </nav>
@@ -185,6 +193,7 @@
     <%- include('../partials/bootstrap-script') %>
     <%- include('../partials/footer')%>
     
+    <script defer src="/scripts/pagination.js"></script>
     <script defer src="/scripts/notification.js"></script>
     <script defer src="/scripts/add_to.js"></script>
 

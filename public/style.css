@@ -500,10 +500,6 @@ main>.add-address input {
     margin: 15px;
 }
 
-.form-addproduct-inner .form-left .green {
-    margin-top: 5px;
-    color: rgb(38, 255, 0);
-}
 
 .form-addproduct #description {
     width: 15rem;
@@ -812,7 +808,6 @@ textarea {
 }
 
 #quantity {
-  width : 2.5rem;
   padding:5px 0 5px 10px;
   border : 1px solid var(--bg_gray);
 }
@@ -1071,6 +1066,11 @@ h1{
         color: blue;
     }
 }
+.green {
+    margin-top: 5px;
+    color: rgb(38, 255, 0);
+}
+
 /*-----------------------------------------------------footer-----------------------------------------------------*/
 
 .footer {

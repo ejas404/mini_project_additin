@@ -27,16 +27,16 @@
                 <div class="form-addproduct-inner">
                     <div class="form-left">
                         <label for="product_name">Product Name:</label><br>
-                        <input type="text" id="product_name" name="product_name" pattern="/^[a-zA-Z0-9][a-zA-Z0-9\s]+$/" required><br>
+                        <input type="text" id="product_name" name="product_name" pattern="^[a-zA-Z0-9\s]*$" required><br>
 
                         <label for="price">Price:</label><br>
-                        <input type="number" id="price" name="price" step="0.01" required><br>
+                        <input type="number" id="price" name="price" step="0.01" min="1" pattern="^[1-9][0-9]*$" required><br>
 
                         <label for="weight">Weight:</label><br>
-                        <input type="number" id="weight" name="weight" step="0.01" required><br>
+                        <input type="number" id="weight" name="weight" step="0.01" min="1" pattern="^[1-9][0-9]*$" required><br>
 
                         <label for="quantity">Quantity:</label><br>
-                        <input type="number" id="quantity" name="quantity" required><br>
+                        <input type="number" id="quantity" name="quantity" pattern="^[1-9][0-9]*$" min="1" required><br>
 
                         <p id="error" class="<%= locals.class %>">
                             <%= locals.message %>
@@ -46,7 +46,7 @@
                     <div class="form-right">
 
                         <label for="category">Category:</label><br>
-                        <select id="category" name="category" required>
+                        <select id="category" style="color: black; cursor: pointer;" name="category" required>
                             <option value="" disabled selected>Select Category</option>
                             <% for (let each of locals.category) {%>
                                 <option value="<%= each.categoryName %>">
@@ -68,7 +68,7 @@
                         <textarea id="description" name="description" rows="4" cols="50" maxlength="499"></textarea><br>
 
                         <label for="file_uploader">File Uploader:</label><br>
-                        <input type="file" id="file_uploader" name="img-file" accept=".jpg, .jpeg, .png" multiple><br>
+                        <input type="file" style="cursor: pointer;" id="file_uploader" name="img-file" accept=".jpg, .jpeg, .png" multiple><br>
 
                     </div>
                 </div>

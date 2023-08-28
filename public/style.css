@@ -273,7 +273,8 @@ nav img {
 }
 
 .user-profile-box .address-box,
-.userlists-div .address-box {
+.userlists-div .address-box,
+.buy-now-box .address-box {
     background-color: var(--white);
     width: 100%;
     padding: 10px;
@@ -283,7 +284,8 @@ nav img {
 }
 
 .user-profile-box .address-box p,
-.userlists-div .address-box p {
+.userlists-div .address-box p,
+.buy-now-box .address-box p {
     padding: 0;
     margin: 0;
 }
@@ -743,6 +745,10 @@ textarea {
     margin: 5px 5px 5px 0;
 }
 /*----------------------------------------------------payment-----------------------------------------------------*/
+.buy-now-box{
+    padding-left: 35rem;
+    padding-right: 15rem;
+}
 .select-payment-details{
     padding: 0 15rem;
 }
@@ -1763,4 +1769,7 @@ input[type=range]::-webkit-slider-thumb {
     .pagination {
         display: none
     }
+}
+a{
+    text-decoration: none!important;
 }

@@ -20,8 +20,8 @@
                 <div class="select-payment-details" style="padding: 0 23rem;" id="cartItemDetails">
                     <div class="px-4 py-3 rounded" style="background-color: #fff;">
                         <h2>Payment Method</h2>
-                        <form>
-                            <input type="radio" id="cashOnDelivery" name="paymentMethod" value="Cash on Delivery"
+                        <form action="/user/placeorder" method="post">
+                            <input type="radio" id="cashOnDelivery" name="paymentMethod" value="COD"
                                 checked>
                             <label for="cashOnDelivery">Cash on Delivery</label><br>
 
@@ -75,7 +75,7 @@
                                     </p>
                                 </div>
                                 <input onclick="" class="default-button px-2 rounded mt-1" type="submit"
-                                    value="placeorder">
+                                    value="confirm order">
                             </div>
 
 

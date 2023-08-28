@@ -4,7 +4,7 @@ const ProductCollection = require('../Model/product')
 const OrderCollection = require('../Model/order')
 const CouponCollection = require('../Model/coupon')
 
-
+const { v4: uuidv4 } = require('uuid');
 const { ObjectId } = require('mongodb')
 
 module.exports = {
@@ -40,46 +40,163 @@ module.exports = {
         res.render('buy-now', { address: userAddress[0].address, product, isUser: true, user })
     },
     buyNow: async (req, res) => {
-        console.log(req.body)
         try {
             if (!req.body.address) {
                 res.render('buy-now', { address: userAddress[0].address, product, isUser: true, user, msg: 'please add your address to proceed' })
             }
             const _id = new ObjectId(req.body.address)
-            const isAddress = await AddressCollection.findOne({_id})
+            const isAddress = await AddressCollection.findOne({ _id })
             const order = {
-                product_id : req.session.buynowP_id,
-                quantity : req.body.quantity
+                product_id: req.session.buynowP_id,
+                quantity: req.body.quantity
             }
             req.session.buynowP_id = null;
-            if(isAddress){
+            if (isAddress) {
                 order.addressId = _id
             }
             req.session.orderDetails = order
-            console.log(req.session.orderDetails)
 
             res.redirect('/user/payment')
-        } 
-        catch(e){
+        }
+        catch (e) {
             console.log(e)
         }
     },
-    selectPayment : async(req,res)=>{
+    selectPayment: async (req, res) => {
         try {
-        const order = req.session.orderDetails
-        const email = req.session.user
-        const user = await UserCollection.findOne({email})
-        const coupons = await CouponCollection.find({user_id : user.user_id})
-        const product = await ProductCollection.findOne({product_id : order.product_id})
-        
-        let total = product.productPrice * Number(order.quantity)
-         total = total>5000 ? total : total+40;
-        
-        console.log(req.session.orderDetails)
-        res.render('select-payment',{isUser : true, coupons, total,count : 1})
-        } 
-        catch(e){
+            const order = req.session.orderDetails
+            const email = req.session.user
+            const user = await UserCollection.findOne({ email })
+            const coupons = await CouponCollection.find({ user_id: user.user_id })
+            const product = await ProductCollection.findOne({ product_id: order.product_id })
+
+            let total = product.productPrice * Number(order.quantity)
+            total = total > 5000 ? total : total + 40;
+
+            res.render('select-payment', { isUser: true, coupons, total, count: 1 })
+        }
+        catch (e) {
             console.log(e)
         }
+    },
+    couponUpdate: async (req, res) => {
+        try {
+            const order = req.session.orderDetails
+            const product = await ProductCollection.findOne({ product_id: order.product_id })
+
+            let total = product.productPrice * Number(order.quantity)
+            total = total > 5000 ? total : total + 40;
+
+            const _id = new ObjectId(req.params.id)
+            const coupon = await CouponCollection.findOne({ _id })
+            if (coupon.couponType === 'percent') {
+                total = (total * coupon.couponValue) / 100
+            } else {
+                total = total - coupon.couponValue
+            }
+            res.json({
+                success: true,
+                total,
+                coupon
+            })
+        } catch (e) {
+            console.log(e)
+            res.json({
+                success: false,
+                err: e.message
+            })
+        }
+    },
+    createOrder: async (req, res) => {
+        try {
+            console.log(req.session.orderDetails)
+            console.log(req.body)
+            const {paymentMethod,discountCoupon} = req.body
+            const { product_id, quantity, addressId } = req.session.orderDetails
+            let address_id = new ObjectId(addressId)
+            const userDetails = await AddressCollection.aggregate([
+                {
+                    $match: {
+                        _id: address_id
+                    }
+                },
+                {
+                    $project: {
+                        _id: 0,
+                        address: {
+                            houseName: "$houseName",
+                            streetAddress: "$streetAddress",
+                            city: "$city",
+                            state: "$state",
+                            postalcode: "$postalcode"
+                        },
+                        mobile: 1,
+                        user_id: 1
+                    }
+                }
+            ])
+            let product = await ProductCollection.aggregate([
+                {
+                    $match: {
+                        product_id
+                    }
+                },
+                {
+                    $project: {
+                        _id : 0,
+                        product: {
+                            productName: '$productName',
+                            product_id: '$product_id',
+                            weight: '$productWeight',
+                            price: '$productPrice'
+                        }
+                    }
+                }
+
+            ])
+            product = product[0].product
+            product.quantity = Number(quantity)
+
+            let total = product.price * Number(quantity)
+            total = total > 5000 ? total : total + 40;
+            let coupon
+            if(discountCoupon){
+                const _id = new ObjectId(discountCoupon)
+                coupon = await CouponCollection.findOne({_id})
+                if(coupon.couponType === 'percent'){
+                   total = (total*coupon.couponValue)/100
+                }else{
+                    total = total - coupon.couponValue
+                }
+            }
+            
+
+            const newOrderData = {
+                order_id : uuidv4(),
+                user_id : userDetails[0].user_id,
+                address : userDetails[0].address,
+                mobile : userDetails[0].mobile,
+                items:[product],
+                total : total,
+                paymentMethod : paymentMethod
+            }
+
+            if(coupon){
+                newOrderData.coupon = coupon.couponCode
+            }
+            const newOrder = await OrderCollection.create(newOrderData)
+            req.session.orderDetails = null;
+            req.session.newOrder = newOrder._id
+            res.redirect('/user/order-completed')
+        } catch (e) {
+            res.redirect('/user/order-failed')
+            console.log(e)
+        }
+    },
+    orderCompleted : (req,res)=>{
+        res.render('order-completed',{isUser : true})
+    },
+    orderFailed : (req,res)=>{
+        res.render('order-failed',{isUser:true})
     }
 }

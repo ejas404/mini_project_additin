@@ -16,10 +16,10 @@
     <%- include('../partials/custom-alert') %>
         <div class="userprofile-main">
             <form action="/user/buynow" method="post" id="buyNowForm">
-                <div class="user-profile-box">
-                    <div class="left-cartdetails" style="padding: 0 23rem;" id="cartItemDetails">
+                <div class="">
+                    <div class="buy-now-box" id="cartItemDetails">
                         <div class="head-name">
-                            <h1 class="double-underline mb-5">Order Summary</h1>
+                            <h1 class="double-underline my-5">Order Summary</h1>
                         </div>
                         <% if(locals.product) { %>
                             <div class="cart-item">

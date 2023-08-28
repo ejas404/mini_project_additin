@@ -17,18 +17,19 @@ const orderSchema = new Schema({
             {
                 productName: { type: String, required: true },
                 product_id: { type: String, required: true },
-                productWeight : {type: Number, required : true},
+                weight : {type: Number, required : true},
                 price: { type: Number, required: true },
                 quantity: { type: Number, required: true },
             }
         ]
     },
     total : {type : Number, required : true},
-    couponCode : {type : String},
-    paymentMethod :{type : String , required : true}, 
+    coupon : {type : String},
+    paymentMethod :{type : String , required : true},
+    orderStatus : {type : String, default : 'pending'}, 
     isCancelled : {type: Boolean, default : false},
 
-})
+},{timestamps : true})
 
 const OrderCollection = mongoose.model('orders',orderSchema)
 module.exports = OrderCollection

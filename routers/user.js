@@ -4,6 +4,7 @@ const userRouter = express.Router()
 
 const userController = require('../Controller/user_controller')
 const userProductController = require('../Controller/user_product_controller')
+const userOrderController = require('../Controller/user_order_controller')
 const userMiddleware = require('../Middlewares/user_middle')
 
 
@@ -36,7 +37,6 @@ userRouter.get('/add-to-cart/:id',userMiddleware.isLoggedinMid,userMiddleware.is
 userRouter.delete('/delete-cart-item/:id',userMiddleware.isLoggedinMid,userMiddleware.isBlockedMid,userProductController.deleteCartItem)
 userRouter.post('/add-to-wishlist/:id',userMiddleware.isLoggedinMid,userMiddleware.isBlockedMid,userProductController.addToWishList)
 
-
 userRouter.use(userMiddleware.isLoggedin,userMiddleware.isBlocked)
 
 userRouter.get('/user-profile',userController.profilePage)
@@ -45,6 +45,10 @@ userRouter.post('/add-address',userController.addAddress)
 userRouter.get('/singleproduct/:id',userProductController.singleProduct)
 userRouter.get('/cart',userProductController.cartPage)
 userRouter.get('/wishlist',userProductController.wishListPage)
+userRouter.get('/payment',userOrderController.selectPayment)
+userRouter.get('/buynow/:id',userOrderController.buyNowPage)
+userRouter.post('/buynow',userOrderController.buyNow)
+
 
 
 

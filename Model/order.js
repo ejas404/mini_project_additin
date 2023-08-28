@@ -24,7 +24,11 @@ const orderSchema = new Schema({
         ]
     },
     total : {type : Number, required : true},
+    couponCode : {type : String},
     paymentMethod :{type : String , required : true}, 
     isCancelled : {type: Boolean, default : false},
 
 })
+
+const OrderCollection = mongoose.model('orders',orderSchema)
+module.exports = OrderCollection

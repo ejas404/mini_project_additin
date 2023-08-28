@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <%- include('../partials/bootstrap-styles') %>
+        <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+    <header>
+        <%- include('../partials/navbar') %>
+    </header>
+    <%- include('../partials/custom-alert') %>
+        <div class="userprofile-main">
+
+            <div class="user-profile-box">
+                <div class="select-payment-details" style="padding: 0 23rem;" id="cartItemDetails">
+                    <div class="px-4 py-3 rounded" style="background-color: #fff;">
+                        <h2>Payment Method</h2>
+                        <form>
+                            <input type="radio" id="cashOnDelivery" name="paymentMethod" value="Cash on Delivery"
+                                checked>
+                            <label for="cashOnDelivery">Cash on Delivery</label><br>
+
+                            <input type="radio" id="upi" name="paymentMethod" value="UPI" disabled>
+                            <label for="upi">UPI</label><br>
+
+                            <input type="radio" id="bank" name="paymentMethod" value="Bank" disabled>
+                            <label for="bank">Bank</label><br>
+
+                            <h2>Discount Coupons</h2>
+
+                            <div class=" my-3 row coupon-list">
+                                <% for (let each of locals.coupons) { %>
+                                    
+                                    <div class="col-sm-4 d-flex">
+                                        <input type="radio" id="coupon1" name="discountCoupon" onclick="couponDiscount(`<%= each._id  %>`)" value="<%= each._id %>">
+                                        <div class="ms-2 p-1 text-center border d-flex align-items-center">
+                                            <div>
+                                                <h5>
+                                                    <%= each.couponCode %>
+                                                </h5>
+                                                <p>
+                                                    <%= each.couponType==='percent' ? `flat ${each.couponValue}%
+                                                        discount on purchase above Rs.2000`:`flat ${each.couponValue}
+                                                        discount on any purchase`; %>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                            
+                                    <% } %>
+                            </div>
+
+
+                            <!-- <label for="coupon1">Coupon 1</label><br>
+
+                            <input type="radio" id="coupon2" name="discountCoupon" value="Coupon 2">
+                            <label for="coupon2">Coupon 2</label><br> -->
+
+                            <div class="select-payment-total">
+                                <h5>Price Details</h5>
+                                <div class="cart-item-mid">
+                                    <p id="couponTitle"></p>
+                                    <p id="couponValue"></p>
+                                </div>
+
+                                <div class="cart-item-mid">
+                                    <p id="itemsCount">total(<%= locals.count %> item)</p>
+                                    <p id="itemSum" class="ind-rs">
+                                        <%= locals.total %>
+                                    </p>
+                                </div>
+                                <input onclick="" class="default-button px-2 rounded mt-1" type="submit"
+                                    value="placeorder">
+                            </div>
+
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <script defer src="/scripts/notification.js"></script>
+        <script defer src="/scripts/select_payment.js"></script>
+        <%- include('../partials/footer')%>
+            <%- include('../partials/bootstrap-script') %>
+</body>
+
+</html>

@@ -1,3 +1,5 @@
+
+const notificationBox = document.getElementById('notificationBox')
 const notification = document.querySelector('.notification');
 
 // function called when the button to dismiss the message is clicked
@@ -10,6 +12,7 @@ function dismissMessage() {
 
 // function showing the message
 function showMessage() {
+    
     // add a class of .received to the .notification container
     notification.classList.add('received');
 
@@ -18,13 +21,15 @@ function showMessage() {
     const button = document.querySelector('.notification__message button');
     button.addEventListener('click', dismissMessage, { once: true });
 
+    setTimeout(dismissMessage,3000)
     setTimeout(()=>{
-        dismissMessage()
-    },3000)
+        notificationBox.style.display = 'none'
+    },5000)
 }
 
 // function generating a message with a random title and text
 function generateMessage(title,text) {
+        notificationBox.style.display = 'flex'
         console.log('generation started')
         const message = document.querySelector('.notification__message');
 

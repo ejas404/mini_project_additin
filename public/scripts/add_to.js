@@ -21,7 +21,7 @@ function addToCart(id,elem) {
                 elem.replaceChild(newElement , elem.firstChild)
                 generateMessage('success','added to cart successfully')
             } else {
-                location.reload()
+                window.location.href = res.redirect
             }
         }).catch((e) => {
             if (e) {

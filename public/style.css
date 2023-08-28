@@ -742,6 +742,21 @@ textarea {
     font-size: 13px;
     margin: 5px 5px 5px 0;
 }
+/*----------------------------------------------------payment-----------------------------------------------------*/
+.select-payment-details{
+    padding: 0 15rem;
+}
+
+.select-payment-total{
+    margin-bottom: 20px;
+    padding: 10px 15px;
+    box-shadow: -2px 2px 5px black;
+
+}
+.select-payment-total p {
+    margin: 3px 0;
+}
+
 /*----------------------------------------------------cart------------------------------------------------------=-*/
 
 .add-to-cart-btn {
@@ -822,7 +837,7 @@ textarea {
     top: 2rem;
     right: 1rem;
     /* align the content to the rigth */
-    display: flex;
+    display: none;
     flex-direction: column;
     align-items: flex-end;
     color: hsl(0, 0%, 20%);

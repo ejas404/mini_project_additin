@@ -7,11 +7,82 @@ const CouponCollection = require('../Model/coupon')
 const { v4: uuidv4 } = require('uuid');
 const { ObjectId } = require('mongodb')
 
+const getTotalSum = async (email)=> {
+    try{
+
+        const cartSum = await UserCollection.aggregate([
+            {
+                $match:{
+                    email
+                }
+            },
+            {
+                $unwind : '$cart'
+            },
+            {
+                $lookup : {
+                    from :'products',
+                    localField : 'cart.product_id',
+                    foreignField : 'product_id',
+                    as : 'cartProducts'
+                }
+            },
+            {
+                $unwind : '$cartProducts'
+            },
+            {
+                $match:{
+                    'cartProducts.isAvailable':true
+                } 
+            },
+            {
+                $project : {
+                    _id : 0,
+                    each : {
+                        $multiply : ['$cart.quantity','$cartProducts.productPrice']
+                    }
+                },
+               
+            },
+            {
+                $group : {
+                    _id : null,
+                    total : {
+                        $sum : '$each'
+                    }
+                }
+            }
+        ])
+
+        return cartSum
+
+    }catch(e){
+        console.log(e)
+        return false
+    }
+}
+
+
 module.exports = {
-    buyNowPage: async (req, res) => {
+    proceedCart : async (req,res)=>{
+        try{
+ 
+            const email = req.session.user
+            const cartTotal = await getTotalSum(email)
+            const user = await UserCollection.findOne({email})
+            
+            const cartOrder = {
+                total : cartTotal[0].total,
+                count : user.cart.length
+            }
+            req.session.cartOrder = cartOrder
+            res.redirect('/user/payment')
+        }catch(e){
+            console.log(e)
+        }
+    },
+    selelctAddress : async(req,res)=>{
         const email = req.session.user
-        const product_id = req.params.id
-        const product = await ProductCollection.findOne({ product_id })
         const userAddress = await UserCollection.aggregate([
             {
                 $match: {
@@ -34,6 +105,35 @@ module.exports = {
             }
         ])
 
+    },
+   
+    buyNowPage: async (req, res) => {
+        const email = req.session.user
+        const userAddress = await UserCollection.aggregate([
+            {
+                $match: {
+                    email
+                }
+            },
+            {
+                $lookup: {
+                    from: 'addres',
+                    localField: 'user_id',
+                    foreignField: 'user_id',
+                    as: 'address'
+                }
+            },
+            {
+                $project: {
+                    address: 1,
+                    name: 1
+                }
+            }
+        ])
+
+        const product_id = req.params.id
+        const product = await ProductCollection.findOne({ product_id })
+       
         const user = { name: userAddress[0].name }
         req.session.buynow = true
         req.session.buynowP_id = product_id
@@ -64,28 +164,45 @@ module.exports = {
     },
     selectPayment: async (req, res) => {
         try {
+            if(req.session.cartOrder.total){
+                const email = req.session.user
+                const user = await UserCollection.findOne({ email })
+                const coupons = await CouponCollection.find({ user_id: user.user_id })
+                const total = req.session.cartOrder.total
+                const count = req.session.cartOrder.count
+
+                return  res.render('select-payment', { isUser: true, coupons, total, count })      
+            }
             const order = req.session.orderDetails
             const email = req.session.user
             const user = await UserCollection.findOne({ email })
-            const coupons = await CouponCollection.find({ user_id: user.user_id })
             const product = await ProductCollection.findOne({ product_id: order.product_id })
 
             let total = product.productPrice * Number(order.quantity)
             total = total > 5000 ? total : total + 40;
 
-            res.render('select-payment', { isUser: true, coupons, total, count: 1 })
+            const count = 1
+            const coupons = await CouponCollection.find({ user_id: user.user_id })
+             return res.render('select-payment', { isUser: true, coupons, total, count })
         }
         catch (e) {
+            req.session.cartOrder = null
             console.log(e)
         }
     },
     couponUpdate: async (req, res) => {
         try {
+            
+            let total 
+            if(req.session.cartOrder.total){
+                total = req.session.cartOrder.total
+            }else{
             const order = req.session.orderDetails
             const product = await ProductCollection.findOne({ product_id: order.product_id })
-
-            let total = product.productPrice * Number(order.quantity)
+    
+            total = product.productPrice * Number(order.quantity)
             total = total > 5000 ? total : total + 40;
+            }
 
             const _id = new ObjectId(req.params.id)
             const coupon = await CouponCollection.findOne({ _id })
@@ -198,5 +315,44 @@ module.exports = {
     },
     orderFailed : (req,res)=>{
         res.render('order-failed',{isUser:true})
+    },
+    myOrders : async (req,res)=>{
+        try{
+            const user = await UserCollection.findOne({email : req.session.user})
+            console.log(user)
+            // const userOrders = await OrderCollection.aggregate([
+            //     {
+            //         $match : {
+            //             user_id : user.user_id
+            //         }
+            //     },
+            //     {
+            //         $lookup : {
+            //             from : 'products',
+            //             localField : 'items.product_id',
+            //             foreignField : 'product_id',
+            //             as : 'products'
+            //         }
+            //     },
+            //     {
+            //         $project : {
+            //             products : 1,
+            //             items : 1,
+            //             total : 1,
+            //             orderStatus : 1
+            //         }
+            //     },
+            //     {
+            //         $unwind : '$products'
+            //     }
+            // ])
+
+            // console.log(userOrders)
+            res.end('done')            
+            
+            //res.render('my-orders',{dest:'myOrder', isUser:true})
+        }catch(e){
+            console.log(e)
+        }
     }
 }

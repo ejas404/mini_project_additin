@@ -37,7 +37,8 @@
                                 <% for (let each of locals.coupons) { %>
                                     
                                     <div class="col-sm-4 d-flex">
-                                        <input type="radio" id="coupon1" name="discountCoupon" onclick="couponDiscount(`<%= each._id  %>`)" value="<%= each._id %>">
+                                        <input type="radio" id="<%= each._id %>" name="discountCoupon" onclick="couponDiscount(`<%= each._id  %>`)" value="<%= each._id %>">
+                                        <label for="<%= each._id %>">
                                         <div class="ms-2 p-1 text-center border d-flex align-items-center">
                                             <div>
                                                 <h5>
@@ -45,11 +46,12 @@
                                                 </h5>
                                                 <p>
                                                     <%= each.couponType==='percent' ? `flat ${each.couponValue}%
-                                                        discount on purchase above Rs.2000`:`flat ${each.couponValue}
+                                                        discount on any purchase`:`flat ${each.couponValue}
                                                         discount on any purchase`; %>
                                                 </p>
                                             </div>
                                         </div>
+                                    </label>
                                     </div>
                             
                                     <% } %>

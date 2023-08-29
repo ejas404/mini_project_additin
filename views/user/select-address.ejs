@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <%- include('../partials/bootstrap-styles') %>
+        <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+    <header>
+        <%- include('../partials/navbar') %>
+    </header>
+    <%- include('../partials/custom-alert') %>
+        <div class="userprofile-main">
+            <form action="/user/buynow" method="post" id="buyNowForm">
+                <div class="">
+                    <div class="buy-now-box" id="cartItemDetails">
+                       
+                                <div class="head-name my-5">
+                                    <h2 class="">Select Your Address</h2>
+                                </div>
+                              
+                                <div class="address">
+                                    <% if(locals.address[0]){ %>
+                                    <h4>Address</h4>
+                                    <% for (let each of locals.address) { %>
+                                        <div class="address-box">
+                                            <div class="address-details">
+                                                <p>
+                                                    <%= each.houseName %>, <%= each.streetAddress %>,
+                                                </p>
+                                                <p>
+                                                    <%= each.city %>,
+                                                </p>
+                                                <p>
+                                                    <%= each.state %>,
+                                                </p>
+                                                <p>postal code : <%= each.postalcode %>,
+                                                </p>
+                                                <p>mobile : <%= each.mobile %>
+                                                </p>
+                                            </div>
+                                            <div class="deleteButton">
+                                                <input type="radio" name="address" value="<%= each._id %>" required>
+                                            </div>
+
+                                        </div>
+                                        <% } %>
+                                        <% } else { %>
+                                            <div class="empty-message text-center">
+                                                <h1>no address to select <br> please add your address</h1>
+                                            </div>
+                                        <% } %>
+
+                                            <div class="add-address-btn my-3">
+                                                <a class="default-button" href="/user/user-profile/add-address">+add
+                                                    address</a>
+                                            </div>
+                                </div>
+                                <p id="errorMessage" class="error-message"><%= locals.msg %></p>
+
+                    </div>
+
+
+                </div>
+
+                <button class="default-button" type="submit">Select Address</button>
+            </form>
+        </div>
+        <script defer src="/scripts/notification.js"></script>
+        <script defer src="/scripts/buy_now.js"></script>
+        <%- include('../partials/footer')%>
+            <%- include('../partials/bootstrap-script') %>
+</body>
+
+</html>

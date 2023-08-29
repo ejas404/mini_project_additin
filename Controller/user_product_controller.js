@@ -51,7 +51,8 @@ const getTotalSum = async (email)=> {
         return cartSum
 
     }catch(e){
-        return e
+        console.log(e)
+        return false
     }
 }
 

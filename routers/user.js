@@ -32,6 +32,8 @@ userRouter.post('/emailotp',userController.emailotp)
 
 userRouter.get('/order-completed',userOrderController.orderCompleted)
 userRouter.get('/order-failed',userOrderController.orderFailed)
+userRouter.get('/orders',userOrderController.myOrders)
+userRouter.get('/cart-order',userOrderController.proceedCart)
 
 
 userRouter.delete('/delete-address/:id',userMiddleware.isLoggedinMid,userMiddleware.isBlockedMid,userController.deleteAddress)

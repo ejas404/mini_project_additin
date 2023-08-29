@@ -7,7 +7,8 @@ const couponSchema = new Schema({
     couponType : {type : String, required : true},
     couponCode : {type : String, required : true},
     couponValue : {type : Number,required : true},
-    expiryDate : {type : Date, required : true}
+    expiryDate : {type : Date, required : true},
+    isAvailable : {type : Boolean, default : true}
 })
 
 const CouponCollection = mongoose.model('coupons',couponSchema)

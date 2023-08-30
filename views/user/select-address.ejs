@@ -15,9 +15,9 @@
     </header>
     <%- include('../partials/custom-alert') %>
         <div class="userprofile-main">
-            <form action="/user/buynow" method="post" id="buyNowForm">
+            <form action="/user/cart-payment" method="post" id="buyNowForm">
                 <div class="">
-                    <div class="buy-now-box" id="cartItemDetails">
+                    <div class="select-address-box my-5" id="cartItemDetails">
                        
                                 <div class="head-name my-5">
                                     <h2 class="">Select Your Address</h2>
@@ -60,6 +60,7 @@
                                                     address</a>
                                             </div>
                                 </div>
+                                <button class="default-button float-right px-3 mb-5" type="submit">Proceed to Pay</button>
                                 <p id="errorMessage" class="error-message"><%= locals.msg %></p>
 
                     </div>
@@ -67,7 +68,7 @@
 
                 </div>
 
-                <button class="default-button" type="submit">Select Address</button>
+                
             </form>
         </div>
         <script defer src="/scripts/notification.js"></script>

@@ -1,6 +1,7 @@
 const UserCollection = require('../Model/user_details')
 const AddressCollection = require('../Model/address_details')
 const ProductCollection = require('../Model/product')
+const CouponCollection = require('../Model/coupon')
 
 const { ObjectId } = require('mongodb')
 
@@ -32,7 +33,7 @@ module.exports = {
         try {
             const existingUser = await UserCollection.findOne({ email: email })
             if (existingUser) {
-                return res.render('signup', { message: 'alredy have a user with this id' })
+                return res.render('signup', { message: 'alredy have a user with this id'})
             } else {
                 let userCount = await UserCollection.findOne().sort({ _id: -1 })
                 let starter_id = 100;
@@ -104,7 +105,7 @@ module.exports = {
 
     //render the page for adding address of user
     addAddressPage: (req, res) => {
-        res.render('add-address')
+        res.render('add-address',{isUser : true})
     },
     addAddress: async (req, res) => {
         try {
@@ -126,7 +127,10 @@ module.exports = {
             console.log(userAddress)
 
             if(req.session.buynow){
-               return  res.redirect(`/user/buynow/${req.session.buynowP_id}`)
+              return res.redirect(`/user/buynow/${req.session.buynowP_id}`)
+            }
+            if (req.session.cartOrder){
+               return res.redirect('/user/select-address')
             }
             res.redirect('/user/user-profile')
 
@@ -156,10 +160,10 @@ module.exports = {
         if(req.session.loginOtp){
 
         }
-        res.render('user-otp')
+        res.render('user-otp',{isUser : true})
     },
     email: (req, res) => {
-        res.render('emailenter')
+        res.render('emailenter',{isUser : true})
     },
     emailotp: async (req, res) => {
         try {
@@ -178,9 +182,9 @@ module.exports = {
 
                 await transporter.sendMail(mailOptions);
                 req.session.user = req.body.email
-                res.render('user-otp')
+                res.render('user-otp',{isUser : true})
             } else {
-                res.render('emailenter', { message: 'no such user with this email' })
+                res.render('emailenter', { message: 'no such user with this email',isUser : true })
             }
         } catch (e) {
             console.log(e)
@@ -210,8 +214,33 @@ module.exports = {
         }
         catch (e) {
             console.log(e)
-            res.render('user-login', { message: 'some error occured try after some time' })
+            res.render('user-login', { message: 'some error occured try after some time'})
         }
+    },
+    userData : async (req,res)=>{
+        try{
+        const email = req.session.user
+        const user = await UserCollection.findOne({email})
+        res.json({
+            success : true,
+            user
+        })
+        }catch(e){
+            console.log(e)
+        }
+    },
+    userUpdate : async (req,res)=>{
+        try{
+            console.log('hai')
+            console.log(req.body)
+            res.end('done')
+        }catch(e){console.log(e)}
+    },
+    otherPage : async (req,res)=>{
+        let email = req.session.user
+        const user = await UserCollection.findOne({email})
+        const coupons = await CouponCollection.find({ user_id: user.user_id })
+        res.render('other',{isUser : true, coupons,user, dest : 'other'})
     }
 
 

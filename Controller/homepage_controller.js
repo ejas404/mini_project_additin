@@ -27,8 +27,7 @@ module.exports = {
                         }
                     }
                 ])
-                console.log('hai')
-                console.log(cartAndWish)
+                
                 res.render('index', { isUser: true, products, count,topBanners,cartAndWish})
             } else {
                 res.render('index', { products, count,topBanners })

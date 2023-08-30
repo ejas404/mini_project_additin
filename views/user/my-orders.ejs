@@ -18,7 +18,7 @@
             <div class="user-profile-box">
                 <div class="left-cartdetails" id="cartItemDetails">
                     <div class="head-name">
-                        <h1 class="double-underline mb-5">Wishlist</h1>
+                        <h1 class="double-underline mb-5">Orders</h1>
                     </div>
                     <% if (! locals.orders[0]) {%>
                         <div class="empty-message text-center">
@@ -37,8 +37,8 @@
                                                     <h6>
                                                         <%= each.productName %>
                                                     </h6>
-                                                    <p class="product-price">
-                                                        <%= each.productPrice %>
+                                                    <p class="product-weight"><span>Qty:</span>
+                                                        <%= each.quantity %>
                                                     </p>
                                                 </div>
                                                 <div class="cart-item-mid">
@@ -46,19 +46,17 @@
                                                     <p class="product-weight"><span>Weight:</span>
                                                         <%= each.productWeight %>kg
                                                     </p>
+                                                    
                                                 </div>
                                                 <div class="cart-item-mid">
-                                                    <div>
-                                                        <% if(locals.cartIds.includes(each.product_id)) { %>
-                                                            <a class="default-button px-2" href="/user/cart">Go to Cart -></a>
-                                                        <% } else { %>
-                                                            <button onclick="addToCart('<%= each.product_id %>',this)" class="default-button px-2">Add to Cart</button>
-                                                        <% } %>
-                                                    </div>
-                                                    <p id="cartItemDelete"
-                                                        onclick="removeFromList(this,'<%= each.product_id %>')"
-                                                        class="delete-icon"><i class="bi bi-trash3-fill"></i></p>
+                                                    <%if(each.orderStatus ==='cancelled'){ %>
+                                                        <p class="error-message"><span style="color: black;">Status: </span> <%= each.orderStatus %></p>
+                                                    <%} else {%>
+                                                    <p class="product-weight"><span>Status:</span><%= each.orderStatus %></p>
+                                                    <% } %>                                                              
+                                                    <a class="d-block default-button px-3" href="/user/order/<%= each.order_id %>">more details</a>
                                                 </div>
+                                               
                                             </div>
 
                                 </div>

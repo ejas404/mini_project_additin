@@ -61,7 +61,7 @@ module.exports = {
     createCouponPage: async (req, res) => {
         try {
             const users = await UserCollection.find({ isBlocked: false }, { email: 1, _id: 0 })
-            res.render('create-coupon', { users })
+            res.render('create-coupon', { users,isAdmin : true})
         } catch (e) {
             console.log(e)
         }

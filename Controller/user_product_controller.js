@@ -140,7 +140,7 @@ module.exports = {
                 if(!total){
                     total = 0
                 }
-                res.render('my-cart',{user,dest :'myCart', cartItems,total})
+                res.render('my-cart',{user,dest :'myCart', cartItems,total,isUser : true})
             }else{
                 res.redirect('/user/login')
             }
@@ -273,9 +273,14 @@ module.exports = {
         ])
 
         console.log(userWishlist)
-        res.render('wishlist',{user : userWishlist[0].userDetails,
-            dest :'wishlist', wishListItems : userWishlist[0].wishListItems,
-            cartIds : userWishlist[0].cartIds})
+        res.render('wishlist',
+        {
+            user : userWishlist[0].userDetails,
+            dest :'wishlist', 
+            wishListItems : userWishlist[0].wishListItems,
+            cartIds : userWishlist[0].cartIds,
+            isUser: true
+        })
         }catch(e){
             console.log(e)
         }
@@ -313,7 +318,7 @@ module.exports = {
         ])
         console.log(product)
         const productName = (titleUpperCase(product[0].productName))
-        res.render('user-single-product', { product, productName })
+        res.render('user-single-product', { product, productName,isUser : true})
     }
    
 } 

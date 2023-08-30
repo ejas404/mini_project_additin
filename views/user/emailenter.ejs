@@ -19,7 +19,7 @@
             <form action="/user/emailotp" method="post">
                 <label for="email"></label>
                 <input type="email" name="email" id="email">
-
+                <p class="error-message"><%= locals.message %></p>
                 <input class="default-button" type="submit" value="send otp">
             </form>
         </div>

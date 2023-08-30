@@ -30,10 +30,9 @@ userRouter.post('/get-otp',userMiddleware.isNumber)
 userRouter.get('/email',userController.email)
 userRouter.post('/emailotp',userController.emailotp)
 
-userRouter.get('/order-completed',userOrderController.orderCompleted)
-userRouter.get('/order-failed',userOrderController.orderFailed)
-userRouter.get('/orders',userOrderController.myOrders)
-userRouter.get('/cart-order',userOrderController.proceedCart)
+
+//just for testing mongo querys
+userRouter.get('/test',userOrderController.test)
 
 
 userRouter.delete('/delete-address/:id',userMiddleware.isLoggedinMid,userMiddleware.isBlockedMid,userController.deleteAddress)
@@ -42,6 +41,8 @@ userRouter.get('/add-to-cart/:id',userMiddleware.isLoggedinMid,userMiddleware.is
 userRouter.delete('/delete-cart-item/:id',userMiddleware.isLoggedinMid,userMiddleware.isBlockedMid,userProductController.deleteCartItem)
 userRouter.post('/add-to-wishlist/:id',userMiddleware.isLoggedinMid,userMiddleware.isBlockedMid,userProductController.addToWishList)
 userRouter.get('/coupon-update/:id', userOrderController.couponUpdate)
+userRouter.get('/user-data',userController.userData)
+userRouter.post('/data-update',userController.userUpdate)
 
 userRouter.use(userMiddleware.isLoggedin,userMiddleware.isBlocked)
 
@@ -55,6 +56,17 @@ userRouter.get('/payment',userOrderController.selectPayment)
 userRouter.get('/buynow/:id',userOrderController.buyNowPage)
 userRouter.post('/buynow',userOrderController.buyNow)
 userRouter.post('/placeorder',userOrderController.createOrder)
+userRouter.get('/other',userController.otherPage)
+
+//orders
+userRouter.get('/order-completed',userOrderController.orderCompleted)
+userRouter.get('/order-failed',userOrderController.orderFailed)
+userRouter.get('/orders',userOrderController.myOrders)
+userRouter.get('/cart-order',userOrderController.proceedCart)
+userRouter.get('/select-address',userOrderController.selelctAddress)
+userRouter.post('/cart-payment',userOrderController.cartPayment)
+userRouter.get('/order/:id',userOrderController.orderDetails)
+
 
 
 

@@ -243,6 +243,7 @@ nav img {
 /*----------------------------------------------------user profile------------------------------------------------*/
 .userprofile-main {
     min-height: calc(100vh - 160px);
+    position: relative;
 }
 .user-profile-box {
     
@@ -266,15 +267,37 @@ nav img {
     background-color: var(--main);
     color: var(--white);
     padding: 10px 10px;
-    max-height: 430px;
+    max-height: 450px;
     top: 100px;
     
 
 }
+.order-details-sidebar{
+    position: sticky!important;
+    width: 40vw;
+    top: 150px;
+    background-color: var(--white);
+    max-height: 350px;
+    margin-left: 5rem;
+}
+.left-orderdetails{
+    flex: 1 0 auto;
+    min-height: 700px;
+    padding: 0 10rem 0 5rem ;
+}
+.order-details-sidebar .shipping{
+    font-size: 13px;
+    color:var(--gray);
+}
+.order-details-sidebar .address-details{
+    margin: 0;
+    font-size: 15px;
+}
 
 .user-profile-box .address-box,
 .userlists-div .address-box,
-.buy-now-box .address-box {
+.buy-now-box .address-box,
+.select-address-box .address-box {
     background-color: var(--white);
     width: 100%;
     padding: 10px;
@@ -285,7 +308,8 @@ nav img {
 
 .user-profile-box .address-box p,
 .userlists-div .address-box p,
-.buy-now-box .address-box p {
+.buy-now-box .address-box p,
+.select-address-box .address-box p {
     padding: 0;
     margin: 0;
 }
@@ -329,6 +353,40 @@ nav img {
 
 .userprofile-main a {
     text-decoration: none;
+}
+ .modale-background{
+    position: absolute;
+    top: 0;
+    background-color: rgba(128, 128, 128, 0.468);
+    width: 100vw;
+    height: 100%;
+    z-index: 50;
+    display: none;
+}
+.userprofile-main .edit-profile-modale{
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40vw;
+    background-color: var(--white);
+    height: 300px;
+    z-index: 50;
+    display: none;
+}
+.userprofile-main #userDetailModale{
+    display: none;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30vw;
+    background-color: var(--white);
+    height: 200px;
+    z-index: 52;
+    border: 1px solid var(--gray);
 }
 /*-----------------------------------------------------sign up----------------------------------------------------*/
 
@@ -468,6 +526,9 @@ main>.add-address input {
     background: rgba(255, 255, 255, 0.25);
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
     color: var(--white);
+}
+.select-address-box{
+    padding: 0 25rem;
 }
 
 /*-----------------------------------------------------add-product-form-------------------------------------------*/
@@ -959,7 +1020,7 @@ h1{
   .double-underline:after, .double-underline:before{
     content: "";
    position: absolute;
-   z-index: -1;
+   z-index: 1;
    width: 60%;
    background-color:black;
    display: block;
@@ -1023,6 +1084,15 @@ h1{
     font-weight: bold;
     cursor: pointer;
     text-decoration: none;
+}
+.cancel-button{
+    color: red;
+    background-color: var(--white);
+    padding: 5px 1rem;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    border: 1px solid var(--bg_gray);
 }
 
 .buy-now-btn {

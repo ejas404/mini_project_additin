@@ -1,4 +1,5 @@
 const AdminCollection = require('../Model/admin_details')
+
 const { v4: uuidv4 } = require('uuid');
 
 module.exports = {
@@ -37,8 +38,6 @@ module.exports = {
             }
         })
         res.redirect('/admin/login')
-    }
-  
-    
-
+    },
+   
 }

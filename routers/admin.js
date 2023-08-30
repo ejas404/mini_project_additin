@@ -6,6 +6,7 @@ const adminController = require('../Controller/admin_controller');
 const adminProductController = require('../Controller/admin_product_controller')
 const adminUserController = require('../Controller/admin_user_controller')
 const adminHomepageController = require('../Controller/admin_homepagecontroller')
+const adminOrderController = require('../Controller/admin_order_controller')
 const adminMiddleWare = require('../Middlewares/admin_midlle')
 
 
@@ -34,6 +35,10 @@ router.get('/others',adminProductController.othersPage)
 router.post('/edit-banner',adminMiddleWare.bannerUpload.array('banner-img',{maxCount : 3}),adminHomepageController.editBanner)
 router.get('/edit-banner/:path',adminHomepageController.editBannerPage)
 
+router.get('/orders',adminOrderController.ordersPage)
+router.get('/order-confirm/:id',adminOrderController.orderConfirm)
+router.get('/order-cancel/:id',adminOrderController.orderCancel)
+router.get('/order-more',adminOrderController.orderMore)
 // router.get('/products/delete/:id',adminProductController.productDeletePage)
 // router.get('/products/delete',adminProductController.productDelete)
 

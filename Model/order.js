@@ -25,6 +25,7 @@ const orderSchema = new Schema({
     },
     total : {type : Number, required : true},
     coupon : {type : String},
+    amountPayable : {type : Number,required : true},
     paymentMethod :{type : String , required : true},
     orderStatus : {type : String, default : 'pending'}, 
     isCancelled : {type: Boolean, default : false},

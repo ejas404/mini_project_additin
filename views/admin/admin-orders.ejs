@@ -46,7 +46,7 @@
                     <% k++ %>
                     <tr>
                         <td><%= k %></td>
-                        <td><%= each.user_id %></td>
+                        <td><%= each.user[0].name %></td>
                         <td><%= each.orderStatus %></td>
                         <td><%= each.amountPayable?each.amountPayable:each.total %></td>
                         <td><%= each.items.length %></td>

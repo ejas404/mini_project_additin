@@ -13,7 +13,9 @@
     <main>
         <div class="login-box">
                 <div>
-                    <h2>Admin</h2>
+                    <div class="" style="text-align: center; margin-bottom: 30px;">
+                        <h2>Admin</h2>
+                    </div>
                     <form action="/admin/login" method="post">
                     
                 
@@ -24,7 +26,7 @@
                     <input type="password" id="password" name="password" required><br>
                 
                    
-                    <input type="submit" value="Login" class="sign-btn">
+                    <input style="margin-top: 30px;" type="submit" value="Login" class="sign-btn">
                   </form>
 
                   <p style="color: red;"><%= locals.message %></p>

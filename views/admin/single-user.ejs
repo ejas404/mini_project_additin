@@ -17,23 +17,12 @@
         <%- include('../partials/navbar') %>
     </header>
     <div class="dashboard-container">
-
-        <div class="admin-sidebar">
-            <ul>
-                <li><a href="/admin/dashboard">Dashboard</a></li>
-                <li>Orders</li>
-                <li><a href="/admin/products">Products</a></li>
-                <li><a href="/admin/userlist">Users</a></li>
-            </ul>
-            <div class="logout-button">
-                <a href="/admin/logout">Logout</a>
-            </div>
+        <div class="back-button">
+            <a href="/admin/userlists"><i class="bi bi-arrow-left-short"></i></a>
         </div>
-        <div class="userlists-div">
-            <div class="back-button">
-                <a href="/admin/userlists"><i class="bi bi-arrow-left-short"></i></a>
-            </div>
-            <div class="head-name">
+        <div class="userlists-div" style="padding: 0 20rem;">
+            
+            <div class="head-name mt-5">
                 <h2>
                     <%= locals.user[0].name.toUpperCase() %>
                 </h2>

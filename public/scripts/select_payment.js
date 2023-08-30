@@ -6,6 +6,12 @@ function couponDiscount(id){
     fetch(couponURL)
     .then(res=>res.json())
     .then((res)=>{
+        if(res.success && !res.coupon){
+            couponVal.innerText = ''
+            couponTitle.innerText = ''
+            itemSum.innerText = res.total
+            return
+        }
         if(res.success){
             let  {couponCode,couponValue,couponType} = res.coupon
             let value;

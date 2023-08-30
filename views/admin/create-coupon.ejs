@@ -31,17 +31,24 @@
                 <h1>Create Coupon</h1>
                 <form action="/admin/create-coupon" method="post">
 
-                    <label for="couponName">Coupon Code Name:</label>
-                    <input type="text" id="couponName" name="couponName">
+                    <label>Coupon Type:</label> <br>
+                    <input type="radio" id="percent" name="couponType" value="percent" required>
+                    <label for="percent">Percent</label>
+                    <input type="radio" id="flat" name="couponType" value="flat" required>
+                    <label for="flat">Flat Price</label>
                     <br><br>
 
-                    <label for="couponValue">Coupon Code Value:</label>
-                    <input type="number" id="couponValue" name="couponValue" min="1">
+                    <label for="couponName">Coupon Name:</label>
+                    <input type="text" id="couponName" name="couponName" pattern="^[a-z]+$" required>
+                    <br><br>
+
+                    <label for="couponValue">Coupon Value:</label>
+                    <input type="number" id="couponValue" name="couponValue" min="1" required>
                     <br><br>
 
 
                     <label for="users">Select Users:</label>
-                    <select id="users" name="users" style="color: black;" multiple>
+                    <select id="users" name="users" style="color: black;" multiple required>
                         <option value="user1">All</option>
                         <% for (let each of locals.users) { %>
                         <option value="<%= each.email %>"><%= each.email %></option>
@@ -50,19 +57,12 @@
                     </select>
                     <br><br>
 
-                    <label>Coupon Type:</label> <br>
-                    <input type="radio" id="percent" name="couponType" value="percent">
-                    <label for="percent">Percent</label>
-                    <input type="radio" id="flat" name="couponType" value="flat">
-                    <label for="flat">Flat Price</label>
-                    <br><br>
-
                     <label for="expiryDays">Expiry Date (in days):</label>
                     <input type="number" id="expiryDays" name="expiryDays" min="1">
                     <br><br>
 
                     
-                    <input type="submit" value="Create Coupon">
+                    <input class="default-button mb-3" type="submit" value="Create Coupon">
                 </form>
             </div>
         </div>

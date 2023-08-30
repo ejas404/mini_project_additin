@@ -163,7 +163,6 @@ nav img {
     border-right: 4px solid var(--secondaryMain);
 
 }
-
 .userlists-div,
 .productlist-div {
     min-height: calc(100vh - 160px);

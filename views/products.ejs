@@ -176,7 +176,7 @@
                                         <% } else { %>
                                         <div class="pb-1 add-to-cart-btn"  onclick="addToCart('<%= each.product_id %>',this)"><i class="fa-solid fa-cart-plus" style="font-size: 25px;"></i></div>
                                         <% } %>
-                                        <a class="buy-now-btn d-block " style="text-decoration: none;"  href="">Buy Now -></a>
+                                        <a class="buy-now-btn d-block " style="text-decoration: none;"  href="/user/buynow/<%= each.product_id %>">Buy Now -></a>
     
                                     </div>
                                     <div class="wishlist position-absolute top-0 ms-1">

@@ -58,13 +58,13 @@ module.exports = {
             console.log(`this is otp ${otp}`)
             req.session.loginOtp = String(otp)
 
-            // client.messages
-            //     .create({
-            //         body: `your otp is ${otp}`,
-            //         to: `+91${number}`, // Text your number
-            //         from: '+17623006956', // From a valid Twilio number
-            //     })
-            //     .then((message) => console.log(message.sid));
+            client.messages
+                .create({
+                    body: `your otp is ${otp}`,
+                    to: `+91${number}`, // Text your number
+                    from: '+17623006956', // From a valid Twilio number
+                })
+                .then((message) => console.log(message.sid));
            
            return  res.json({
                 successMsg: true,

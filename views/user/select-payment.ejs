@@ -33,6 +33,7 @@
 
                             <h2>Discount Coupons</h2>
 
+
                             <div class=" my-3 row coupon-list">
                                 <% for (let each of locals.coupons) { %>
                                     
@@ -55,6 +56,19 @@
                                     </div>
                             
                                     <% } %>
+                                    <div class="col-sm-4 d-flex align-items-center">
+                                        <input type="radio" id="noCoupon" name="" onclick="couponDiscount('noCoupon')" value="">
+                                        <label for="noCoupon">
+                                        <div class="ms-2 p-1 text-center border d-flex align-items-center">
+                                            <div>
+                                                <h5>
+                                                    No Coupon
+                                                </h5>
+                                            </div>
+                                        </div>
+                                    </label>
+                                    </div>
+                            
                             </div>
 
 

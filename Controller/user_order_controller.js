@@ -181,7 +181,7 @@ module.exports = {
     },
     selectPayment: async (req, res) => {
         try {
-            if (req.session.cartOrder.total) {
+            if (req.session.cartOrder) {
                 const email = req.session.user
                 const user = await UserCollection.findOne({ email })
                 const coupons = await CouponCollection.find({ user_id: user.user_id })
@@ -211,7 +211,7 @@ module.exports = {
         try {
 
             let total
-            if (req.session.cartOrder.total) {
+            if (req.session.cartOrder) {
                 total = req.session.cartOrder.total
             } else {
                 const order = req.session.orderDetails
@@ -219,6 +219,13 @@ module.exports = {
 
                 total = product.productPrice * Number(order.quantity)
                 total = total > 5000 ? total : total + 40;
+            }
+            
+            if(req.params.id === 'noCoupon'){
+             return   res.json({
+                    success: true,
+                    total
+                })
             }
 
             const _id = new ObjectId(req.params.id)
@@ -252,7 +259,7 @@ module.exports = {
             if (req.session.cartPaymentAddressId) {
                 address_id = new ObjectId(req.session.cartPaymentAddressId)
             } else {
-                address_id = new ObjectId(req.session.orderDetailsaddressId)
+                address_id = new ObjectId(req.session.orderDetails.addressId)
             }
 
             const userDetails = await AddressCollection.aggregate([
@@ -387,7 +394,8 @@ module.exports = {
             }
             const newOrder = await OrderCollection.create(newOrderData)
             req.session.orderDetails = null;
-            req.session.newOrder = newOrder._id
+            req.session.cartOrder = null
+            req.session.newOrder = newOrder.order_id
             res.redirect('/user/order-completed')
         } catch (e) {
             res.redirect('/user/order-failed')
@@ -449,7 +457,13 @@ module.exports = {
     },
     orderDetails: async (req, res) => {
         try {
-            const order_id = req.params.id
+            let  order_id
+            if(req.session.newOrder && req.params.id === '123'){
+                order_id = req.session.newOrder
+                req.session.newOrder = null
+            }else {
+            order_id = req.params.id
+            }
             const orderProducts = await OrderCollection.aggregate([
                 {
                     $match: {

@@ -57,7 +57,7 @@ module.exports = {
             }
         }
         const updated = await ProductCollection.findOneAndUpdate({ product_id }, { $set: updatedProduct })
-        res.send('will be updated')
+        res.redirect('/admin/products')
     },
 
     productUnblock: async (req, res) => {
@@ -168,7 +168,8 @@ module.exports = {
                 categoryDesc: description
             })
 
-            res.send('category added')
+            req.session.msg = 'category added successfully'
+            res.redirect('/admin/add-product')
 
         } catch (e) {
             console.log(e)

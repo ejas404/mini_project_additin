@@ -61,7 +61,7 @@
                             </div>
                             <% } %>
                                 <div class="add-address-btn my-3">
-                                    <a class="default-button" href="/user/user-profile/add-address">+add address</a>
+                                    <a class="default-button" href="/add-address">+add address</a>
                                 </div>
                     </div>
 
@@ -116,7 +116,7 @@
 
                     //onclick function to show edit profile modale
                     function editProfile() {
-                        fetch('/user/user-data')
+                        fetch('/user-data')
                             .then(res => res.json())
                             .then((res) => {
                                 if (res.success) {
@@ -154,7 +154,7 @@
                         formData.name = document.getElementById('name').value
                         formData.email = document.getElementById('email').value
                         consle.log(formData)
-                        fetch("/user/data-update", {
+                        fetch("/data-update", {
                             method: "POST",
                             body: JSON.stringify(formData),
                             headers : {

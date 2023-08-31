@@ -84,7 +84,7 @@ module.exports = {
                 count: user.cart.length
             }
             req.session.cartOrder = cartOrder
-            res.redirect('/user/select-address')
+            res.redirect('/select-address')
         } catch (e) {
             console.log(e)
         }
@@ -121,7 +121,7 @@ module.exports = {
     },
     cartPayment: async (req, res) => {
         req.session.cartPaymentAddressId = req.body.address
-        res.redirect('/user/payment')
+        res.redirect('/payment')
     },
 
     buyNowPage: async (req, res) => {
@@ -173,7 +173,7 @@ module.exports = {
             }
             req.session.orderDetails = order
 
-            res.redirect('/user/payment')
+            res.redirect('/payment')
         }
         catch (e) {
             console.log(e)
@@ -396,9 +396,9 @@ module.exports = {
             req.session.orderDetails = null;
             req.session.cartOrder = null
             req.session.newOrder = newOrder.order_id
-            res.redirect('/user/order-completed')
+            res.redirect('/order-completed')
         } catch (e) {
-            res.redirect('/user/order-failed')
+            res.redirect('/order-failed')
             console.log(e)
         }
     },

@@ -10,27 +10,27 @@ module.exports = {
         try {
             const products = await ProductCollection.find({ isAvailable: true }).skip(num * 3).limit(3)
             const count = await ProductCollection.countDocuments({ isAvailable: true })
-            const topBanners = await BannerCollection.find({name : 'homepage_top_banner'})
+            const topBanners = await BannerCollection.find({ name: 'homepage_top_banner' })
 
             if (req.session.user) {
                 const cartAndWish = await UserCollection.aggregate([
                     {
-                        $match : {
-                            email : req.session.user
+                        $match: {
+                            email: req.session.user
                         }
-                       
+
                     },
                     {
-                        $project : {
-                            cartIds : '$cart.product_id',
-                            wishListIds : '$wishlist.product_id'
+                        $project: {
+                            cartIds: '$cart.product_id',
+                            wishListIds: '$wishlist.product_id'
                         }
                     }
                 ])
-                
-                res.render('index', { isUser: true, products, count,topBanners,cartAndWish})
+
+                res.render('index', { isUser: true, products, count, topBanners, cartAndWish })
             } else {
-                res.render('index', { products, count,topBanners })
+                res.render('index', { products, count, topBanners })
             }
 
         } catch (e) {
@@ -38,70 +38,79 @@ module.exports = {
         }
     },
     singleProductPage: async (req, res) => {
-        const product_id = req.params.id
-        const product = await ProductCollection.aggregate([
-            {
-                $match: {
-                    product_id
-                }
-            },
-            {
-                $lookup: {
-                    from: 'categories',
-                    localField: 'productCategory',
-                    foreignField: 'category_id',
-                    as: 'category'
-                }
-            }
-
-
-        ])
-        console.log(product)
-        const productName = (titleUpperCase(product[0].productName))
-        if (req.session.user) {
-            return res.render('user-single-product', { product, productName, isUser: true, })
-        }
-        res.render('user-single-product', { product, productName })
-    },
-    pagination: async (req, res) => {
-        try{
-            console.log('hai')
-        const num = req.params.num
-        const products = await ProductCollection.find({ isAvailable: true }).skip(num * 3).limit(3)
-        if (req.session.user) {
-            const cartAndWish = await UserCollection.aggregate([
+        try {
+            const product_id = req.params.id
+            const product = await ProductCollection.aggregate([
                 {
-                    $match : {
-                        email : req.session.user
+                    $match: {
+                        product_id
                     }
-                   
                 },
                 {
-                    $project : {
-                        cartIds : '$cart.product_id',
-                        wishListIds : '$wishlist.product_id'
+                    $lookup: {
+                        from: 'categories',
+                        localField: 'productCategory',
+                        foreignField: 'category_id',
+                        as: 'category'
                     }
                 }
-            ])
-            let cart = cartAndWish[0].cartIds
-            let wishlist = cartAndWish[0].wishListIds
-            return res.json({
-                success : true,
-                isUser : true,
-                products,
-                cart,
-                wishlist, 
-            })
 
+
+            ])
+            console.log(product)
+            const productName = (titleUpperCase(product[0].productName))
+            if (req.session.user) {
+                return res.render('user-single-product', { product, productName, isUser: true, })
+            }
+            res.render('user-single-product', { product, productName })
+        } catch (e) {
+            if(e instanceof TypeError){
+                res.status(404)
+                res.redirect('/404-not-found')
+            }else{
+                console.log(e)
+            }
         }
-        return res.json({
-            success : true,
-            products 
-        })
-        } catch (e){
+    },
+    pagination: async (req, res) => {
+        try {
+            console.log('hai')
+            const num = req.params.num
+            const products = await ProductCollection.find({ isAvailable: true }).skip(num * 3).limit(3)
+            if (req.session.user) {
+                const cartAndWish = await UserCollection.aggregate([
+                    {
+                        $match: {
+                            email: req.session.user
+                        }
+
+                    },
+                    {
+                        $project: {
+                            cartIds: '$cart.product_id',
+                            wishListIds: '$wishlist.product_id'
+                        }
+                    }
+                ])
+                let cart = cartAndWish[0].cartIds
+                let wishlist = cartAndWish[0].wishListIds
+                return res.json({
+                    success: true,
+                    isUser: true,
+                    products,
+                    cart,
+                    wishlist,
+                })
+
+            }
+            return res.json({
+                success: true,
+                products
+            })
+        } catch (e) {
             console.log(e)
             res.json({
-                err : e.message
+                err: e.message
             })
         }
     },
@@ -114,19 +123,19 @@ module.exports = {
             if (req.session.user) {
                 const cartAndWish = await UserCollection.aggregate([
                     {
-                        $match : {
-                            email : req.session.user
+                        $match: {
+                            email: req.session.user
                         }
-                       
+
                     },
                     {
-                        $project : {
-                            cartIds : '$cart.product_id',
-                            wishListIds : '$wishlist.product_id'
+                        $project: {
+                            cartIds: '$cart.product_id',
+                            wishListIds: '$wishlist.product_id'
                         }
                     }
                 ])
-                res.render('products', { isUser: true, products, count, categories ,cartAndWish})
+                res.render('products', { isUser: true, products, count, categories, cartAndWish })
             } else {
                 res.render('products', { products, count, categories })
             }
@@ -181,32 +190,32 @@ module.exports = {
                     break;
             }
 
-             let price;
-            if(priceRange){
-               price  = {productPrice : priceQuery}
-            }else{
-                price = {productPrice: { $exists: true }}
+            let price;
+            if (priceRange) {
+                price = { productPrice: priceQuery }
+            } else {
+                price = { productPrice: { $exists: true } }
             }
 
             const cartAndWish = await UserCollection.aggregate([
                 {
-                    $match : {
-                        email : req.session.user
+                    $match: {
+                        email: req.session.user
                     }
-                   
+
                 },
                 {
-                    $project : {
-                        cartIds : '$cart.product_id',
-                        wishListIds : '$wishlist.product_id'
+                    $project: {
+                        cartIds: '$cart.product_id',
+                        wishListIds: '$wishlist.product_id'
                     }
                 }
             ])
 
-            const products = await ProductCollection.find({ ...price,...category,...{ isAvailable: true } })
+            const products = await ProductCollection.find({ ...price, ...category, ...{ isAvailable: true } })
             console.log(products)
             const categories = await CategoryCollection.find()
-            res.render('products', { products, categories,isUser : true,cartAndWish})
+            res.render('products', { products, categories, isUser: true, cartAndWish })
         } catch (e) {
             console.log(e)
         }

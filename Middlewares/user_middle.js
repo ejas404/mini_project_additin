@@ -68,7 +68,7 @@ module.exports = {
            
            return  res.json({
                 successMsg: true,
-                redirect: '/user/enter-otp'
+                redirect: '/enter-otp'
             })
         }
        
@@ -88,7 +88,7 @@ module.exports = {
         if(req.session.user){
             next()
         }else{
-            res.redirect('/user/login')
+            res.redirect('/login')
         }
     },
     isLoggedinMid : (req,res,next)=>{
@@ -96,7 +96,7 @@ module.exports = {
             next()
         }else{
           return  res.json({
-                redirect : '/user/login',
+                redirect : '/login',
                 message : 'please login first'
             })
         }
@@ -106,7 +106,7 @@ module.exports = {
         const check = await UserCollection.findOne({email})
         if(check.isBlocked){
             return  res.json({
-                redirect : '/user/login',
+                redirect : '/login',
                 message : 'entry prohibited please contact authority'
             })
         }

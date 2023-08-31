@@ -15,7 +15,7 @@
         <div class="login-box">
                 <div>
                     <h2>Login Now</h2>
-                    <form action="/user/login " method="post">
+                    <form action="/login " method="post">
                     
                 
                     <label for="email">Email:</label><br>
@@ -26,7 +26,7 @@
                     <label for="password">Password:</label><br>
                     <input type="password" id="password" name="password" required><br>
 
-                    <a  href="/user/email">forget password?</a><br>
+                    <a  href="/email">forget password?</a><br>
 
                     <p class="<%= locals.success ? 'green' : 'error-message' %>" id="err-message"><%= locals.message %></p>
                     <!-- <p style="color: green; font-size: 13px;"><%= locals.completed %></p> -->
@@ -37,7 +37,7 @@
 
                  
             
-                  <a href="/user/signup">dont have an accout? signup now</a>
+                  <a href="/signup">dont have an accout? signup now</a>
                 
                 </div>
 

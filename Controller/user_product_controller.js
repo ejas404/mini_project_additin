@@ -142,7 +142,7 @@ module.exports = {
                 }
                 res.render('my-cart',{user,dest :'myCart', cartItems,total,isUser : true})
             }else{
-                res.redirect('/user/login')
+                res.redirect('/login')
             }
 
            
@@ -284,41 +284,5 @@ module.exports = {
         }catch(e){
             console.log(e)
         }
-    }, singleProduct: async (req, res) => {
-        try {
-            console.log('hai')
-            req.session.product_id = req.params.id
-            const product_id = req.params.id
-            const product = await ProductCollection.findOne({ product_id })
-            res.redirect('/user/' + product.productName)
-        } catch (e) {
-            console.log(e)
-        }
-
-
-    },
-    singleProductPage: async (req, res) => {
-        const product_id = req.session.product_id
-        const product = await ProductCollection.aggregate([
-            {
-                $match: {
-                    product_id
-                }
-            },
-            {
-                $lookup: {
-                    from: 'categories',
-                    localField: 'productCategory',
-                    foreignField: 'category_id',
-                    as: 'category'
-                }
-            }
-
-
-        ])
-        console.log(product)
-        const productName = (titleUpperCase(product[0].productName))
-        res.render('user-single-product', { product, productName,isUser : true})
-    }
-   
+    }, 
 } 

@@ -147,7 +147,7 @@
                             <% for(let each of locals.products) { %>
 
                                 <div class="col-lg-4 col-md-6 pt-md-0 pt-3 position-relative">
-                                    <a style="text-decoration: none;" href="/singleproduct/<%= each.product_id %>">
+                                    <a style="text-decoration: none;" href="/product/<%= each.product_id %>">
                                         <div style="height: 350px;" class="card d-flex flex-column align-items-center">
 
                                             <div class="card-img"> <img src="<%= each.productImg[0] %>" alt=""
@@ -172,11 +172,11 @@
                                     <div class="productButtons ps-2 position-absolute d-flex justify-content-between" 
                                     style="top: 90%; width: 90%;">
                                         <% if (locals.cartAndWish && locals.cartAndWish[0]?.cartIds && locals.cartAndWish[0]?.cartIds.includes(each.product_id)) { %>
-                                        <a class="default-button px-2 rounded d-block" href="/user/cart">Go to Cart -></a>
+                                        <a class="default-button px-2 rounded d-block" href="/cart">Go to Cart -></a>
                                         <% } else { %>
                                         <div class="pb-1 add-to-cart-btn"  onclick="addToCart('<%= each.product_id %>',this)"><i class="fa-solid fa-cart-plus" style="font-size: 25px;"></i></div>
                                         <% } %>
-                                        <a class="buy-now-btn d-block " style="text-decoration: none;"  href="/user/buynow/<%= each.product_id %>">Buy Now -></a>
+                                        <a class="buy-now-btn d-block " style="text-decoration: none;"  href="/buynow/<%= each.product_id %>">Buy Now -></a>
     
                                     </div>
                                     <div class="wishlist position-absolute top-0 ms-1">

@@ -127,12 +127,12 @@ module.exports = {
             console.log(userAddress)
 
             if(req.session.buynow){
-              return res.redirect(`/user/buynow/${req.session.buynowP_id}`)
+              return res.redirect(`/buynow/${req.session.buynowP_id}`)
             }
             if (req.session.cartOrder){
-               return res.redirect('/user/select-address')
+               return res.redirect('/select-address')
             }
-            res.redirect('/user/user-profile')
+            res.redirect('/profile')
 
         }
         catch (e) {
@@ -200,7 +200,7 @@ module.exports = {
                 console.log('destroyed successfully')
             }
         })
-        res.redirect('/user/login')
+        res.redirect('/login')
     },
     resetPassword: async (req, res) => {
         try {
@@ -241,7 +241,9 @@ module.exports = {
         const user = await UserCollection.findOne({email})
         const coupons = await CouponCollection.find({ user_id: user.user_id })
         res.render('other',{isUser : true, coupons,user, dest : 'other'})
+    },
+    error404 : async (req,res)=>{
+        res.render('404-error',{isUser : true})
     }
-
 
 }

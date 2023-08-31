@@ -1,6 +1,6 @@
 function removeFromList(elem,id){
     let toRemove = elem.closest('.cart-item')
-    let removeURL = `/user/add-to-wishlist/${id}`
+    let removeURL = `/add-to-wishlist/${id}`
     let reqOption = {
         method : 'POST',
         headers : {

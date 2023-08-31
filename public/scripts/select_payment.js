@@ -2,7 +2,7 @@ function couponDiscount(id){
     let itemSum = document.getElementById('itemSum')
     let couponTitle = document.getElementById('couponTitle')
     let couponVal = document.getElementById('couponValue')
-    const couponURL = `/user/coupon-update/${id}`
+    const couponURL = `/coupon-update/${id}`
     fetch(couponURL)
     .then(res=>res.json())
     .then((res)=>{

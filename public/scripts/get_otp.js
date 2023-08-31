@@ -9,7 +9,7 @@ function getOtp(){
     const body = {
         email : email
     }
-    const url = 'http://localhost:4400/user/get-otp';
+    const url = '/get-otp';
     fetch(url,{
         method : 'POST',
         headers : {

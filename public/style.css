@@ -1010,6 +1010,42 @@ textarea {
     background-size: 35px;
     background-position: 100% 100%;
 }
+/*-------------------------------------------------------404 not found----------------------------------------------*/
+
+.err404-img {
+    width: 18rem;
+    height: auto;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    
+
+}
+.err404-img img{
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(-3px 5px 3px var(--gray) );
+}
+.err4{
+    font-size: 20rem;
+    font-weight: bolder;
+    margin: 0;
+    padding: 0;
+    background-color: #f3ec78;
+    background-image: linear-gradient(45deg,var(--bg_gray), var(--bg_gray));
+    background-size: 100%;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    -webkit-text-fill-color: transparent; 
+    -moz-text-fill-color: transparent;
+}
+.err-text{
+    margin-top: 3rem;
+    font-size: 2rem;
+}
+
 
 /*-----------------------------------------------------default-------------------------------------------------------*/
 h1{

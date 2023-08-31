@@ -34,7 +34,7 @@ function renderProducts(products,num,cart,wishlist){
                 </a>
                 <div class="productButtons position-absolute d-flex justify-content-between" style="width: 22.5rem;top: 88%; padding: 0 10px;">
                     ${cart && cart.includes(each.product_id)
-                        ? `<a class="default-button px-2 rounded d-block" href="/user/cart">Go to Cart -></a>`
+                        ? `<a class="default-button px-2 rounded d-block" href="/cart">Go to Cart -></a>`
                         : `<div class="pb-1 add-to-cart-btn" onclick="addToCart('${each.product_id}', this)"><i class="fa-solid fa-cart-plus" style="font-size: 25px;"></i></div>`
                     }
                     <a class="buy-now-btn d-block rounded" style="text-decoration: none;" href="">Buy Now -></a>

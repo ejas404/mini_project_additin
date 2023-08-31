@@ -21,7 +21,7 @@ let totalSum = document.getElementById('totalSum')
 function deleteItem(elem,id){
     let cartItem = elem.closest('.cart-item')
   
-    const delItemUrl = `/user/delete-cart-item/${id}`
+    const delItemUrl = `/delete-cart-item/${id}`
     const requestOption = {
       method : 'DELETE',
       headers : {
@@ -63,7 +63,7 @@ function deleteItem(elem,id){
 function quantityChange(elem){
     let val = elem.value
     let product_id = elem.getAttribute('data-product_id')
-        let updateQuantityUrl = `/user/cartquantity?quantity=${val}&p_id=${product_id}`
+        let updateQuantityUrl = `/cartquantity?quantity=${val}&p_id=${product_id}`
         fetch(updateQuantityUrl)
         .then(res=>res.json())
         .then((res)=>{

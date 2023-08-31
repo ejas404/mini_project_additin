@@ -1,6 +1,6 @@
 function addToCart(id,elem) {
     console.log('hai')
-    fetch(`/user/add-to-cart/${id}`, {
+    fetch(`/add-to-cart/${id}`, {
         method: 'GET',
         headers: {
             'Content-type': 'application/json'
@@ -15,7 +15,7 @@ function addToCart(id,elem) {
                 let newElement = document.createElement('a')
                 newElement.className = 'default-button px-2s'
                 newElement.textContent = 'Go to Cart->'
-                newElement.href = '/user/cart'
+                newElement.href = '/cart'
                 
                 elem.removeAttribute('onclick')
                 elem.replaceChild(newElement , elem.firstChild)
@@ -33,7 +33,7 @@ function addToCart(id,elem) {
 
 function addToWishList(id,icon){
     console.log(icon)
-    let wishListURL = `/user/add-to-wishlist/${id}`
+    let wishListURL = `/add-to-wishlist/${id}`
     let reqOption = {
         method : 'POST',
         headers :{

@@ -15,7 +15,6 @@
     </header>
     <%- include('../partials/custom-alert') %>
     <div class="homepage">
-
         <div class="container-fluid homepage-banner">
             <div style="height: inherit;" id="carouselExampleControls" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner">
@@ -90,7 +89,7 @@
             </div>
         </div>
 
-        <div class="product-cards container py-5">
+        <div id="products" class="product-cards container py-5">
             <div class=" text-center">
                 <h1 class="double-underline poppins mb-5">Our Products</h1>
             </div>
@@ -103,7 +102,7 @@
                         <% for(let each of locals.products) { %>
 
                             <div class="col-lg-4 col-md-6 pt-md-0 pt-3 text-center position-relative">
-                                <a style="text-decoration: none;" class="" href="/singleproduct/<%= each.product_id %>">
+                                <a style="text-decoration: none;" class="" href="/product/<%= each.product_id %>">
                                     <div style="height: 350px;" class="card d-flex flex-column align-items-center ">
 
                                         <div class="card-img"> <img src="<%= each.productImg[0] %>" alt="" height="100"
@@ -130,7 +129,7 @@
                                     style="width: 22.5rem;top: 88%; padding: 0 10px;">
                               
                                     <% if (locals.cartAndWish && locals?.cartAndWish[0]?.cartIds?.includes(each.product_id)) { %>
-                                        <a class="default-button px-2 rounded d-block" href="/user/cart">Go to Cart -></a>
+                                        <a class="default-button px-2 rounded d-block" href="/cart">Go to Cart -></a>
                                         <% } else { %>
                                             <div class="pb-1 add-to-cart-btn"
                                                 onclick="addToCart('<%= each.product_id %>',this)"><i
@@ -139,7 +138,7 @@
 
 
                                                 <a class="buy-now-btn d-block rounded" style="text-decoration: none;"
-                                                    href="/user/buynow/<%= each.product_id %>">Buy Now -></a>
+                                                    href="/buynow/<%= each.product_id %>">Buy Now -></a>
 
                                 </div>
                                 <div  class="wishlist position-absolute top-0 ms-1">

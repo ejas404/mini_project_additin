@@ -1,7 +1,7 @@
 function deleteAddress(id, elem) {
      if (confirm('are youe sure to address this address ?')) {
         let toDelete = elem.closest('.address-box')
-        let delAdressUrl = `/user/delete-address/${id}`
+        let delAdressUrl = `/delete-address/${id}`
         let reqOption = {
             method: 'DELETE',
             headers: {

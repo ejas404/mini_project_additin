@@ -27,10 +27,25 @@ const orderSchema = new Schema({
     coupon : {type : String},
     amountPayable : {type : Number,required : true},
     paymentMethod :{type : String , required : true},
-    orderStatus : {type : String, default : 'pending'}, 
+    orderStatus : {type : String, default : 'pending'},
+    confirmDate : {type : Date}, 
     isCancelled : {type: Boolean, default : false},
 
 },{timestamps : true})
+
+
+
+orderSchema.pre('findOneAndUpdate',function(next){
+    const update = this.getUpdate()
+  
+    console.log(update)
+    console.log('fop')
+    if(update.$set.orderStatus === 'confirmed'){
+        update.confirmDate = Date.now()
+    }
+    next()
+})
+
 
 const OrderCollection = mongoose.model('orders',orderSchema)
 module.exports = OrderCollection

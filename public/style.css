@@ -1076,6 +1076,7 @@ h1{
     color: var(--error);
     margin-top: 5px;
     font-size: 15px;
+    -webkit-text-stroke: var(--white);
 
 }
 

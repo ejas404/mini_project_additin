@@ -125,6 +125,7 @@
                                     window.location.href = res.redirect
                                 }
                             })
+                        document.body.style.overflow = 'hidden'
                         modaleBg.style.display = 'block'
                         editProfileModale.style.display = 'flex'
                     }
@@ -134,6 +135,7 @@
                         editProfileModale.style.display = 'none'
                         modaleBg.style.display = 'none'
                         userDetailModale.style.display = 'none'
+                        document.body.style.overflow = 'unset'
                     })
 
                     function editUserData() {

@@ -31,17 +31,15 @@ app.use(session({
 app.set('view engine','ejs')
 app.set('views',['./views/user','./views/admin','./views'])
 
-//requests starts with /user will be connected to user Router
-app.use('/',userRouter)
-
 //requests starts with /admin will be connected to adminRouter
 app.use('/admin', adminRouter);
 
+//requests starts with /user will be connected to user Router
+app.use('/',userRouter)
 
-userRouter.all('*',(req,res)=>{
-  res.status(404)
-  res.redirect('/404-not-found')
-})
+
+
+
 
 db.once('open', () => {
     app.listen(PORT, () => {

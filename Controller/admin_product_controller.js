@@ -1,4 +1,4 @@
-const AdminCollection = require('../Model/admin_details')
+
 const ProductCollection = require('../Model/product')
 const CategoryCollection = require('../Model/category')
 const subCategoryCollection = require('../Model/sub_category')
@@ -151,15 +151,22 @@ module.exports = {
     },
     addProductPage: async (req, res) => {
         const category = await CategoryCollection.find({}, { categoryName: 1 })
-        return res.render('add-product', { category, isAdmin: true })
+        let message ;
+        if(req.session.msg){
+            message = req.session.msg
+            req.session.msg = null
+        }
+        return res.render('add-product', { category, isAdmin: true,message})
     },
 
     addCategory: async (req, res) => {
-        const { name, description } = req.body
+        let  { name, description } = req.body
+        name = name.toLowerCase()
         console.log(req.body)
         try {
-            const isExistCategory = await CategoryCollection.findOne({ categoryName: name })
+            const isExistCategory = await CategoryCollection.findOne({ categoryName:{$regex :  name }})
             if (isExistCategory) {
+                req.session.msg = 'category item already exists'
                 return res.redirect('/admin/add-product')
             }
             const newCategory = await CategoryCollection.create({

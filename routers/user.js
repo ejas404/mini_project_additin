@@ -75,6 +75,11 @@ userRouter.get('/select-address',userOrderController.selelctAddress)
 userRouter.post('/cart-payment',userOrderController.cartPayment)
 userRouter.get('/order/:id',userOrderController.orderDetails)
 
+userRouter.all('*',(req,res)=>{
+    res.status(404)
+    res.redirect('/404-not-found')
+  })
+
 
 
 //thisi os nothing

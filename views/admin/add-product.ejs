@@ -38,7 +38,7 @@
                         <label for="quantity">Quantity:</label><br>
                         <input type="number" id="quantity" name="quantity" pattern="^[1-9][0-9]*$" min="1" required><br>
 
-                        <p id="error" class="<%= locals.class %>">
+                        <p id="error" class="<%= locals.class? locals.class : 'error-message' %>">
                             <%= locals.message %>
                         </p>
 

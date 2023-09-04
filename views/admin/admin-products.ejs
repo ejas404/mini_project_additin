@@ -29,6 +29,7 @@
 
             <div class="filterbox">
                 <h6>Filter : </h6>
+                <div class="overflow-auto" style="height: 180px;">
                 <ul>
                     <li><a href="/admin/products">All</a></li>
                     <% for(let each of locals.categories) { %>
@@ -37,6 +38,7 @@
                             </a></li>
                         <% } %>
                 </ul>
+                </div>
             </div>
             <div class="logout-button">
                 <a href="/admin/logout">Logout</a>

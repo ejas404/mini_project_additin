@@ -48,6 +48,8 @@ router.get('/products/unblock/:id',adminProductController.productUnblock)
 router.get('/products/block/:id',adminProductController.productBlock)
 
 router.get('/dashboard',adminController.dashboard)
+
+router.get('/chart-data',adminController.chartData)
 router.get('/products',adminProductController.productsPage)
 router.get('/products/:id', adminProductController.filterProducts)
 

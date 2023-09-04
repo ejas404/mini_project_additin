@@ -1,34 +1,186 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <%- include('../partials/bootstrap-styles') %>
-    <link rel="stylesheet" href="/style.css">
+        <link rel="stylesheet" href="/style.css">
 </head>
+
 <body>
     <header>
-       <%- include('../partials/navbar') %>
+        <%- include('../partials/navbar') %>
     </header>
     <div class="dashboard-container">
-       <div class="admin-sidebar">
-        <ul>
-            <li style="border-bottom:4px solid #003466;"><a href="/admin/dashboard" style="color: blue;">Dashboard</a></li>
-            <li><a href="/admin/orders">Orders</a></li>
-            <li><a href="/admin/products">Products</a></li>
-            <li><a href="/admin/userlists">Users</a></li>
-            <li><a href="/admin/others">Other</a></li>
-        </ul>
-        <div class="logout-button">
-            <a href="/admin/logout">Logout</a>
+        <div class="admin-sidebar">
+            <ul>
+                <li style="border-bottom:4px solid #003466;"><a href="/admin/dashboard"
+                        style="color: blue;">Dashboard</a></li>
+                <li><a href="/admin/orders">Orders</a></li>
+                <li><a href="/admin/products">Products</a></li>
+                <li><a href="/admin/userlists">Users</a></li>
+                <li><a href="/admin/others">Other</a></li>
+            </ul>
+            <div class="logout-button">
+                <a href="/admin/logout">Logout</a>
+            </div>
         </div>
-       </div>
-       <div class="userlists-div text-center" style="max-height: calc(100vh );">
-           <img src="/assets/admin dashboard img.PNG" alt="">
-       </div>
+        <div class="userlists-div text-center" style="min-height: calc(100vh );">
+
+            <div class=" dashboard-right">
+                <div class="row g-0">
+
+                    <div class="center-colum col-sm-4">
+                        <div class="dashboard-card-icon bg-primary">
+                            <i class="bi bi-person"></i>
+                        </div>
+                        <a href="/admin/userlists">
+                            <div class="card pt-3" style="width: 8rem;">
+                                <div class="card-body">
+                                    <h1 class="card-title">
+                                        <%= locals.dashboardData.userCount %>
+                                    </h1>
+                                    <h6 class="card-subtitle mb-2 text-muted">Users</h6>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="center-colum col-sm-4">
+                        <div class="dashboard-card-icon bg-success">
+                            <i class="bi bi-check-circle"></i>
+                        </div>
+                        <a href="/admin/orders">
+                            <div class="card pt-3" style="width: 8rem;">
+                                <div class="card-body">
+                                    <h1 class="card-title">
+                                        <%= locals.dashboardData.orderCount %>
+                                    </h1>
+                                    <h6 class="card-subtitle mb-2 text-muted">Orders</h6>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="center-colum col-sm-4">
+                        <div class="dashboard-card-icon bg-danger">
+                            <i class="bi bi-file-earmark-bar-graph"></i>
+                        </div>
+                        <a href="/admin/products">
+                            <div class="card pt-3" style="width: 8rem;">
+                                <div class="card-body">
+                                    <h1 class="card-title">
+                                        <%= locals.dashboardData.productCount %>
+                                    </h1>
+                                    <h6 class="card-subtitle mb-2 text-muted">Products</h6>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                </div>
+                <h3 class="mt-5">Order Status</h3>
+                <div class="dashboard-graphs">
+                    <div style="padding: 2rem 10rem 3rem 10rem;">
+                        <canvas id="orderChart"></canvas>
+                    </div>
+
+                    <h3>Category</h3>
+                    <div style="padding: 2rem 10rem 3rem 10rem;">
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
     </div>
-        <%- include('../partials/footer')%>
+    <%- include('../partials/footer')%>
         <%- include('../partials/bootstrap-script') %>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js@4.0.1"></script>
+
+            <script>
+
+                const ctx = document.getElementById('orderChart');
+                const categoryChart = document.getElementById('categoryChart')
+                window.onload = function () {
+                    console.log('onload')
+                    let orderData, orderLabel;
+                    const reqUrl = '/admin/chart-data'
+                    fetch(reqUrl)
+                        .then(res => res.json())
+                        .then((res) => {
+                            if (res.success) {
+                                generateOrderChart(res.orderStatusLabel, res.orderStatusData)
+                                generateCateogryGraph(res.categoryNames, res.categoryCount)
+                            }
+                        })
+
+
+
+
+                }
+
+                //function generate order chart with given value
+
+                function generateOrderChart(orderLabel, orderData) {
+                    Chart.defaults.font.size = 16;
+                    new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: orderLabel,
+                            datasets: [{
+                                label: 'Order Status',
+                                data: orderData,
+                                backgroundColor: [
+                                    'rgba(54, 162, 235, 1)',
+                                ],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            zscales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                }
+
+                function generateCateogryGraph(categoryLabel, categoryData) {
+                    const data = {
+                        labels: categoryLabel,
+                        datasets: [{
+                            label: 'Available',
+                            backgroundColor:
+                                [
+                                    'rgba(8, 37, 103)',
+                                    'rgba(16, 52, 166)',
+                                    'rgba(67, 107, 149)',
+                                    'rgba(0, 90, 146)',
+                                    'rgba(0, 0, 128)',
+                                    'rgba(0, 127, 255)'
+                                ],
+                            data: categoryData,
+                        }]
+                    };
+
+                    const config = {
+                        type: 'pie',
+                        data: data,
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false
+                        }
+                    };
+
+                    new Chart(categoryChart, config)
+                }
+            </script>
 </body>
+
 </html>

@@ -275,6 +275,18 @@ nav img {
     background-color: #edf0f7;
     margin: 2rem 10rem;
 }
+#orderTable td{
+    font-size: 1rem;
+}
+
+/*---------------------------------------------------admin salesreport--------------------------------------------*/
+
+.admin-sales-report {
+    min-height: calc(100vh - 160px);
+}
+.sales-selector select {
+    color: black;
+}
 
 /*----------------------------------------------------user profile------------------------------------------------*/
 .userprofile-main {

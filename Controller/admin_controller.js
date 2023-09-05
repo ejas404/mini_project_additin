@@ -92,6 +92,22 @@ module.exports = {
             res.err = e.message
             console.log(e)
         }
+    },
+    salesReportPage : async (req,res)=>{
+        try{
+            res.render('sales-report',{isAdmin : true})
+        }catch(e){
+            console.log(e)
+        }
+    },
+    salesData : async (req,res)=>{
+        try{
+            const {day, month, year} = req.body
+            const date = new Date(year,month-1,day)
+            console.log(date)
+        }catch(e){
+            console.log(e)
+        }
     }
 
 }

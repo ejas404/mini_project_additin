@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <%- include('../partials/bootstrap-styles') %>
+        <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+    <header style="position: fixed; top: 0;">
+        <%- include('../partials/navbar') %>
+    </header>
+    <div class="admin-sales-report">
+        <div class="container mt-5">
+            <h1>Sales Report</h1>
+            <div class="sales-selector text-end my-3">
+                <form id="dateForm">
+                    <select id="dateSelector" name="date">
+                        <option value="" disabled selected>Select Date</option>
+                    </select>
+                    <select id="monthSelector" name="month" onchange="updateDays()">
+                        <option value="" disabled selected>Select Month</option>
+                        <option value="1">January</option>
+                        <option value="2">February</option>
+                        <option value="3">March</option>
+                        <option value="4">April</option>
+                        <option value="5">May</option>
+                        <option value="6">June</option>
+                        <option value="7">July</option>
+                        <option value="8">August</option>
+                        <option value="9">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                    </select>
+
+                    <select id="yearDropdown" name="year">
+                        <option value="" disabled selected>Select Year</option>
+                        <!-- JavaScript will populate the options here -->
+                    </select>
+                    <button type="button" class="default-button py-1 px-3" onclick="submitForm()">submit</button>
+                </form>
+            </div>
+
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Product Name</th>
+                        <th>Quantity</th>
+                        <th>User</th>
+                        <th>Order At</th>
+                        <th>Total Price</th>
+                        <th>Amount <br> Payable</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Add table rows with data here -->
+                    <tr>
+                        <td>1</td>
+                        <td>Product A</td>
+                        <td>5</td>
+                        <td>User 1</td>
+                        <td>2023-09-01 10:15:00</td>
+                        <td>$100</td>
+                        <td>$20</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Product B</td>
+                        <td>2</td>
+                        <td>User 2</td>
+                        <td>2023-09-02 14:30:00</td>
+                        <td>$50</td>
+                        <td>$0</td>
+                    </tr>
+                    <!-- Add more rows as needed -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <%- include('../partials/footer')%>
+        <%- include('../partials/bootstrap-script') %>
+            <script>
+                // Get the current year
+                const currentYear = new Date().getFullYear();
+
+                // Populate the dropdown with years, e.g., from the current year to 10 years back
+                const yearDropdown = document.getElementById('yearDropdown');
+                for (let year = currentYear; year >= currentYear - 5; year--) {
+                    const option = document.createElement('option');
+                    option.value = year;
+                    option.text = year;
+                    yearDropdown.appendChild(option);
+                }
+
+                function updateDays() {
+                    const monthSelector = document.getElementById("monthSelector");
+                    const selectedMonth = monthSelector.value;
+
+                    
+                        const days = new Date(new Date().getFullYear(), selectedMonth, 0).getDate();
+                        const dateSelector = document.getElementById('dateSelector')
+                        for (let i = 1; i <= days; i++) {
+                            const option = document.createElement('option');
+                            option.value = i;
+                            option.text = i;
+                            dateSelector.appendChild(option);
+                        }
+                    
+                }
+
+                //form submission 
+                function submitForm() {
+
+                    const formData = new FormData(document.getElementById("dateForm"));
+                    const day = document.getElementById('dateSelector').value
+                    const month = document.getElementById('monthSelector').value
+                    const year = document.getElementById('yearDropdown').value
+                    const date = {
+                        day,
+                        month,
+                        year
+                    }
+
+                    fetch("/admin/sales-data", {
+                        method: "POST",
+                        body: JSON.stringify(date),
+                        headers : {
+                            'Content-type':'application/json'
+                        }
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            // Handle the response from the server here
+                            console.log(data);
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+
+
+                }
+
+
+
+
+            </script>
+
+</body>
+
+</html>

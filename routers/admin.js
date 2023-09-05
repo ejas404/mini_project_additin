@@ -20,6 +20,8 @@ router.post('/login',adminController.adminLogin)
 
 router.get('/logout',adminController.logout)
 
+router.post('/sales-data',adminController.salesData)
+
 router.use(adminMiddleWare.isAdmin)
 
 router.get('/userlists',adminUserController.userLists)
@@ -41,13 +43,13 @@ router.get('/orders',adminOrderController.ordersPage)
 router.get('/order-confirm/:id',adminOrderController.orderConfirm)
 router.get('/order-cancel/:id',adminOrderController.orderCancel)
 router.get('/order-more/:id',adminOrderController.orderMore)
-// router.get('/products/delete/:id',adminProductController.productDeletePage)
-// router.get('/products/delete',adminProductController.productDelete)
 
 router.get('/products/unblock/:id',adminProductController.productUnblock)
 router.get('/products/block/:id',adminProductController.productBlock)
 
 router.get('/dashboard',adminController.dashboard)
+router.get('/sales-report',adminController.salesReportPage)
+
 
 router.get('/chart-data',adminController.chartData)
 router.get('/products',adminProductController.productsPage)

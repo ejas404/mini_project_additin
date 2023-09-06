@@ -284,9 +284,27 @@ nav img {
 .admin-sales-report {
     min-height: calc(100vh - 160px);
 }
+.admin-sales-report select {
+    cursor: pointer;
+}
 .sales-selector select {
     color: black;
 }
+#pdfDownloadBtn {
+    display: none;
+}
+.sales-rprt-back {
+    background-color: var(--main);
+    color: var(--white);
+    position: fixed;
+    top:5rem;
+    left: 1rem;
+    padding: 1px 7px;
+    font-size: 30px;
+    box-shadow: -1px 3px 10px gray;
+    cursor: pointer;
+}
+
 
 /*----------------------------------------------------user profile------------------------------------------------*/
 .userprofile-main {

@@ -58,9 +58,8 @@ module.exports = {
         res.redirect('/admin/userlists')
 
     },
-    createCouponPage: async (req, res) => {
+    createCouponPage:  (req, res) => {
         try {
-            const users = await UserCollection.find({ isBlocked: false }, { email: 1, _id: 0 })
             res.render('create-coupon', { users,isAdmin : true})
         } catch (e) {
             console.log(e)
@@ -70,9 +69,8 @@ module.exports = {
     createCoupon: async (req, res) => {
         try {
             console.log(req.body)
-            const {couponName,couponValue,users,couponType,expiryDays} = req.body
-            let userEmails = Array.isArray(users) ? users : [users];
-            const userIds = await UserCollection.find({email : {$in : userEmails}},{user_id : 1, _id : 0})
+            const {couponName,couponValue,couponLimit,couponType,expiryDays} = req.body
+
             let couponCode;
             if(couponType === 'percent'){
                 couponCode = `${couponName}${couponValue}%`
@@ -85,16 +83,15 @@ module.exports = {
                 expiryDate = Date.now()+days
             }
 
-            let userCoupon = []
-            for(let each of userIds){
-                userCoupon.push(await CouponCollection.create({
+           
+            const newCoupon = await CouponCollection.create({
                     user_id : each.user_id,
                     couponType,
                     couponCode,
                     couponValue,
+                    couponLimit,
                     expiryDate,
-                }))
-            }
+            })
 
             console.log(userCoupon)
             res.redirect('/admin/create-coupon')

@@ -49,6 +49,7 @@ router.get('/products/block/:id',adminProductController.productBlock)
 
 router.get('/dashboard',adminController.dashboard)
 router.get('/sales-report',adminController.salesReportPage)
+router.get('/download/:name',adminController.downloadPdf)
 
 
 router.get('/chart-data',adminController.chartData)

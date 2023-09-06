@@ -17,7 +17,6 @@ module.exports =  function pdfCreate(documents, date){
 
     const salesDate = `${month} ,${year}`
 
-
     // Pipe the PDF into a patient file
     doc.pipe(fs.createWriteStream(`./pdf/sales-${salesDate}.pdf`));
 
@@ -58,5 +57,7 @@ module.exports =  function pdfCreate(documents, date){
     // Finalize the PDF and end the stream
     doc.end();
 
+    let fileName = `sales-${salesDate}.pdf`
+    return fileName
 }
 

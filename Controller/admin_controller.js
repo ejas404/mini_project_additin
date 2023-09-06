@@ -156,13 +156,28 @@ module.exports = {
         try{
             const data = req.session.pdfData.salesData
             const date = req.session.pdfData.date
-             pdfConvert(data,date)
+            const pdfName =  pdfConvert(data,date)
+            
              req.session.pdfData = null
-             res.end('done')
-
+            
+            res.redirect(`/admin/download/${pdfName}`)
         }catch(e){
             console.log(e)
+            if(e instanceof TypeError){
+                res.redirect('/404-not-found')
+            }
         }
+    },
+    downloadPdf : (req,res)=>{
+        const pdfName = req.params.name
+        const pdfFilePath = `./pdf/${pdfName}`
+        res.download(pdfFilePath, pdfName, (err) => {
+            if (err) {
+              // Handle error if the file cannot be found or there is any other issue.
+              console.error(err);
+              res.status(404).send('File not found');
+            }
+          });
     }
 
 }

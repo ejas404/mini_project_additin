@@ -3,12 +3,11 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const couponSchema = new Schema({
-    user_id : {type : String, required:true},
     couponType : {type : String, required : true},
     couponCode : {type : String, required : true},
     couponValue : {type : Number,required : true},
+    couponLimit : {type : Number,required : true},
     expiryDate : {type : Date, required : true},
-    isAvailable : {type : Boolean, default : true}
 })
 
 const CouponCollection = mongoose.model('coupons',couponSchema)

@@ -45,17 +45,12 @@
                     <label for="couponValue">Coupon Value:</label>
                     <input type="number" id="couponValue" name="couponValue" min="1" required>
                     <br><br>
-
-
-                    <label for="users">Select Users:</label>
-                    <select id="users" name="users" style="color: black;" multiple required>
-                        <option value="user1">All</option>
-                        <% for (let each of locals.users) { %>
-                        <option value="<%= each.email %>"><%= each.email %></option>
-                        <% } %>
                     
-                    </select>
+                    <label for="couponLimit">Coupon Limit:</label>
+                    <input type="number" id="couponLimit" name="couponLimit" min="1" required>
                     <br><br>
+
+
 
                     <label for="expiryDays">Expiry Date (in days):</label>
                     <input type="number" id="expiryDays" name="expiryDays" min="1">

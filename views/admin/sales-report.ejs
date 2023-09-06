@@ -49,6 +49,7 @@
             <table class="table table-bordered">
                 <thead>
                     <tr>
+                        <th>Sl no:</th>
                         <th>ID</th>
                         <th>Product Name</th>
                         <th>Quantity</th>
@@ -56,29 +57,16 @@
                         <th>Order At</th>
                         <th>Total Price</th>
                         <th>Amount <br> Payable</th>
+                        <th><a href="/admin/createPdf">create pdf</a></th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="tableBody">
                     <!-- Add table rows with data here -->
                     <tr>
-                        <td>1</td>
-                        <td>Product A</td>
-                        <td>5</td>
-                        <td>User 1</td>
-                        <td>2023-09-01 10:15:00</td>
-                        <td>$100</td>
-                        <td>$20</td>
+                        <h4>Choose a date</h4>
+
                     </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Product B</td>
-                        <td>2</td>
-                        <td>User 2</td>
-                        <td>2023-09-02 14:30:00</td>
-                        <td>$50</td>
-                        <td>$0</td>
-                    </tr>
-                    <!-- Add more rows as needed -->
+
                 </tbody>
             </table>
         </div>
@@ -86,6 +74,7 @@
     <%- include('../partials/footer')%>
         <%- include('../partials/bootstrap-script') %>
             <script>
+
                 // Get the current year
                 const currentYear = new Date().getFullYear();
 
@@ -102,16 +91,56 @@
                     const monthSelector = document.getElementById("monthSelector");
                     const selectedMonth = monthSelector.value;
 
-                    
-                        const days = new Date(new Date().getFullYear(), selectedMonth, 0).getDate();
-                        const dateSelector = document.getElementById('dateSelector')
-                        for (let i = 1; i <= days; i++) {
-                            const option = document.createElement('option');
-                            option.value = i;
-                            option.text = i;
-                            dateSelector.appendChild(option);
+
+                    const days = new Date(new Date().getFullYear(), selectedMonth, 0).getDate();
+                    const dateSelector = document.getElementById('dateSelector')
+                    for (let i = 1; i <= days; i++) {
+                        const option = document.createElement('option');
+                        option.value = i;
+                        option.text = i;
+                        dateSelector.appendChild(option);
+                    }
+
+                }
+
+                function dateConvert(timeStr) {
+                    const timeStamp = new Date(timeStr)
+                    const option = { day: 'numeric', month: 'short', year: 'numeric' }
+
+                    const timeFormat = timeStamp.toLocaleString('en-Us', option)
+                    return timeFormat
+                }
+
+                function addTableRow(data) {
+                    let tableBody = document.getElementById('tableBody')
+
+                    let row = '';
+                    let x = 0;
+                    for (let each of data) {
+                        let confirmDate = dateConvert(each.confirmDate)
+                        let names = [];
+                        let qty = []
+                        for (let item of each.items) {
+                            names.push(item.productName)
+                            qty.push(item.quantity)
                         }
-                    
+                        names = names.join(', ')
+                        qty = qty.join(', ')
+                        let rowData = ` <tr>
+                                        <td>${++x}</td>
+                                        <td>${each.order_id}</td>
+                                        <td>${names}</td>
+                                        <td>${qty}</td>
+                                        <td>${each.user_id}</td>
+                                        <td>${confirmDate}</td>
+                                        <td ><p class="ind-rs">${each.total}</p></td>
+                                        <td><p class="ind-rs">${each.amountPayable}</p></td>
+                                        </tr>`
+
+                        row += rowData
+                    }
+
+                    tableBody.innerHTML = row
                 }
 
                 //form submission 
@@ -130,14 +159,19 @@
                     fetch("/admin/sales-data", {
                         method: "POST",
                         body: JSON.stringify(date),
-                        headers : {
-                            'Content-type':'application/json'
+                        headers: {
+                            'Content-type': 'application/json'
                         }
                     })
                         .then(response => response.json())
                         .then(data => {
-                            // Handle the response from the server here
-                            console.log(data);
+                            if (data.success) {
+                                addTableRow(data.salesData)
+                            } else {
+                                let tableBody = document.getElementById('tableBody')
+                                tableBody.innerHTML = '<h1>no details available now</h1>'
+                            }
+
                         })
                         .catch(error => {
                             console.error('Error:', error);

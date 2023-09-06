@@ -4,6 +4,8 @@ const ProductCollection = require('../Model/product')
 const CategoryCollection = require('../Model/category')
 const UserCollection = require('../Model/user_details')
 
+const pdfConvert = require('../storage/pdfConvert')
+
 const { v4: uuidv4 } = require('uuid');
 
 module.exports = {
@@ -31,7 +33,7 @@ module.exports = {
     },
 
     dashboard: async (req, res) => {
-        try {   
+        try {
             const userCount = await UserCollection.countDocuments({})
             const orderCount = await OrderCollection.countDocuments({})
             const productCount = await CategoryCollection.countDocuments({})
@@ -43,7 +45,7 @@ module.exports = {
             }
             console.log(dashboardData)
 
-            res.render('dashboard', { isAdmin: true ,dashboardData})
+            res.render('dashboard', { isAdmin: true, dashboardData })
         } catch {
             console.log(e)
         }
@@ -93,18 +95,71 @@ module.exports = {
             console.log(e)
         }
     },
-    salesReportPage : async (req,res)=>{
-        try{
-            res.render('sales-report',{isAdmin : true})
-        }catch(e){
+    salesReportPage: async (req, res) => {
+        try {
+            res.render('sales-report', { isAdmin: true })
+        } catch (e) {
             console.log(e)
         }
     },
-    salesData : async (req,res)=>{
+    salesData: async (req, res) => {
+        try {
+            let { day, month, year } = req.body
+
+            console.log('req body -', req.body)
+            year = year ? year : '2023';
+            month = month ? month : '1';
+            day = day ? day : '1';
+
+            const date = new Date(year, month - 1, day)
+
+
+            let query;
+            if (!req.body.year && !req.body.month) {
+                query = { $gte: date }
+            } else if (req.body.day && req.body.month){
+                date.setHours(0, 0, 0, 0);
+                const endDate = new Date(year, month-1, day)
+                endDate.setHours(23, 59, 59, 999);
+                query = { $gte: date, $lt: endDate }
+            }else {
+                date.setHours(0, 0, 0, 0);
+                const endDate = new Date(year, month, day)
+                endDate.setHours(23, 59, 59, 999);
+                endDate.setTime(endDate.getTime() - 1);
+                query = { $gte: date, $lt: endDate }
+            }
+            console.log()
+            const salesData = await OrderCollection.aggregate([
+                {
+                    $match: {
+                        confirmDate: query
+                    }
+                }
+            ])
+            console.log('b4')
+            console.log(salesData)
+            req.session.pdfData = {
+                salesData,
+                date
+            }
+
+            res.json({
+                success : true,
+                salesData
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    },
+    createPdf : async (req,res)=>{
         try{
-            const {day, month, year} = req.body
-            const date = new Date(year,month-1,day)
-            console.log(date)
+            const data = req.session.pdfData.salesData
+            const date = req.session.pdfData.date
+             pdfConvert(data,date)
+             req.session.pdfData = null
+             res.end('done')
+
         }catch(e){
             console.log(e)
         }

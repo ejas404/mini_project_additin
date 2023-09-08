@@ -10,11 +10,6 @@ const adminOrderController = require('../Controller/admin_order_controller')
 const adminMiddleWare = require('../Middlewares/admin_midlle')
 
 
-router.use(express.json())
-router.use(express.urlencoded({extended:true}))
-
-
-
 router.get('/login',adminController.loginPage )
 router.post('/login',adminController.adminLogin)
 
@@ -49,7 +44,7 @@ router.get('/products/block/:id',adminProductController.productBlock)
 
 router.get('/dashboard',adminController.dashboard)
 router.get('/sales-report',adminController.salesReportPage)
-router.get('/download/:name',adminController.downloadPdf)
+// router.get('/download/:name',adminController.downloadPdf)
 
 
 router.get('/chart-data',adminController.chartData)

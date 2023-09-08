@@ -4,14 +4,17 @@ const ProductCollection = require('../Model/product')
 const OrderCollection = require('../Model/order')
 const CouponCollection = require('../Model/coupon')
 
+const PDFDocument = require("../storage/pdfTable");
+const invoiceGenerate = require('../storage/invoicePdf')
+
 const { v4: uuidv4 } = require('uuid');
 const { ObjectId } = require('mongodb')
 
-function dateConvert(timeStr){
+function dateConvert(timeStr) {
     const timeStamp = new Date(timeStr)
-    const option = {day :'numeric',month:'short',year:'numeric'}
+    const option = { day: 'numeric', month: 'short', year: 'numeric' }
 
-    const timeFormat = timeStamp.toLocaleString('en-Us',option)
+    const timeFormat = timeStamp.toLocaleString('en-Us', option)
     return timeFormat
 }
 
@@ -182,24 +185,20 @@ module.exports = {
     selectPayment: async (req, res) => {
         try {
             if (req.session.cartOrder) {
-                const email = req.session.user
-                const user = await UserCollection.findOne({ email })
-                const coupons = await CouponCollection.find({ user_id: user.user_id })
+                const coupons = await CouponCollection.find({})
                 const total = req.session.cartOrder.total
                 const count = req.session.cartOrder.count
 
                 return res.render('select-payment', { isUser: true, coupons, total, count })
             }
             const order = req.session.orderDetails
-            const email = req.session.user
-            const user = await UserCollection.findOne({ email })
             const product = await ProductCollection.findOne({ product_id: order.product_id })
 
             let total = product.productPrice * Number(order.quantity)
             total = total > 5000 ? total : total + 40;
 
             const count = 1
-            const coupons = await CouponCollection.find({ user_id: user.user_id })
+            const coupons = await CouponCollection.find({})
             return res.render('select-payment', { isUser: true, coupons, total, count })
         }
         catch (e) {
@@ -220,9 +219,9 @@ module.exports = {
                 total = product.productPrice * Number(order.quantity)
                 total = total > 5000 ? total : total + 40;
             }
-            
-            if(req.params.id === 'noCoupon'){
-             return   res.json({
+
+            if (req.params.id === 'noCoupon') {
+                return res.json({
                     success: true,
                     total
                 })
@@ -231,11 +230,25 @@ module.exports = {
             const _id = new ObjectId(req.params.id)
             const coupon = await CouponCollection.findOne({ _id })
             if (coupon.couponType === 'percent') {
+                if (total > coupon.couponLimit) {
+                    return res.json({
+                        except: true,
+                        msg: 'cannot use this coupon for this purchase',
+                        total
+                    })
+                }
                 total = (total * coupon.couponValue) / 100
             } else {
+                if (total < coupon.couponLimit) {
+                    return res.json({
+                        except: true,
+                        total,
+                        msg: 'cannot use this coupon for this purchase'
+                    })
+                }
                 total = total - coupon.couponValue
             }
-            res.json({
+            return res.json({
                 success: true,
                 total,
                 coupon
@@ -370,9 +383,13 @@ module.exports = {
                 const _id = new ObjectId(discountCoupon)
                 coupon = await CouponCollection.findOne({ _id })
                 if (coupon.couponType === 'percent') {
-                    amountPayable = (amountPayable * coupon.couponValue) / 100
+                    if (amountPayable <= coupon.couponLimit) {
+                        amountPayable = (amountPayable * coupon.couponValue) / 100
+                    }
                 } else {
-                    amountPayable = amountPayable - coupon.couponValue
+                    if (amountPayable > coupon.couponLimit) {
+                        amountPayable = amountPayable - coupon.couponValue
+                    }
                 }
             }
 
@@ -457,12 +474,12 @@ module.exports = {
     },
     orderDetails: async (req, res) => {
         try {
-            let  order_id
-            if(req.session.newOrder && req.params.id === '123'){
+            let order_id
+            if (req.session.newOrder && req.params.id === '123') {
                 order_id = req.session.newOrder
                 req.session.newOrder = null
-            }else {
-            order_id = req.params.id
+            } else {
+                order_id = req.params.id
             }
             const orderProducts = await OrderCollection.aggregate([
                 {
@@ -477,30 +494,69 @@ module.exports = {
                         foreignField: 'product_id',
                         as: 'products'
                     }
-                },
-                {
-                    $sort: {
-                        createdAt: -1
-                    }
                 }
             ])
-
+            console.log(orderProducts)
             const data = orderProducts[0]
 
             const products = data.items.map(item => {
                 const product = data.products.find(product => product.product_id === item.product_id);
                 return { ...item, ...product };
             });
-            
-            orderDate = dateConvert(data.createdAt)
-            
-            res.render('order-details',{isUser:true,products,order:data,orderDate})
 
-        } 
+            orderDate = dateConvert(data.createdAt)
+
+            res.render('order-details', { isUser: true, products, order: data, orderDate })
+
+        }
         catch (e) {
             console.log(e)
+            if(e instanceof TypeError){
+                res.redirect('/404-not-found')
+            }
         }
     },
-    test: async (req, res) => {
+    invoice :async (req,res)=>{
+        try{
+            
+            const order_id  = req.params.id
+            const email = req.session.user
+
+            const user = await UserCollection.findOne({email})
+            const orderProducts = await OrderCollection.aggregate([
+                {
+                    $match: {
+                        order_id
+                    }
+                },
+                {
+                    $lookup: {
+                        from: 'products',
+                        localField: 'items.product_id',
+                        foreignField: 'product_id',
+                        as: 'products'
+                    }
+                }
+            ])
+
+            console.log(orderProducts)
+
+            const doc = new PDFDocument();
+
+            const pdfDoc = invoiceGenerate(doc, orderProducts[0],user)
+
+            res.setHeader("Content-Type", "application/pdf");
+            res.setHeader("Content-Disposition", 'inline; filename="sales-details.pdf"');
+
+            pdfDoc.pipe(res);
+
+            // End the PDF document
+            pdfDoc.end();
+
+
+           
+        }catch(e){
+            console.log(e)
+        }
     }
 }

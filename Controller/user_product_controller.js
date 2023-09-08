@@ -62,12 +62,12 @@ module.exports = {
         const product_id = req.params.id
         const email = req.session.user
         const isCartItem = await UserCollection.findOne({email, 'cart.product_id' : product_id})
-        // if(isCartItem){
-        //     return res.json({
-        //         msg : 'product alredy exist',
-        //         success : true
-        //     })
-        // }
+        if(isCartItem){
+            return res.json({
+                err : true,
+                msg : 'product alredy exist'
+            })
+        }
         const product = await ProductCollection.findOne({product_id})
         const cart = {
             product_id : product.product_id,

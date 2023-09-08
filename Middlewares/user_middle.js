@@ -84,6 +84,8 @@ module.exports = {
        }
        res.render('user-otp',{message : 'otp doesnt match'})
     },
+
+    //middle ware for ejs
     isLoggedin : (req,res,next)=>{
         if(req.session.user){
             next()
@@ -91,6 +93,8 @@ module.exports = {
             res.redirect('/login')
         }
     },
+
+    //middle ware for fetch
     isLoggedinMid : (req,res,next)=>{
         if(req.session.user){
             next()

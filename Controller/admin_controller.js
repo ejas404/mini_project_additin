@@ -4,7 +4,11 @@ const ProductCollection = require('../Model/product')
 const CategoryCollection = require('../Model/category')
 const UserCollection = require('../Model/user_details')
 
-const pdfConvert = require('../storage/pdfConvert')
+const PDFDocument = require("../storage/pdfTable");
+const pdfGenereator = require("../storage/salesPdf")
+
+
+// const pdfConvert = require('../storage/pdfConvert')
 
 const { v4: uuidv4 } = require('uuid');
 
@@ -117,19 +121,18 @@ module.exports = {
             let query;
             if (!req.body.year && !req.body.month) {
                 query = { $gte: date }
-            } else if (req.body.day && req.body.month){
+            } else if (req.body.day && req.body.month) {
                 date.setHours(0, 0, 0, 0);
-                const endDate = new Date(year, month-1, day)
+                const endDate = new Date(year, month - 1, day)
                 endDate.setHours(23, 59, 59, 999);
                 query = { $gte: date, $lt: endDate }
-            }else {
+            } else {
                 date.setHours(0, 0, 0, 0);
                 const endDate = new Date(year, month, day)
                 endDate.setHours(23, 59, 59, 999);
                 endDate.setTime(endDate.getTime() - 1);
                 query = { $gte: date, $lt: endDate }
             }
-            console.log()
             const salesData = await OrderCollection.aggregate([
                 {
                     $match: {
@@ -137,47 +140,46 @@ module.exports = {
                     }
                 }
             ])
-            console.log('b4')
-            console.log(salesData)
+
             req.session.pdfData = {
                 salesData,
                 date
             }
 
             res.json({
-                success : true,
+                success: true,
                 salesData
             })
         } catch (e) {
             console.log(e)
         }
     },
-    createPdf : async (req,res)=>{
-        try{
-            const data = req.session.pdfData.salesData
-            const date = req.session.pdfData.date
-            const pdfName =  pdfConvert(data,date)
-            
-             req.session.pdfData = null
-            
-            res.redirect(`/admin/download/${pdfName}`)
-        }catch(e){
+    createPdf: async (req, res) => {
+        try {
+            const documents = req.session.pdfData.salesData
+            let date = req.session.pdfData.date
+
+            date = new Date(date)
+
+            // Create The PDF document
+            const doc = new PDFDocument();
+
+            const pdfDoc = pdfGenereator(doc, documents, date)
+
+            res.setHeader("Content-Type", "application/pdf");
+            res.setHeader("Content-Disposition", 'inline; filename="sales-details.pdf"');
+
+            pdfDoc.pipe(res);
+
+            // End the PDF document
+            pdfDoc.end();
+
+        } catch (e) {
             console.log(e)
-            if(e instanceof TypeError){
+            if (e instanceof TypeError) {
                 res.redirect('/404-not-found')
             }
         }
-    },
-    downloadPdf : (req,res)=>{
-        const pdfName = req.params.name
-        const pdfFilePath = `./pdf/${pdfName}`
-        res.download(pdfFilePath, pdfName, (err) => {
-            if (err) {
-              // Handle error if the file cannot be found or there is any other issue.
-              console.error(err);
-              res.status(404).send('File not found');
-            }
-          });
     }
 
 }

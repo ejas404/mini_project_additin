@@ -55,7 +55,7 @@
                                                 </div>
                                                 <div class="cart-item-mid">
                                                     <div>
-                                                        <% if(locals.cartIds.includes(each.product_id)) { %>
+                                                        <% if(locals.cartIds?.includes(each.product_id)) { %>
                                                             <a class="default-button px-2" href="/cart">Go to Cart -></a>
                                                         <% } else { %>
                                                             <button onclick="addToCart('<%= each.product_id %>',this)" class="default-button px-2">Add to Cart</button>

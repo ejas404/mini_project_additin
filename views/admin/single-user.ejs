@@ -47,20 +47,7 @@
                     </div>
                     <% } %>
             </div>
-            <div class="coupons my-4 mx-3">
-                <h4 class="my-3">Coupons</h4>
-                <div class=" row coupon-list">
-                    <% for (let each of locals.coupons) { %>
-                    <div class="col-sm-4 d-flex">
-                        <div class="card px-3 py-4 text-center" style="width: 15rem;">
-                            <h5><%= each.couponCode %></h5>
-                            <p ><%= each.couponType === 'percent'? `flat ${each.couponValue}% discount on purchase above Rs.2000`:`flat ${each.couponValue} discount on any purchase`;  %></p>
-                        </div>
-                    </div>
-                    <% } %>
-                </div>
-
-            </div>
+          
 
         </div>
     </div>

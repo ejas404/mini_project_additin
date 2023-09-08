@@ -55,9 +55,8 @@
                     </div>
 
                     <div class="buttons">
-                        <input class="py-1 ps-4"  type="number" min="1" value="1" style="width: 4rem;">
-                        <input class="default-button" onclick="addToCart('<%= locals.product[0].product_id %>')" type="button" value="Add to cart" >
-                        <input  class="default-button" type="button" value="Buy Now" style="background-color: #fff; border: 2px solid #002442; color:#002442 ;">
+                        <input class="default-button" onclick="addToCart('<%= locals.product[0].product_id %>',this)" type="button" value="Add to cart" >
+                        <a class="default-button" href="/buynow/<%= locals.product[0].product_id %>" style="background-color: #fff; border: 2px solid #002442; color:#002442 ;" >Buy Now</a>
                     </div>
 
 

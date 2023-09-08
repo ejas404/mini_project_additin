@@ -26,9 +26,11 @@
                 <a href="/admin/logout">Logout</a>
             </div>
         </div>
-        <div class="userlists-div" style="max-height: calc(100vh );">
+        <div class="userlists-div" style="min-height: calc(100vh );">
             <div class="top-banner-lists">
                 <h1>Create Coupon</h1>
+
+                    <p  class="green"><%= locals.msg %></p>
                 <form action="/admin/create-coupon" method="post">
 
                     <label>Coupon Type:</label> <br>
@@ -60,6 +62,21 @@
                     <input class="default-button mb-3" type="submit" value="Create Coupon">
                 </form>
             </div>
+            <div class="coupons my-4 mx-3">
+                <h4 class="my-3">Available Coupons</h4>
+                <div class=" row coupon-list">
+                    <% for (let each of locals.coupons) { %>
+                    <div class="col-sm-4 d-flex">
+                        <div class="card px-3 py-4 text-center" style="width: 15rem; background-color:#d9d9d9;">
+                            <h5><%= each.couponCode %></h5>
+                            <p ><%= each.couponType === 'percent'? `flat ${each.couponValue}% discount on purchase upto ${each.couponLimit}`:`flat ${each.couponValue} discount on any purchase above ${each.couponLimit}`;  %></p>
+                        </div>
+                    </div>
+                    <% } %>
+                </div>
+
+            </div>
+
         </div>
     </div>
     <%- include('../partials/footer')%>

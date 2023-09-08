@@ -61,52 +61,54 @@
                                 <div class="head-name my-5">
                                     <h2 class="">Select Your Address</h2>
                                 </div>
-                              
+
                                 <div class="address">
                                     <% if(locals.address[0]){ %>
-                                    <h4>Address</h4>
-                                    <% for (let each of locals.address) { %>
-                                        <div class="address-box">
-                                            <div class="address-details">
-                                                <p>
-                                                    <%= each.houseName %>, <%= each.streetAddress %>,
-                                                </p>
-                                                <p>
-                                                    <%= each.city %>,
-                                                </p>
-                                                <p>
-                                                    <%= each.state %>,
-                                                </p>
-                                                <p>postal code : <%= each.postalcode %>,
-                                                </p>
-                                                <p>mobile : <%= each.mobile %>
-                                                </p>
-                                            </div>
-                                            <div class="deleteButton">
-                                                <input type="radio" name="address" value="<%= each._id %>" required>
-                                            </div>
+                                        <h4>Address</h4>
+                                        <% for (let each of locals.address) { %>
+                                            <div class="address-box">
+                                                <div class="address-details">
+                                                    <p>
+                                                        <%= each.houseName %>, <%= each.streetAddress %>,
+                                                    </p>
+                                                    <p>
+                                                        <%= each.city %>,
+                                                    </p>
+                                                    <p>
+                                                        <%= each.state %>,
+                                                    </p>
+                                                    <p>postal code : <%= each.postalcode %>,
+                                                    </p>
+                                                    <p>mobile : <%= each.mobile %>
+                                                    </p>
+                                                </div>
+                                                <div class="deleteButton">
+                                                    <input type="radio" name="address" value="<%= each._id %>" required>
+                                                </div>
 
-                                        </div>
-                                        <% } %>
-                                        <% } else { %>
-                                            <div class="empty-message text-center">
-                                                <h1>no address to select <br> please add your address</h1>
                                             </div>
-                                        <% } %>
+                                            <% } %>
+                                                <% } else { %>
+                                                    <div class="empty-message text-center">
+                                                        <h1>no address to select <br> please add your address</h1>
+                                                    </div>
+                                                    <% } %>
 
-                                            <div class="add-address-btn my-3">
-                                                <a class="default-button" href="/add-address">+add
-                                                    address</a>
-                                            </div>
+                                                        <div class="add-address-btn my-3 text-end">
+                                                            <a class="default-button" href="/add-address">+add
+                                                                address</a>
+                                                        </div>
                                 </div>
-                                <p id="errorMessage" class="error-message"><%= locals.msg %></p>
+                                <p id="errorMessage" class="error-message">
+                                    <%= locals.msg %>
+                                </p>
 
                     </div>
 
 
                 </div>
 
-                <div class="placeorder">
+                <div class="buy-placeorder">
                     <h5>Price Details</h5>
                     <div class="cart-item-mid">
                         <p id="itemsCount">item(1)</p>
@@ -128,7 +130,9 @@
                                 ?locals.product.productPrice : locals.product.productPrice + 40;%>
                         </p>
                     </div>
-                    <input onclick="" class="default-button px-2 rounded mt-1" type="submit" value="placeorder">
+                    <div class="text-end">
+                        <input onclick="" class="default-button px-2 rounded mt-1" type="submit" value="placeorder">
+                    </div>
                 </div>
             </form>
         </div>

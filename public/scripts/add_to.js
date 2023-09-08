@@ -13,7 +13,7 @@ function addToCart(id,elem) {
         .then((res) => {
             if (res.successMsg) {
                 let newElement = document.createElement('a')
-                newElement.className = 'default-button px-2s'
+                newElement.className = 'default-button px-2'
                 newElement.textContent = 'Go to Cart->'
                 newElement.href = '/cart'
                 

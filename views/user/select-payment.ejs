@@ -37,7 +37,7 @@
                             <div class=" my-3 row coupon-list">
                                 <% for (let each of locals.coupons) { %>
                                     
-                                    <div class="col-sm-4 d-flex">
+                                    <div class="col-sm-6 d-flex">
                                         <input type="radio" id="<%= each._id %>" name="discountCoupon" onclick="couponDiscount(`<%= each._id  %>`)" value="<%= each._id %>">
                                         <label for="<%= each._id %>">
                                         <div class="ms-2 p-1 text-center border d-flex align-items-center">
@@ -47,8 +47,8 @@
                                                 </h5>
                                                 <p>
                                                     <%= each.couponType==='percent' ? `flat ${each.couponValue}%
-                                                        discount on any purchase`:`flat ${each.couponValue}
-                                                        discount on any purchase`; %>
+                                                        discount on purchases upto ${each.couponLimit}`:`flat ${each.couponValue}
+                                                        discount on any purchase above ${each.couponLimit}`; %>
                                                 </p>
                                             </div>
                                         </div>
@@ -56,8 +56,8 @@
                                     </div>
                             
                                     <% } %>
-                                    <div class="col-sm-4 d-flex align-items-center">
-                                        <input type="radio" id="noCoupon" name="" onclick="couponDiscount('noCoupon')" value="">
+                                    <div class="col-sm-6 d-flex align-items-center">
+                                        <input type="radio" id="noCoupon" name="discountCoupon" onclick="couponDiscount('noCoupon')" value="">
                                         <label for="noCoupon">
                                         <div class="ms-2 p-1 text-center border d-flex align-items-center">
                                             <div>

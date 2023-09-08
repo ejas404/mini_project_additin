@@ -23,6 +23,10 @@ function couponDiscount(id){
             couponVal.innerText = value
             couponTitle.innerText = couponCode
             itemSum.innerText = res.total
+        }else if (res.except){
+            couponTitle.innerText = ''
+            couponVal.innerText = res.msg
+            itemSum.innerText = res.total
         }else{
             window.location.href = res.redirect
         }

@@ -5,7 +5,8 @@ const userHomepageController = require('../Controller/homepage_controller');
 const userController = require('../Controller/user_controller')
 const userProductController = require('../Controller/user_product_controller')
 const userOrderController = require('../Controller/user_order_controller')
-const userMiddleware = require('../Middlewares/user_middle')
+const userMiddleware = require('../Middlewares/user_middle');
+const homepage_controller = require('../Controller/homepage_controller');
 
 
 //user signup----------------------------------------
@@ -18,6 +19,8 @@ userRouter.get('/products',userHomepageController.productsPage)
 userRouter.get('/products/filter',userHomepageController.filter)
 userRouter.get('/product/:id',userHomepageController.singleProductPage)
 userRouter.get('/paginate/:num',userHomepageController.pagination)
+userRouter.get('/sort/:value',homepage_controller.sort)
+userRouter.get('/search-products',homepage_controller.search)
 
 userRouter.get('/login',userController.loginPage)
 userRouter.post('/login',userMiddleware.isBlocked,userController.userLogin)
@@ -39,10 +42,7 @@ userRouter.post('/emailotp',userController.emailotp)
 
 
 
-
-//just for testing mongo querys
-userRouter.get('/test',userOrderController.test)
-
+//routes for ajax
 
 userRouter.delete('/delete-address/:id',userMiddleware.isLoggedinMid,userMiddleware.isBlockedMid,userController.deleteAddress)
 userRouter.get('/cartquantity',userMiddleware.isLoggedinMid,userMiddleware.isBlockedMid,userProductController.updateCartItemQty)
@@ -74,7 +74,10 @@ userRouter.get('/cart-order',userOrderController.proceedCart)
 userRouter.get('/select-address',userOrderController.selelctAddress)
 userRouter.post('/cart-payment',userOrderController.cartPayment)
 userRouter.get('/order/:id',userOrderController.orderDetails)
+userRouter.get('/invoice/:id',userOrderController.invoice)
 
+
+// to render 404 page if no routes exists
 userRouter.all('*',(req,res)=>{
     res.status(404)
     res.redirect('/404-not-found')

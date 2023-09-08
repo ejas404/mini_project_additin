@@ -1,3 +1,76 @@
+
+const sortBy = document.getElementById('sortBy')
+    sortBy.addEventListener('change',(e)=>{
+        fetch(`/sort/${sortBy.value}`)
+        .then(res => res.json())
+        .then((res) => {
+            if (res.success) {
+                sortedProducts(res.products, res.cartAndWish)
+            }
+        })
+})
+
+
+function sortedProducts(products, cartAndWish) {
+    const productRow = document.getElementById('productsRow')
+
+   let rowProducts = ""
+
+    for (let each of products) {
+        let itemCol = `  <div class="col-lg-4 col-md-6 pt-md-0 pt-3 position-relative">
+                        <a style="text-decoration: none;" href="/product/${each.product_id} ">
+                            <div style="height: 350px;"
+                                class="card d-flex flex-column align-items-center">
+
+                                <div class="card-img"> <img src='${each.productImg[0]}' alt=""
+                                        height="100" id="shirt"> </div>
+                                <div class="product-name">
+                                    ${each.productName} 
+                                </div>
+                                <div class="card-body pt-0">
+
+                                    <div class="d-flex align-items-center price">
+                                        <div class="del mr-2"><span class="text-dark"
+                                                style="font-size: 15px;">Rs.${Number(each.productPrice) + 1000}</span></div>
+                                        <div class="font-weight-bold "
+                                            style="font-weight: bold; margin-left: 5px;">Rs.
+                                            ${each.productPrice} 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                       
+                        <div class="productButtons ps-2 position-absolute d-flex justify-content-between" style="top: 90%; width: 90%;">
+                            ${cartAndWish && cartAndWish[0]?.cartIds && cartAndWish[0]?.cartIds.includes(each.product_id) ? `
+                                <a class="default-button px-2 rounded d-block" href="/cart">Go to Cart -></a>
+                            ` : `
+                                <div class="pb-1 add-to-cart-btn" onclick="addToCart('${each.product_id}',this)">
+                                    <i class="fa-solid fa-cart-plus" style="font-size: 25px;"></i>
+                                </div>
+                                <a class="buy-now-btn d-block " style="text-decoration: none;" href="/buynow/${each.product_id}">Buy Now -></a>
+                            `}
+                        </div>
+                        <div class="wishlist position-absolute top-0 ms-1">
+                            ${cartAndWish && cartAndWish[0]?.wishListIds?.includes(each.product_id) ? `
+                                <i onclick="addToWishList('${each.product_id}',this)" id="biHrt" class="bi bi-heart-fill wishlist-icon"></i>
+                            ` : `
+                                <i onclick="addToWishList('${each.product_id}',this)" id="biHrt" class="bi bi-heart wishlist-icon"></i>
+                            `}
+                        </div>
+
+                    </div>`
+
+                rowProducts+=itemCol                         
+    }
+
+    productRow.innerHTML =rowProducts
+}
+
+
+
+
+
 // For Filters
 document.addEventListener("DOMContentLoaded", function() {
     var filterBtn = document.getElementById('filter-btn');

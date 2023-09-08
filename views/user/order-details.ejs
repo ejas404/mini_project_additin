@@ -16,39 +16,6 @@
     <%- include('../partials/custom-alert') %>
         <div class="userprofile-main">
             <div class="user-profile-box">
-                <div class="order-details-sidebar p-3 shadow">
-                    <div>                   
-                    <p class="m-0">Order id : <%= locals.order.order_id %></p>
-                    <% if (locals.order.orderStatus === 'cancelled') { %>
-                        <p class="m-0">Order Status : <span class="error-message"><%= locals.order.orderStatus %></span></p>
-                    
-                    <%} else {%>
-                        <p class="m-0">Order Status : <%= locals.order.orderStatus %></p>
-                    
-                        <% } %>
-                        
-                    <p class="m-0">Order placed at : <%= locals.orderDate %></p>
-                    </div>
-                    <div class="mt-2">
-                        <p class="shipping mb-1">shipping details</p>
-                        <p class="address-details"><%= locals.order.address.houseName %></p>
-                        <p class="address-details"><%= locals.order.address.streetAddress %></p>
-                        <p class="address-details"><%= locals.order.address.city %></p>
-                        <p class="address-details"><%= locals.order.address.state %> - <%= locals.order.address.postalcode %></p>
-                        <p class="address-details"><%= locals.order.mobile %></p>
-                    </div>
-                    <div class="mt-2">
-                        <p class="shipping mb-1">price details</p>
-                        <div class="cart-item-title">
-                            <p>coupon</p>
-                            <p class="product-price"><%= locals.order.coupon? locals.order.coupon:'no coupon !' %></p>
-                        </div>
-                        <div class="cart-item-title">
-                            <p>Total Amount</p>
-                            <p class="product-price ind-rs"><%= locals.order.amountPayable? locals.order.amountPayable : locals.order.total %></p>
-                        </div>
-                    </div>
-                </div>
                 <div class="left-orderdetails" id="cartItemDetails">
                     <div class="head-name">
                         <h1 class="double-underline mb-5">Orders</h1>
@@ -83,6 +50,45 @@
                         </div>
                         <% } %>
                 </div>
+                <div class="order-details-sidebar p-3 shadow">
+                    <div>                   
+                    <p class="m-0">Order id : <%= locals.order.order_id %></p>
+                    <% if (locals.order.orderStatus === 'cancelled') { %>
+                        <p class="m-0">Order Status : <span class="error-message"><%= locals.order.orderStatus %></span></p>
+                    
+                    <%} else {%>
+                        <p class="m-0">Order Status : <%= locals.order.orderStatus %></p>
+                    
+                        <% } %>
+                        
+                    <p class="m-0">Order placed at : <%= locals.orderDate %></p>
+                    </div>
+                    <div class="mt-2">
+                        <p class="shipping mb-1">shipping details</p>
+                        <p class="address-details"><%= locals.order.address.houseName %></p>
+                        <p class="address-details"><%= locals.order.address.streetAddress %></p>
+                        <p class="address-details"><%= locals.order.address.city %></p>
+                        <p class="address-details"><%= locals.order.address.state %> - <%= locals.order.address.postalcode %></p>
+                        <p class="address-details"><%= locals.order.mobile %></p>
+                    </div>
+                    <div class="mt-2">
+                        <p class="shipping mb-1">price details</p>
+                        <div class="cart-item-title">
+                            <p class="m-0">coupon</p>
+                            <p class="product-price m-0"><%= locals.order.coupon? locals.order.coupon:'no coupon !' %></p>
+                        </div>
+                        <div class="cart-item-title">
+                            <p class="m-0">Total Amount</p>
+                            <p class="product-price ind-rs m-0"><%= locals.order.amountPayable? locals.order.amountPayable : locals.order.total %></p>
+                        </div>
+                        <% if (locals.order.orderStatus === 'confirmed') { %>
+                        <div>
+                            <a class="btn btn-danger py-1" href="/invoice/<%= locals.order.order_id %>">Get Invoice</a>
+                        </div>
+                        <% } %>
+                    </div>
+                </div>
+               
             </div>
         </div>
         <script defer src="/scripts/notification.js"></script>

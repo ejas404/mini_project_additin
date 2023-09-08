@@ -346,13 +346,13 @@ nav img {
     top: 150px;
     background-color: var(--white);
     max-height: 350px;
-    margin-left: 5rem;
+    margin-right: 5rem;
 }
 
 .left-orderdetails {
     flex: 1 0 auto;
     min-height: 700px;
-    padding: 0 10rem 0 5rem;
+    padding: 0 5rem 0 10rem;
 }
 
 .order-details-sidebar .shipping {
@@ -886,8 +886,8 @@ textarea {
 
 /*----------------------------------------------------payment-----------------------------------------------------*/
 .buy-now-box {
-    padding-left: 35rem;
-    padding-right: 15rem;
+    padding-left: 10rem;
+    padding-right: 38rem;
 }
 
 .select-payment-details {
@@ -927,6 +927,19 @@ textarea {
     border-radius: 10px;
     padding: 10px 15px;
     box-shadow: -2px 2px 5px black;
+}
+.buy-placeorder{
+    position: sticky;
+    width: 30%;
+    margin-right: 3%;
+    bottom: 45px;
+    background-color: var(--main);
+    color: var(--white);
+    margin-bottom: 20px;
+    border-radius: 10px;
+    padding: 10px 15px;
+    box-shadow: -2px 2px 5px black;
+    float: right;
 }
 
 .cart-item {
@@ -982,6 +995,9 @@ textarea {
 }
 
 .placeorder p {
+    margin: 0;
+}
+.buy-placeorder p {
     margin: 0;
 }
 
@@ -1155,7 +1171,6 @@ textarea {
     padding: 5px;
     border-radius: 5px 0 0 5px;
     outline: none;
-    color: #9DBFAF;
   }
   
   .searchTerm:focus{
@@ -1177,6 +1192,23 @@ textarea {
   /*Resize the wrap to see the search bar change!*/
   .wrap{
     width: 30%;
+    position: relative;
+  }
+  #item-list{
+    position: absolute;
+    top: 40px;
+    background-color: var(--white);
+    list-style-type: none;
+    z-index: 10;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  #item-list li {
+    border: 1px solid var(--bg_gray);
+    padding: 3px 10px;
+    cursor: pointer;
+
   }
 
 
@@ -1257,6 +1289,10 @@ h1 {
     font-weight: bold;
     cursor: pointer;
     text-decoration: none;
+
+    &:hover{
+        color: var(--white);
+    }
 }
 
 .cancel-button {

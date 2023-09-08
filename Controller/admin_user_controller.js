@@ -58,9 +58,14 @@ module.exports = {
         res.redirect('/admin/userlists')
 
     },
-    createCouponPage:  (req, res) => {
+    createCouponPage:  async (req, res) => {
         try {
-            res.render('create-coupon', { users,isAdmin : true})
+            const coupons = await CouponCollection.find({})
+            if(req.session.newCoupon){
+                req.session.newCoupon = null;
+                res.render('create-coupon', {isAdmin : true,coupons, msg : 'coupon created successfully'})
+            }
+            res.render('create-coupon', {isAdmin : true,coupons})
         } catch (e) {
             console.log(e)
         }
@@ -85,7 +90,6 @@ module.exports = {
 
            
             const newCoupon = await CouponCollection.create({
-                    user_id : each.user_id,
                     couponType,
                     couponCode,
                     couponValue,
@@ -93,7 +97,8 @@ module.exports = {
                     expiryDate,
             })
 
-            console.log(userCoupon)
+            console.log(newCoupon)
+            req.session.newCoupon = true
             res.redirect('/admin/create-coupon')
         } catch (e) {
             console.log(e)

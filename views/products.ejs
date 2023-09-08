@@ -24,18 +24,20 @@
 
                 <div class="wrap">
                     <div class="search">
-                       <input type="text" class="searchTerm" placeholder="What are you looking for?">
-                       <button type="submit" class="searchButton">
-                         <i class="fa fa-search"></i>
-                      </button>
+                        <input type="text" id="searchItemInput" class="searchTerm" placeholder="What are you looking for?">
+                        <button type="submit" id="searchButton" class="searchButton">
+                            <i class="fa fa-search"></i>
+                        </button>
                     </div>
-                 </div>
+                    <ul id="item-list">
+                       
+                      </ul>
+                </div>
 
-                <select id="sort" style="color: black;">
+                <select id="sortBy"  style="color: black;">
                     <option value="">Sort By : </option>
-                    <option value="name">Name</option>
-                    <option value="date">Date</option>
-                    <option value="price">Price</option>
+                    <option  value="productName">Name</option>
+                    <option  value="productPrice">Price</option>
                 </select>
 
             </div>
@@ -140,7 +142,7 @@
                     </form>
                 </div>
                 <div id="products">
-                    <div class="row mx-0 gy-3">
+                    <div id="productsRow" class="row mx-0 gy-3">
                         <% if (! locals.products[0]) {%>
                             <div class="empty-message text-center">
                                 <h1>Sorry No Products Please Check after some time</h1>
@@ -210,9 +212,11 @@
             </div>
         </div>
         <%- include('../partials/bootstrap-script') %>
+
             <script src="/scripts/productsfilter.js"></script>
             <script defer src="/scripts/notification.js"></script>
             <script defer src="/scripts/add_to.js"></script>
+           <script defer src="/scripts/trieSearch.js"></script>
 </body>
 
-</html>
+</html

@@ -60,14 +60,16 @@ module.exports = {
             console.log(product)
             const productName = (titleUpperCase(product[0].productName))
             if (req.session.user) {
+                const email = req.session.user
+                const user = await UserCollection.findOne({email, "cart.product_id": "8f88c912-7836-4497-8509-37dc9351b81e"})
                 return res.render('user-single-product', { product, productName, isUser: true, })
             }
             res.render('user-single-product', { product, productName })
         } catch (e) {
-            if(e instanceof TypeError){
+            if (e instanceof TypeError) {
                 res.status(404)
                 res.redirect('/404-not-found')
-            }else{
+            } else {
                 console.log(e)
             }
         }
@@ -138,6 +140,54 @@ module.exports = {
                 res.render('products', { isUser: true, products, count, categories, cartAndWish })
             } else {
                 res.render('products', { products, count, categories })
+            }
+
+        } catch (e) {
+            console.log(e)
+        }
+    },
+    sort: async (req, res) => {
+        try {
+            const sortField = req.params.value
+            let sortObj = {}
+            if (sortField === 'productName') {
+                sortObj.productName = 1
+            } else if (sortField === 'productPrice') {
+                sortObj.productPrice = 1
+            } else {
+                const products = await ProductCollection.find({ productName: { $regex: sortField } })
+                   return res.json({
+                        success: true,
+                        products
+                    })
+    
+            }
+            const products = await ProductCollection.find({ isAvailable: true }).sort(sortObj)
+            if (req.session.user) {
+                const cartAndWish = await UserCollection.aggregate([
+                    {
+                        $match: {
+                            email: req.session.user
+                        }
+
+                    },
+                    {
+                        $project: {
+                            cartIds: '$cart.product_id',
+                            wishListIds: '$wishlist.product_id'
+                        }
+                    }
+                ])
+                res.json({
+                    success: true,
+                    products,
+                    cartAndWish
+                })
+            } else {
+                res.json({
+                    success: true,
+                    products
+                })
             }
 
         } catch (e) {
@@ -216,6 +266,19 @@ module.exports = {
             console.log(products)
             const categories = await CategoryCollection.find()
             res.render('products', { products, categories, isUser: true, cartAndWish })
+        } catch (e) {
+            console.log(e)
+        }
+    },
+    search: async (req, res) => {
+        try {
+            console.log('hai')
+            const productNames = await ProductCollection.find({ isAvailable: true }, { productName: 1, _id: 0 })
+            console.log(productNames)
+            res.json({
+                success: true,
+                productNames
+            })
         } catch (e) {
             console.log(e)
         }

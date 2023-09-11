@@ -10,6 +10,7 @@ const productSchema = new Schema({
     productCategory:{type:String, required:true},
     productDescription:{type:String, required:true},
     productImg:{type:[String], required:[true, "imges cannote be empty"]},
+    rating : {type : Number, default : 0},
     isAvailable : {type:Boolean , required:true}
 })
 

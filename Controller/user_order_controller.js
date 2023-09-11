@@ -467,7 +467,7 @@ module.exports = {
                 orders.push(...combinedItems)
             }
 
-            res.render('my-orders', { dest: 'myOrder', isUser: true, orders, user })
+            res.render('my-orders', { dest: 'myOrder', isUser: true, orders, user,count : 3 })
         } catch (e) {
             console.log(e)
         }
@@ -506,7 +506,7 @@ module.exports = {
 
             orderDate = dateConvert(data.createdAt)
 
-            res.render('order-details', { isUser: true, products, order: data, orderDate })
+            res.render('order-details', { isUser: true, products, order: data, orderDate})
 
         }
         catch (e) {

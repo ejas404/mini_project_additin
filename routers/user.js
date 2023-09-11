@@ -52,6 +52,8 @@ userRouter.post('/add-to-wishlist/:id',userMiddleware.isLoggedinMid,userMiddlewa
 userRouter.get('/coupon-update/:id', userOrderController.couponUpdate)
 userRouter.get('/user-data',userController.userData)
 userRouter.post('/data-update',userController.userUpdate)
+userRouter.post('/update-rating',userProductController.rating)
+
 
 userRouter.use(userMiddleware.isLoggedin,userMiddleware.isBlocked)
 

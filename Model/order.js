@@ -20,6 +20,7 @@ const orderSchema = new Schema({
                 weight : {type: Number, required : true},
                 price: { type: Number, required: true },
                 quantity: { type: Number, required: true },
+                rating : {type : Number , default : 0}
             }
         ]
     },

@@ -1,5 +1,6 @@
 const UserCollection = require('../Model/user_details')
 const ProductCollection = require('../Model/product')
+const OrderCollection = require('../Model/order')
 
 const getTotalSum = async (email)=> {
     try{
@@ -284,5 +285,31 @@ module.exports = {
         }catch(e){
             console.log(e)
         }
-    }, 
+    },
+    rating : async (req,res)=>{
+        try{
+            console.log('hai')
+            const {product_id , value} = req.body
+            console.log(req.body)
+            const email = req.session.user 
+            const user = await UserCollection.findOne({email},{user_id : 1, _id : 0})
+            const orders = await OrderCollection.find({user_id : user.user_id})
+            for (let i = 0; i < orders.length; i++) {
+                for (let j = 0; j < orders[i].items.length; j++) {
+                    if (orders[i].items[j].product_id === product_id) {
+                        orders[i].items[j].rating = Number(value);
+                    }
+                }
+
+                await orders[i].save()
+            }
+   
+            res.json({
+                success : true
+            })
+
+        }catch(e){
+            console.log(e)
+        }
+    } 
 } 

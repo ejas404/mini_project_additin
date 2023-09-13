@@ -11,16 +11,7 @@ function couponDiscount(id) {
                 couponVal.innerText = ''
                 couponTitle.innerText = ''
                 itemSum.innerText = res.total
-                return
-            }
-<<<<<<< Updated upstream
-            couponVal.innerText = value
-            couponTitle.innerText = couponCode
-            itemSum.innerText = res.total
-        }else{
-            window.location.href = res.redirect
-=======
-            if (res.success) {
+            } else if (res.success) {
                 let { couponCode, couponValue, couponType } = res.coupon
                 let value;
                 if (couponType === 'percent') {
@@ -74,7 +65,6 @@ function checkoutPayment(){
     .then((res)=>{
         if(res.success){
             payment(res.orderInstance)
->>>>>>> Stashed changes
         }
     })
 }

@@ -4,74 +4,7 @@ const ProductCollection = require('../Model/product')
 const OrderCollection = require('../Model/order')
 const CouponCollection = require('../Model/coupon')
 
-<<<<<<< Updated upstream
-const { v4: uuidv4 } = require('uuid');
-const { ObjectId } = require('mongodb')
 
-function dateConvert(timeStr){
-    const timeStamp = new Date(timeStr)
-    const option = {day :'numeric',month:'short',year:'numeric'}
-
-    const timeFormat = timeStamp.toLocaleString('en-Us',option)
-    return timeFormat
-}
-
-const getTotalSum = async (email) => {
-    try {
-
-        const cartSum = await UserCollection.aggregate([
-            {
-                $match: {
-                    email
-                }
-            },
-            {
-                $unwind: '$cart'
-            },
-            {
-                $lookup: {
-                    from: 'products',
-                    localField: 'cart.product_id',
-                    foreignField: 'product_id',
-                    as: 'cartProducts'
-                }
-            },
-            {
-                $unwind: '$cartProducts'
-            },
-            {
-                $match: {
-                    'cartProducts.isAvailable': true
-                }
-            },
-            {
-                $project: {
-                    _id: 0,
-                    each: {
-                        $multiply: ['$cart.quantity', '$cartProducts.productPrice']
-                    }
-                },
-
-            },
-            {
-                $group: {
-                    _id: null,
-                    total: {
-                        $sum: '$each'
-                    }
-                }
-            }
-        ])
-
-        return cartSum
-
-    } catch (e) {
-        console.log(e)
-        return false
-    }
-}
-
-=======
 const Razorpay = require('razorpay')
 const PDFDocument = require("../storage/pdfTable");
 const invoiceGenerate = require('../storage/invoicePdf')
@@ -79,7 +12,6 @@ const invoiceGenerate = require('../storage/invoicePdf')
 const { v4: uuidv4 } = require('uuid');
 const { ObjectId } = require('mongodb')
 
->>>>>>> Stashed changes
 
 module.exports = {
     proceedCart: async (req, res) => {
@@ -499,11 +431,7 @@ module.exports = {
                 orders.push(...combinedItems)
             }
 
-<<<<<<< Updated upstream
             res.render('my-orders', { dest: 'myOrder', isUser: true, orders, user })
-=======
-            res.render('my-orders', { dest: 'myOrder', isUser: true, orders, user, count: 3 })
->>>>>>> Stashed changes
         } catch (e) {
             console.log(e)
         }
@@ -549,24 +477,12 @@ module.exports = {
             
             res.render('order-details',{isUser:true,products,order:data,orderDate})
 
-<<<<<<< Updated upstream
         } 
         catch (e) {
             console.log(e)
         }
     },
-    test: async (req, res) => {
-=======
-            res.render('order-details', { isUser: true, products, order: data, orderDate })
-
-        }
-        catch (e) {
-            console.log(e)
-            if (e instanceof TypeError) {
-                res.redirect('/404-not-found')
-            }
-        }
-    },
+    
     invoice: async (req, res) => {
         try {
 
@@ -609,7 +525,6 @@ module.exports = {
         } catch (e) {
             console.log(e)
         }
->>>>>>> Stashed changes
     }
 }
 
@@ -644,7 +559,7 @@ function dateConvert(timeStr) {
     return timeFormat
 }
 
-const getTotalSum = async (email) => {
+ async function getTotalSum (email){
     try {
 
         const cartSum = await UserCollection.aggregate([

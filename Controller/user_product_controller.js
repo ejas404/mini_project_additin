@@ -57,31 +57,6 @@ const getTotalSum = async (email) => {
 }
 
 module.exports = {
-<<<<<<< Updated upstream
-    addToCart : async(req,res)=>{
-       try{
-        const product_id = req.params.id
-        const email = req.session.user
-        const isCartItem = await UserCollection.findOne({email, 'cart.product_id' : product_id})
-        // if(isCartItem){
-        //     return res.json({
-        //         msg : 'product alredy exist',
-        //         success : true
-        //     })
-        // }
-        const product = await ProductCollection.findOne({product_id})
-        const cart = {
-            product_id : product.product_id,
-            quantity : 1,
-            price : product.productPrice
-        }
-        const user = await UserCollection.findOneAndUpdate({email},{$push : {cart : cart}})
-        console.log(user)
-        return  res.json({
-            successMsg: true,
-        })
-    }catch(e){
-=======
     addToCart: async (req, res) => {
         try {
             const product_id = req.params.id
@@ -105,7 +80,6 @@ module.exports = {
                 successMsg: true,
             })
         } catch (e) {
->>>>>>> Stashed changes
             console.log(e)
             return res.json({ error: e.message })
         }
@@ -310,9 +284,6 @@ module.exports = {
         } catch (e) {
             console.log(e)
         }
-<<<<<<< Updated upstream
-    }, 
-=======
     },
     rating: async (req, res) => {
         try {
@@ -357,5 +328,4 @@ module.exports = {
             console.log(e)
         }
     }
->>>>>>> Stashed changes
 } 

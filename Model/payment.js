@@ -10,3 +10,6 @@ const paymentSchema = new Schema({
     refund: {type: Boolean,default: false},
     refundId: {type: String}
 })
+
+const PaymentCollection =  mongoose.model('payment',paymentSchema)
+module.exports = PaymentCollection

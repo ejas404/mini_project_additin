@@ -68,22 +68,14 @@ module.exports = {
             }
             const productName = (titleUpperCase(product[0].productName))
             if (req.session.user) {
-<<<<<<< Updated upstream
-                return res.render('user-single-product', { product, productName, isUser: true, })
-=======
                 const email = req.session.user
                 const user = await UserCollection.findOne({email, "cart.product_id": product_id})
                 return res.render('user-single-product', { product, productName, isUser: true, rating})
->>>>>>> Stashed changes
             }
             res.render('user-single-product', { product, productName,rating })
         } catch (e) {
-<<<<<<< Updated upstream
-            if(e instanceof TypeError){
-=======
             if (e instanceof TypeError) {
                 console.log(e)
->>>>>>> Stashed changes
                 res.status(404)
                 res.redirect('/404-not-found')
             }else{

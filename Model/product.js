@@ -9,8 +9,8 @@ const productSchema = new Schema({
     productQuantity:{type:Number, required:true},
     productCategory:{type:String, required:true},
     productDescription:{type:String, required:true},
-    productImg:{type:[String], required:[true, "imges cannote be empty"]},
-    rating : {type : Number, default : 0},
+    productImg:{type:[String], required:[true, "imges cannot be empty"]},
+    productRating : {type :[{key:String, value : Number}]},
     isAvailable : {type:Boolean , required:true}
 })
 

@@ -58,15 +58,24 @@ module.exports = {
 
             ])
             console.log(product)
+            console.log('hai')
+            let rating;
+            if(product[0].productRating?.length){
+             const productRating = product[0].productRating
+             rating = productRating.reduce((acc, each)=> acc + each.value ,0)
+             rating = Math.round(rating/productRating.length)
+            
+            }
             const productName = (titleUpperCase(product[0].productName))
             if (req.session.user) {
                 const email = req.session.user
-                const user = await UserCollection.findOne({email, "cart.product_id": "8f88c912-7836-4497-8509-37dc9351b81e"})
-                return res.render('user-single-product', { product, productName, isUser: true, })
+                const user = await UserCollection.findOne({email, "cart.product_id": product_id})
+                return res.render('user-single-product', { product, productName, isUser: true, rating})
             }
-            res.render('user-single-product', { product, productName })
+            res.render('user-single-product', { product, productName,rating })
         } catch (e) {
             if (e instanceof TypeError) {
+                console.log(e)
                 res.status(404)
                 res.redirect('/404-not-found')
             } else {

@@ -1,7 +1,6 @@
 
 const ProductCollection = require('../Model/product')
 const CategoryCollection = require('../Model/category')
-const subCategoryCollection = require('../Model/sub_category')
 const BannerCollection = require('../Model/banner_details')
 const titleUpperCase = require('../public/scripts/title_uppercase')
 const { v4: uuidv4 } = require('uuid');

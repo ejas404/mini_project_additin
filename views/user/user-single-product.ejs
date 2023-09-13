@@ -38,8 +38,14 @@
                     <h1 class="my-3">
                         <%= locals?.productName %>
                     </h1>
-                    <h2 class="ind-rs my-3"> <span><%= locals.product[0].productPrice %></h2>
-                    <div class="del"><h3 class="ind-rs" style="color: black;"><%= Number(locals.product[0].productPrice) + 1000 %></h3></div>
+                    <h2 class="ind-rs my-3"> <span>
+                            <%= locals.product[0].productPrice %>
+                    </h2>
+                    <div class="del">
+                        <h3 class="ind-rs" style="color: black;">
+                            <%= Number(locals.product[0].productPrice) + 1000 %>
+                        </h3>
+                    </div>
                     <p class="my-2 w-75">
                         <%= locals.product[0].productDescription %>
                     </p>
@@ -55,8 +61,11 @@
                     </div>
 
                     <div class="buttons">
-                        <input class="default-button" onclick="addToCart('<%= locals.product[0].product_id %>',this)" type="button" value="Add to cart" >
-                        <a class="default-button" href="/buynow/<%= locals.product[0].product_id %>" style="background-color: #fff; border: 2px solid #002442; color:#002442 ;" >Buy Now</a>
+                        <input class="default-button" onclick="addToCart('<%= locals.product[0].product_id %>',this)"
+                            type="button" value="Add to cart">
+                        <a class="default-button" href="/buynow/<%= locals.product[0].product_id %>"
+                            style="background-color: #fff; border: 2px solid #002442; color:#002442 ;">Buy Now</a>
+
                     </div>
 
 

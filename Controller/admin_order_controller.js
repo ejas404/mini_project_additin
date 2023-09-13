@@ -21,6 +21,11 @@ module.exports = {
                         foreignField : 'user_id',
                         as :'user'
                     }
+                },
+                {
+                    $sort : {
+                        createdAt : -1
+                    }
                 }
             ])
             
@@ -39,6 +44,11 @@ module.exports = {
             for(let each of order.items){
                 const productUpdate = await ProductCollection.findOneAndUpdate({product_id : each.product_id},{$inc :{productQuantity : -each.quantity}})
                 console.log(productUpdate)
+            }
+
+            if (order.items.length > 1) {
+                const cartUpdate = await UserCollection.findOneAndUpdate({ user_id : order.user_id },
+                    { $set: { cart: [] } })
             }
 
             res.redirect('/admin/orders')

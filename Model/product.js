@@ -9,7 +9,12 @@ const productSchema = new Schema({
     productQuantity:{type:Number, required:true},
     productCategory:{type:String, required:true},
     productDescription:{type:String, required:true},
+<<<<<<< Updated upstream
     productImg:{type:[String], required:[true, "imges cannote be empty"]},
+=======
+    productImg:{type:[String], required:[true, "imges cannot be empty"]},
+    productRating : {type :[{key:String, value : Number}]},
+>>>>>>> Stashed changes
     isAvailable : {type:Boolean , required:true}
 })
 

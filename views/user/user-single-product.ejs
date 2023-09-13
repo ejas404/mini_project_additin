@@ -38,8 +38,14 @@
                     <h1 class="my-3">
                         <%= locals?.productName %>
                     </h1>
-                    <h2 class="ind-rs my-3"> <span><%= locals.product[0].productPrice %></h2>
-                    <div class="del"><h3 class="ind-rs" style="color: black;"><%= Number(locals.product[0].productPrice) + 1000 %></h3></div>
+                    <h2 class="ind-rs my-3"> <span>
+                            <%= locals.product[0].productPrice %>
+                    </h2>
+                    <div class="del">
+                        <h3 class="ind-rs" style="color: black;">
+                            <%= Number(locals.product[0].productPrice) + 1000 %>
+                        </h3>
+                    </div>
                     <p class="my-2 w-75">
                         <%= locals.product[0].productDescription %>
                     </p>
@@ -49,6 +55,7 @@
 
 
                     <div class="weight-scale d-flex">
+<<<<<<< Updated upstream
                         <div>1</div>
                         <div>5</div>
                         <div>10</div>
@@ -58,6 +65,26 @@
                         <input class="py-1 ps-4"  type="number" min="1" value="1" style="width: 4rem;">
                         <input class="default-button" onclick="addToCart('<%= locals.product[0].product_id %>')" type="button" value="Add to cart" >
                         <input  class="default-button" type="button" value="Buy Now" style="background-color: #fff; border: 2px solid #002442; color:#002442 ;">
+=======
+                        <% for (let i=0 ; i < 5 ; i++ ) { %>
+                            <% if(i < locals.rating) { %>
+                                <label style="font-size: 20px;" aria-label="1 star" class="rating__label"
+                                    for="rating3-1"><i
+                                        class="rating__icon rating__icon--star fa fa-star checked-star"></i></label>
+                                <% } else { %>
+                                    <label style="font-size: 20px;" aria-label="1 star" class="rating__label"
+                                        for="rating3-1"><i
+                                            class="rating__icon rating__icon--star fa fa-star"></i></label>
+                                    <% } %>
+                                        <% } %>
+                    </div>
+
+                    <div class="buttons">
+                        <input class="default-button" onclick="addToCart('<%= locals.product[0].product_id %>',this)"
+                            type="button" value="Add to cart">
+                        <a class="default-button" href="/buynow/<%= locals.product[0].product_id %>"
+                            style="background-color: #fff; border: 2px solid #002442; color:#002442 ;">Buy Now</a>
+>>>>>>> Stashed changes
                     </div>
 
 

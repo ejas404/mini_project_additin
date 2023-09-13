@@ -21,15 +21,12 @@
                     <div class="px-4 py-3 rounded" style="background-color: #fff;">
                         <h2>Payment Method</h2>
                         <form action="/placeorder" method="post">
-                            <input type="radio" id="cashOnDelivery" name="paymentMethod" value="COD"
+                            <input onclick="changeButton()" type="radio" id="cashOnDelivery" name="paymentMethod" value="COD"
                                 checked>
                             <label for="cashOnDelivery">Cash on Delivery</label><br>
 
-                            <input type="radio" id="upi" name="paymentMethod" value="UPI" disabled>
-                            <label for="upi">UPI</label><br>
-
-                            <input type="radio" id="bank" name="paymentMethod" value="Bank" disabled>
-                            <label for="bank">Bank</label><br>
+                            <input onclick="changeButton()" type="radio" id="upi" name="paymentMethod" value="UPI/Bank" >
+                            <label for="upi">UPI/Bank</label><br>
 
                             <h2>Discount Coupons</h2>
 
@@ -90,8 +87,10 @@
                                         <%= locals.total %>
                                     </p>
                                 </div>
-                                <input onclick="" class="default-button px-2 rounded mt-1" type="submit"
-                                    value="confirm order">
+                               <div class="text-end">
+                                <input id="formSubmitBtn" class="default-button px-2 rounded mt-1" type="submit"
+                                value="confirm order">
+                               </div>
                             </div>
 
 
@@ -103,6 +102,7 @@
 
 
         </div>
+        <script defer src="https://checkout.razorpay.com/v1/checkout.js"></script>
         <script defer src="/scripts/notification.js"></script>
         <script defer src="/scripts/select_payment.js"></script>
         <%- include('../partials/footer')%>

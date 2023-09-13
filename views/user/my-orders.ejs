@@ -21,7 +21,7 @@
                         <h1 class="double-underline mb-5">Orders</h1>
                     </div>
                     <% if (! locals.orders[0]) {%>
-                        <div class="empty-message text-center">
+                        <div class="empty-message text-center mt-5">
                             <h1>Sorry No Orders yet <br>
                                 please buy something </h1>
                         </div>
@@ -46,7 +46,40 @@
                                                     <p class="product-weight"><span>Weight:</span>
                                                         <%= each.productWeight %>kg
                                                     </p>
+<<<<<<< Updated upstream
                                                     
+=======
+                                                    <% if (each.orderStatus==='confirmed'){ %>
+                                                    <div class="rating-group" id="ratingGroup"
+                                                        data-pId="<%= each.product_id %>">
+                                                        <% for (let i=1; i<=5 ; i++) { %>
+                                                            <% if (i <= each.rating ) {%>
+                                                                <label aria-label="<%= i %> star" class="rating__label"
+                                                                    for="rating<%= k %>-<%= i %>"><i
+                                                                        class="rating__icon rating__icon--star fa fa-star checked-star"></i></label>
+
+                                                                <input onclick="starRated(this,'<%= k %>')"
+                                                                    class="rating__input" name="rating<%= k %>"
+                                                                    id="rating<%= k %>-<%= i %>" value="<%= i %>"
+                                                                    type="radio" data-check="true">
+
+                                                                <% } else { %>
+                                                                    <label aria-label="<%= i %> star" class="rating__label"
+                                                                        for="rating<%= k %>-<%= i %>"><i
+                                                                            class="rating__icon rating__icon--star fa fa-star"></i></label>
+
+                                                                    <input onclick="starRated(this,'<%= k %>')"
+                                                                        class="rating__input" name="rating<%= k %>"
+                                                                        id="rating<%= k %>-<%= i %>" value="<%= i %>"
+                                                                        type="radio">
+                                                                    <% } %>
+
+                                                                        <% } %>
+
+                                                    </div>
+                                                    <% } %>
+
+>>>>>>> Stashed changes
                                                 </div>
                                                 <div class="cart-item-mid">
                                                     <%if(each.orderStatus ==='cancelled'){ %>

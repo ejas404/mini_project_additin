@@ -4,6 +4,7 @@ const ProductCollection = require('../Model/product')
 const OrderCollection = require('../Model/order')
 const CouponCollection = require('../Model/coupon')
 
+<<<<<<< Updated upstream
 const { v4: uuidv4 } = require('uuid');
 const { ObjectId } = require('mongodb')
 
@@ -70,6 +71,15 @@ const getTotalSum = async (email) => {
     }
 }
 
+=======
+const Razorpay = require('razorpay')
+const PDFDocument = require("../storage/pdfTable");
+const invoiceGenerate = require('../storage/invoicePdf')
+
+const { v4: uuidv4 } = require('uuid');
+const { ObjectId } = require('mongodb')
+
+>>>>>>> Stashed changes
 
 module.exports = {
     proceedCart: async (req, res) => {
@@ -249,6 +259,23 @@ module.exports = {
         }
     },
     createOrder: async (req, res) => {
+
+        // if order created already this will redirect to razorpay
+        if (req.session.orderInstance) {
+            try {
+                const orderInstance = req.session.orderInstance
+              return  res.json({
+                    success: true,
+                    orderInstance
+                })
+            } catch (e) {
+               return res.json({
+                    success: false,
+                    redirect: '/payment'
+                })
+            }
+        }
+
         const { paymentMethod, discountCoupon } = req.body
         let address_id;
         let products;
@@ -393,11 +420,33 @@ module.exports = {
                 newOrderData.coupon = coupon.couponCode
             }
             const newOrder = await OrderCollection.create(newOrderData)
+          
             req.session.orderDetails = null;
             req.session.cartOrder = null
             req.session.newOrder = newOrder.order_id
-            res.redirect('/order-completed')
+            if (paymentMethod === 'COD') {
+                res.redirect('/order-completed')
+            } else if (paymentMethod === 'UPI/Bank') {
+
+
+                try {
+                    const orderInstance = await paymentOnline(amountPayable, newOrder.order_id)
+                    req.session.orderInstance = orderInstance
+                    console.log(orderInstance)
+                    res.json({
+                        success: true,
+                        orderInstance
+                    })
+                } catch (e) {
+                    res.json({
+                        success: false,
+                        redirect: '/payment'
+                    })
+                }
+            }
+
         } catch (e) {
+
             res.redirect('/order-failed')
             console.log(e)
         }
@@ -450,7 +499,11 @@ module.exports = {
                 orders.push(...combinedItems)
             }
 
+<<<<<<< Updated upstream
             res.render('my-orders', { dest: 'myOrder', isUser: true, orders, user })
+=======
+            res.render('my-orders', { dest: 'myOrder', isUser: true, orders, user, count: 3 })
+>>>>>>> Stashed changes
         } catch (e) {
             console.log(e)
         }
@@ -496,11 +549,154 @@ module.exports = {
             
             res.render('order-details',{isUser:true,products,order:data,orderDate})
 
+<<<<<<< Updated upstream
         } 
         catch (e) {
             console.log(e)
         }
     },
     test: async (req, res) => {
+=======
+            res.render('order-details', { isUser: true, products, order: data, orderDate })
+
+        }
+        catch (e) {
+            console.log(e)
+            if (e instanceof TypeError) {
+                res.redirect('/404-not-found')
+            }
+        }
+    },
+    invoice: async (req, res) => {
+        try {
+
+            const order_id = req.params.id
+            const email = req.session.user
+
+            const user = await UserCollection.findOne({ email })
+            const orderProducts = await OrderCollection.aggregate([
+                {
+                    $match: {
+                        order_id
+                    }
+                },
+                {
+                    $lookup: {
+                        from: 'products',
+                        localField: 'items.product_id',
+                        foreignField: 'product_id',
+                        as: 'products'
+                    }
+                }
+            ])
+
+            console.log(orderProducts)
+
+            const doc = new PDFDocument();
+
+            const pdfDoc = invoiceGenerate(doc, orderProducts[0], user)
+
+            res.setHeader("Content-Type", "application/pdf");
+            res.setHeader("Content-Disposition", 'inline; filename="sales-details.pdf"');
+
+            pdfDoc.pipe(res);
+
+            // End the PDF document
+            pdfDoc.end();
+
+
+
+        } catch (e) {
+            console.log(e)
+        }
+>>>>>>> Stashed changes
     }
 }
+
+
+// helper functions-----------------------------------------------------------
+
+async function paymentOnline(amount, order_id) {
+    const instance = new Razorpay({
+        key_id: process.env.RAZORPAY_KEY_ID,
+        key_secret: process.env.RAZORPAY_SECRET_KEY
+    })
+
+    try {
+        const orderInstance = await instance.orders.create({
+            amount: amount * 100,
+            currency: 'INR',
+            receipt: order_id
+        })
+        return orderInstance
+    } catch (e) {
+        console.log(e)
+        throw new Error('order instance didnt created')
+    }
+}
+
+
+function dateConvert(timeStr) {
+    const timeStamp = new Date(timeStr)
+    const option = { day: 'numeric', month: 'short', year: 'numeric' }
+
+    const timeFormat = timeStamp.toLocaleString('en-Us', option)
+    return timeFormat
+}
+
+const getTotalSum = async (email) => {
+    try {
+
+        const cartSum = await UserCollection.aggregate([
+            {
+                $match: {
+                    email
+                }
+            },
+            {
+                $unwind: '$cart'
+            },
+            {
+                $lookup: {
+                    from: 'products',
+                    localField: 'cart.product_id',
+                    foreignField: 'product_id',
+                    as: 'cartProducts'
+                }
+            },
+            {
+                $unwind: '$cartProducts'
+            },
+            {
+                $match: {
+                    'cartProducts.isAvailable': true
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    each: {
+                        $multiply: ['$cart.quantity', '$cartProducts.productPrice']
+                    }
+                },
+
+            },
+            {
+                $group: {
+                    _id: null,
+                    total: {
+                        $sum: '$each'
+                    }
+                }
+            }
+        ])
+
+        return cartSum
+
+    } catch (e) {
+        console.log(e)
+        return false
+    }
+}
+
+

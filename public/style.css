@@ -44,6 +44,12 @@ body {
     width: 100%;
     top: 0;
 }
+.navIt {
+    font-weight: bolder;
+}
+.nav-item {
+  padding-right: 1rem;
+}
 
 .navbar>div {
     width: 100%;
@@ -1437,6 +1443,34 @@ h1 {
 .orange {
     margin-top: 5px;
     color: rgb(214, 139, 0);
+}
+/*-----------------------------------------------------wallet-----------------------------------------------------*/
+
+
+.page-title {
+	text-align: left;
+    font-size: 20px ;
+}
+.amount-box img {
+	width: 70px;
+}
+
+.amount {
+	font-size: 35px;
+}
+
+.amount-box p {
+	margin-top: 10px;
+	margin-bottom: -10px;
+}
+
+.wallet-head {
+    background-color: var(--main);
+    color: var(--white);
+    padding: 1rem 10px;
+}
+.wallet-box-in {
+    padding-top: 5em;
 }
 
 /*-----------------------------------------------------footer-----------------------------------------------------*/

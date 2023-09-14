@@ -5,6 +5,7 @@ const userHomepageController = require('../Controller/homepage_controller');
 const userController = require('../Controller/user_controller')
 const userProductController = require('../Controller/user_product_controller')
 const userOrderController = require('../Controller/user_order_controller')
+const userPaymentController = require('../Controller/user_payment_controller')
 const userMiddleware = require('../Middlewares/user_middle');
 const homepage_controller = require('../Controller/homepage_controller');
 
@@ -42,6 +43,7 @@ userRouter.post('/emailotp',userController.emailotp)
 
 
 
+
 //routes for ajax
 
 userRouter.delete('/delete-address/:id',userMiddleware.isLoggedinMid,userMiddleware.isBlockedMid,userController.deleteAddress)
@@ -58,6 +60,7 @@ userRouter.post('/update-rating',userProductController.rating)
 userRouter.use(userMiddleware.isLoggedin,userMiddleware.isBlocked)
 
 userRouter.get('/profile',userController.profilePage)
+userRouter.get('/wallet',userController.wallet)
 userRouter.get('/add-address',userController.addAddressPage)
 userRouter.post('/add-address',userController.addAddress)
 userRouter.get('/cart',userProductController.cartPage)
@@ -77,6 +80,11 @@ userRouter.get('/select-address',userOrderController.selelctAddress)
 userRouter.post('/cart-payment',userOrderController.cartPayment)
 userRouter.get('/order/:id',userOrderController.orderDetails)
 userRouter.get('/invoice/:id',userOrderController.invoice)
+
+//payment 
+userRouter.post('/payment/verify',userPaymentController.verifyPayment)
+userRouter.post('/payment/fail',userPaymentController.paymentFailure)
+userRouter.get('/cancel-order/:id', userPaymentController.cancelOrder)
 
 
 // to render 404 page if no routes exists

@@ -28,9 +28,9 @@ module.exports = {
                     }
                 ])
 
-                res.render('index', { isUser: true, products, count, topBanners, cartAndWish })
+                res.render('index', { isUser: true, products, count, topBanners, cartAndWish,navIt : 'home' })
             } else {
-                res.render('index', { products, count, topBanners })
+                res.render('index', { products, count, topBanners, navIt : 'home' })
             }
 
         } catch (e) {
@@ -146,9 +146,9 @@ module.exports = {
                         }
                     }
                 ])
-                res.render('products', { isUser: true, products, count, categories, cartAndWish })
+                res.render('products', { isUser: true, products, count, categories, cartAndWish ,navIt : 'product'})
             } else {
-                res.render('products', { products, count, categories })
+                res.render('products', { products, count, categories, navIt : 'product' })
             }
 
         } catch (e) {

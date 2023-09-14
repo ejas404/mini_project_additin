@@ -8,6 +8,7 @@ const userSchema = new Schema({
     email: { type: String, required: true },
     password: { type: String, required: true },
     isBlocked: { type: Boolean, required: true },
+    wallet : {type : Number , default : 0},
     cart: {
         type: [{
             product_id: {

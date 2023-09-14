@@ -8,11 +8,11 @@
     <div class="profile-lists">
         <ul>
             <ul>
-                <li class="<%= dest === 'profile' ? 'border-white' : '' %>"><a href="/profile">Profile</a></li>
-                <li class="<%= dest === 'myOrder' ? 'border-white' : '' %>"><a href="/orders">My Orders</a></li>
-                <li class="<%= dest === 'myCart' ? 'border-white' : '' %>"><a href="/cart">My Cart</a></li>
-                <li class="<%= dest === 'wishlist' ? 'border-white' : '' %>"><a href="/wishlist">Wishlist</a></li>
-                <li class="<%= dest === 'other' ? 'border-white' : '' %>"><a href="/other">Other</a></li>
+                <li class="<%= locals.dest === 'profile' ? 'border-white' : '' %>"><a href="/profile">Profile</a></li>
+                <li class="<%= locals.dest === 'myOrder' ? 'border-white' : '' %>"><a href="/orders">My Orders</a></li>
+                <li class="<%= locals.dest === 'myCart' ? 'border-white' : '' %>"><a href="/cart">My Cart</a></li>
+                <li class="<%= locals.dest === 'wishlist' ? 'border-white' : '' %>"><a href="/wishlist">Wishlist</a></li>
+                <li class="<%= locals.dest === 'other' ? 'border-white' : '' %>"><a href="/other">Other</a></li>
 
             </ul>
 

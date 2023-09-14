@@ -244,6 +244,14 @@ module.exports = {
     },
     error404 : async (req,res)=>{
         res.render('404-error',{isUser : true})
+    },
+    wallet : async (req,res)=>{
+        try{
+            const user = await UserCollection.findOne({email : req.session.user})
+            res.render('wallet', {user , isUser : true})
+        }catch(e){
+            console.log(e)
+        }
     }
 
 }

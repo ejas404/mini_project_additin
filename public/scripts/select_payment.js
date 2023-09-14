@@ -1,4 +1,4 @@
-let couponId ;
+let couponId;
 function couponDiscount(id) {
     let itemSum = document.getElementById('itemSum')
     let couponTitle = document.getElementById('couponTitle')
@@ -45,46 +45,128 @@ function changeButton() {
     }
 }
 
-function checkoutPayment(){
+function checkoutPayment() {
     const reqUrl = '/placeorder'
     const reqBody = {
-        paymentMethod : 'UPI/Bank',
+        paymentMethod: 'UPI/Bank',
     }
-    if(couponId){
+    if (couponId) {
         reqBody.discountCoupon = couponId
     }
 
-    fetch(reqUrl,{
-        method : 'POST',
-        headers : {
-            'Content-Type':'application/json'
+    fetch(reqUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
         },
-        body : JSON.stringify(reqBody)
+        body: JSON.stringify(reqBody)
     })
-    .then(res => res.json())
-    .then((res)=>{
-        if(res.success){
-            payment(res.orderInstance)
-        }
-    })
+        .then(res => res.json())
+        .then((res) => {
+            if (res.success) {
+                payment(res.orderInstance)
+            }
+        })
 }
 
-function payment(orderDetails){
+let failedRes;
 
-    var options = {
-        key: 'rzp_test_GJNZbRGoHhpUNK',  
+function payment(orderDetails) {
+
+    let options = {
+        key: 'rzp_test_GJNZbRGoHhpUNK',
         amount: orderDetails.amount,
         currency: orderDetails.currency,
         order_id: orderDetails.id,
         name: 'Acme Corp',
         description: 'Payment for order #12345',
-        handler: function (response){
+        "theme": {
+            "color": "#000000"
+        },
+        "modal": {
+            "ondismiss": function () {
+                cancelPayment(orderDetails)
+            }
+        },
+        handler: function (response) {
             console.log('this is b4 response')
             console.log(response)
-          verifyPayment(response,orderDetails)
+            verifyPayment(response, orderDetails)
         }
-      };
-    
-      var rzp1 = new Razorpay(options);
-      rzp1.open();  
+    };
+
+    const rzp = new Razorpay(options);
+
+    rzp.on('payment.failed',function (response) {
+         
+    })
+    rzp.open();
+}
+
+async function verifyPayment(payment, order) {
+    const response = await fetch('/payment/verify', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            payment,
+            order
+        })
+    })
+    const res = await response.json()
+    if (res.success) {
+        window.location.href = '/order-completed'
+    } else {
+        window.location.href = '/order-failed'
+    }
+}
+
+async function paymentFailed(payment, order) {
+    try {
+        console.log('hai')
+        const response = await fetch('/payment/fail', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                payment,
+                order
+            })
+        })
+        const res = await response.json()
+        if (res.success) {
+            console.log('success1')
+            window.location.href = '/order-failed'
+        } else {
+            console.log('success2')
+            window.location.href = '/order-failed'
+        }
+    } catch (e) {
+        console.log('error on p fail')
+        console.log(e)
+    }
+}
+
+ async function cancelPayment(order) {
+    try {
+      const response = await fetch('/payment/cancel',{
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          order
+        })
+      })
+      const res = await response.json()
+      if(res.successStatus){
+        window.location.href = '/order-failed'
+      }else{
+        window.location.href = '/'
+      }
+    } catch (error) {
+      console.log(error)
+    }
 }

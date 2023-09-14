@@ -142,6 +142,7 @@ module.exports = {
         }
         catch (e) {
             req.session.cartOrder = null
+            res.render('/404-not-found')
             console.log(e)
         }
     },
@@ -398,7 +399,14 @@ module.exports = {
         }
     },
     orderCompleted: (req, res) => {
-        res.render('order-completed', { isUser: true })
+        if(req.session.codCancel){
+            req.session.codCancel = null;
+            res.render('order-completed', { isUser: true , cod : true})
+        }else if(req.session.onlineCancel){
+            req.session.onlineCancel = null
+            res.render('order-completed', { isUser: true , online : true})
+        }
+        res.render('order-completed', {isUser: true})
     },
     orderFailed: (req, res) => {
         res.render('order-failed', { isUser: true })

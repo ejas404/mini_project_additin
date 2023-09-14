@@ -1,4 +1,5 @@
-let couponId;
+let couponId = null;
+let walletAmount = null;
 function couponDiscount(id) {
     let itemSum = document.getElementById('itemSum')
     let couponTitle = document.getElementById('couponTitle')
@@ -33,22 +34,60 @@ function couponDiscount(id) {
         })
 }
 
+const walletMoney = document.getElementById('walletMoney')
+
+function changeSubmit(value) {
+    const button = document.getElementById('formSubmitBtn')
+
+    if (value === 'Wallet') {
+        useWallet()
+        button.type = 'button'
+        button.setAttribute('onclick', `checkoutPayment('Wallet')`)
+    }else{
+        button.type = 'button'
+        button.setAttribute('onclick', `checkoutPayment('UPI/Bank')`)
+    }
+    if (walletAmount && value !== 'Wallet') {
+        walletMoney.innerText = walletAmount
+    }
+
+
+
+}
+
 
 function changeButton() {
     const button = document.getElementById('formSubmitBtn')
-    if (button.type === 'submit') {
-        button.type = 'button'
-        button.setAttribute('onclick', 'checkoutPayment()')
-    } else {
-        button.type = 'submit'
-        button.removeAttribute('onclick')
+    button.type = 'submit'
+    button.removeAttribute('onclick')
+    if (walletAmount) {
+        walletMoney.innerText = walletAmount
     }
 }
 
-function checkoutPayment() {
+function useWallet() {
+    let itemSum = document.getElementById('itemSum')
+    const wallet = Number(walletMoney.innerText)
+    const total = Number(itemSum.innerText)
+    if (total <= wallet) {
+        walletMoney.innerText = wallet - total
+        walletAmount = wallet
+    }
+}
+
+
+
+function checkoutPayment(value) {
+    console.log(value)
+    let pMethod = null;
+    if (value === 'Wallet') {
+        pMethod = 'Wallet'
+    } else {
+        pMethod = 'UPI/Bank'
+    }
     const reqUrl = '/placeorder'
     const reqBody = {
-        paymentMethod: 'UPI/Bank',
+        paymentMethod: pMethod
     }
     if (couponId) {
         reqBody.discountCoupon = couponId
@@ -65,6 +104,9 @@ function checkoutPayment() {
         .then((res) => {
             if (res.success) {
                 payment(res.orderInstance)
+            }
+            if(res.success && res.wallet){
+                window.location.href = '/order-completed'
             }
         })
 }
@@ -97,8 +139,8 @@ function payment(orderDetails) {
 
     const rzp = new Razorpay(options);
 
-    rzp.on('payment.failed',function (response) {
-         
+    rzp.on('payment.failed', function (response) {
+
     })
     rzp.open();
 }
@@ -149,24 +191,24 @@ async function paymentFailed(payment, order) {
     }
 }
 
- async function cancelPayment(order) {
+async function cancelPayment(order) {
     try {
-      const response = await fetch('/payment/cancel',{
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          order
+        const response = await fetch('/payment/cancel', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                order
+            })
         })
-      })
-      const res = await response.json()
-      if(res.successStatus){
-        window.location.href = '/order-failed'
-      }else{
-        window.location.href = '/'
-      }
+        const res = await response.json()
+        if (res.successStatus) {
+            window.location.href = '/order-failed'
+        } else {
+            window.location.href = '/'
+        }
     } catch (error) {
-      console.log(error)
+        console.log(error)
     }
 }

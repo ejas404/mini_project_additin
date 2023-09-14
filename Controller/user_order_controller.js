@@ -123,12 +123,13 @@ module.exports = {
     },
     selectPayment: async (req, res) => {
         try {
+            const user = await UserCollection.findOne({email : req.session.user},{password : 0})
             if (req.session.cartOrder) {
-                const coupons = await CouponCollection.find({})
+                const coupons = await CouponCollection.find({ used: { $nin: [user.user_id] } })
                 const total = req.session.cartOrder.total
                 const count = req.session.cartOrder.count
 
-                return res.render('select-payment', { isUser: true, coupons, total, count })
+                return res.render('select-payment', { isUser: true, coupons, total, count,user})
             }
             const order = req.session.orderDetails
             const product = await ProductCollection.findOne({ product_id: order.product_id })
@@ -137,8 +138,8 @@ module.exports = {
             total = total > 5000 ? total : total + 40;
 
             const count = 1
-            const coupons = await CouponCollection.find({})
-            return res.render('select-payment', { isUser: true, coupons, total, count })
+            const coupons = await CouponCollection.find({ used: { $nin: [user.user_id] } })
+            return res.render('select-payment', { isUser: true, coupons, total, count,user })
         }
         catch (e) {
             req.session.cartOrder = null
@@ -365,6 +366,9 @@ module.exports = {
 
             if (coupon) {
                 newOrderData.coupon = coupon.couponCode
+                coupon.used.push( userDetails[0].user_id)
+                await coupon.save()
+
             }
             const newOrder = await OrderCollection.create(newOrderData)
           
@@ -387,7 +391,24 @@ module.exports = {
                 } catch (e) {
                     res.json({
                         success: false,
-                        redirect: '/payment'
+                        redirect: '/payment',
+                        msg : 'some error occured try after some time'
+                    })
+                }
+            }else if (paymentMethod === 'Wallet') {
+                const user = await UserCollection.findOne({email : req.session.user})
+                if(amountPayable <= user.wallet){
+                    user.wallet = user.wallet - amountPayable
+                    await user.save()
+                    res.json({
+                        success: true,
+                        wallet : true
+                    })
+                }else {
+                    res.json({
+                        success: false,
+                        redirect: '/payment',
+                        msg : 'not enough amount on wallet'
                     })
                 }
             }

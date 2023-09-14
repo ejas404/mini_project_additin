@@ -152,6 +152,14 @@ nav img {
     top: 50%;
     left: 50%;
 }
+.productButtons , .wishlist{
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+}
+#productCard:hover .productButtons,
+#productCard:hover .wishlist {
+    opacity: 1;
+}
 
 
 /*-----------------------------------------------------dash board-------------------------------------------------*/
@@ -909,6 +917,14 @@ textarea {
 
 .select-payment-total p {
     margin: 3px 0;
+}
+
+.wallet-pay-top {
+    width: inherit;  
+    background-image: linear-gradient(to right, #002442, #1a3787); 
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
 }
 
 /*----------------------------------------------------cart------------------------------------------------------=-*/

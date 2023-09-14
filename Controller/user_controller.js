@@ -239,7 +239,7 @@ module.exports = {
     otherPage : async (req,res)=>{
         let email = req.session.user
         const user = await UserCollection.findOne({email})
-        const coupons = await CouponCollection.find({ user_id: user.user_id })
+        const coupons = await CouponCollection.find({used : {$nin : [ user.user_id ]}})
         res.render('other',{isUser : true, coupons,user, dest : 'other'})
     },
     error404 : async (req,res)=>{

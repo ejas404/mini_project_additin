@@ -17,8 +17,8 @@
         <div class="userprofile-main">
             <div class="user-profile-box">
                 <div class="left-cartdetails " id="cartItemDetails">
-                    <div class="other-box bg-white p-3" style="width: 100%; height: 100%;">
-                        <div class="head-name">
+                    <div class="other-box bg-white p-3" style="max-width: 30rem; height: 100%;">
+                        <div class="head-name text-center">
                             <h1 class="double-underline mb-5">Discount Coupons</h1>
                         </div>
                         <% if (! locals.coupons[0]) {%>
@@ -30,8 +30,8 @@
                                 <div class=" my-3 row coupon-list">
                                     <% for (let each of locals.coupons) { %>
 
-                                        <div class="col-sm-4 d-flex">
-                                            <div class="ms-2 p-1 text-center border d-flex align-items-center">
+                                        <div class="col-sm-6 d-flex">
+                                            <div class="ms-2 p-1 text-center border d-flex align-items-center rounded shadow">
                                                 <div>
                                                     <h5>
                                                         <%= each.couponCode %>

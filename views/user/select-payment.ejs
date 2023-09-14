@@ -18,17 +18,26 @@
 
             <div class="user-profile-box">
                 <div class="select-payment-details" style="padding: 0 23rem;" id="cartItemDetails">
-                    <div class="px-4 py-3 rounded" style="background-color: #fff;">
-                        <h2>Payment Method</h2>
+                    <div class="wallet-pay-top py-3 px-3 rounded-top">
+                        <p class="m-0">your wallet</p>
+                        <p id="walletMoney" class="ind-rs m-0"><%= locals.user?.wallet || 0 %></p>
+                    </div>
+                    <div class="px-4 py-3 rounded shadow" style="background-color: #fff;">
+                        
+                        <h4>Payment Method</h4>
                         <form action="/placeorder" method="post">
                             <input onclick="changeButton()" type="radio" id="cashOnDelivery" name="paymentMethod" value="COD"
                                 checked>
-                            <label for="cashOnDelivery">Cash on Delivery</label><br>
+                            <label class="me-1" for="cashOnDelivery">Cash on Delivery</label>
 
-                            <input onclick="changeButton()" type="radio" id="upi" name="paymentMethod" value="UPI/Bank" >
-                            <label for="upi">UPI/Bank</label><br>
+                            <input onclick="changeSubmit(this.value)" type="radio" id="upi" name="paymentMethod" value="UPI/Bank" >
+                            <label for="upi" class="me-1">UPI/Bank</label>
 
-                            <h2>Discount Coupons</h2>
+                            <input onclick="changeSubmit(this.value)" type="radio" id="upi" name="paymentMethod" value="Wallet" >
+                            <label class="me-1" for="upi">Wallet</label><br>
+
+                            <h4>Discount Coupons</h4>
+                            
 
 
                             <div class=" my-3 row coupon-list">

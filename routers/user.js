@@ -65,7 +65,7 @@ userRouter.get('/add-address',userController.addAddressPage)
 userRouter.post('/add-address',userController.addAddress)
 userRouter.get('/cart',userProductController.cartPage)
 userRouter.get('/wishlist',userProductController.wishListPage)
-userRouter.get('/payment',userOrderController.selectPayment)
+userRouter.get('/payment',userMiddleware.paymentSubmit,userOrderController.selectPayment)
 userRouter.get('/buynow/:id',userOrderController.buyNowPage)
 userRouter.post('/buynow',userOrderController.buyNow)
 userRouter.post('/placeorder',userOrderController.createOrder)
@@ -85,6 +85,7 @@ userRouter.get('/invoice/:id',userOrderController.invoice)
 userRouter.post('/payment/verify',userPaymentController.verifyPayment)
 userRouter.post('/payment/fail',userPaymentController.paymentFailure)
 userRouter.get('/cancel-order/:id', userPaymentController.cancelOrder)
+userRouter.post('/payment/dismiss', userPaymentController.dismissPayment)
 
 
 // to render 404 page if no routes exists

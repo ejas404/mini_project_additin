@@ -63,6 +63,7 @@ module.exports = {
     },
     cartPayment: async (req, res) => {
         req.session.cartPaymentAddressId = req.body.address
+        rea.session.payment = true
         res.redirect('/payment')
     },
 
@@ -114,6 +115,7 @@ module.exports = {
                 order.addressId = _id
             }
             req.session.orderDetails = order
+            req.session.payment = true
 
             res.redirect('/payment')
         }
@@ -203,22 +205,6 @@ module.exports = {
         }
     },
     createOrder: async (req, res) => {
-
-        // if order created already this will redirect to razorpay
-        if (req.session.orderInstance) {
-            try {
-                const orderInstance = req.session.orderInstance
-              return  res.json({
-                    success: true,
-                    orderInstance
-                })
-            } catch (e) {
-               return res.json({
-                    success: false,
-                    redirect: '/payment'
-                })
-            }
-        }
 
         const { paymentMethod, discountCoupon } = req.body
         let address_id;
@@ -386,7 +372,8 @@ module.exports = {
                     console.log(orderInstance)
                     res.json({
                         success: true,
-                        orderInstance
+                        orderInstance,
+                        online : true
                     })
                 } catch (e) {
                     res.json({
@@ -420,16 +407,20 @@ module.exports = {
         }
     },
     orderCompleted: (req, res) => {
+        req.session.payment = null;
         if(req.session.codCancel){
             req.session.codCancel = null;
             res.render('order-completed', { isUser: true , cod : true})
         }else if(req.session.onlineCancel){
             req.session.onlineCancel = null
             res.render('order-completed', { isUser: true , online : true})
+        }else{
+            res.render('order-completed', {isUser: true}) 
         }
-        res.render('order-completed', {isUser: true})
+      
     },
     orderFailed: (req, res) => {
+        req.session.payment = null;
         res.render('order-failed', { isUser: true })
     },
     myOrders: async (req, res) => {

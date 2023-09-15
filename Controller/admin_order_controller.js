@@ -29,7 +29,7 @@ module.exports = {
                 }
             ])
             
-            res.render('admin-orders',{orders,isAdmin:true})
+            res.render('admin-orders',{orders,isAdmin:true,adminSide : true})
         }catch(e){
             console.log(e)
         }

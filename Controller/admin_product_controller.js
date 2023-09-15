@@ -206,7 +206,7 @@ module.exports = {
 
             ])
             const categories = await CategoryCollection.find()
-            res.render('admin-products', { products, categories, grey: 'product', isAdmin: true })
+            res.render('admin-products', { products, categories, grey: 'product', isAdmin: true,adminSide : true })
         } catch (e) {
             console.log(e)
         }
@@ -241,7 +241,7 @@ module.exports = {
         try{
         const topBanners = await BannerCollection.findOne({name : 'homepage_top_banner'})
         console.log(topBanners)
-        res.render('others',{topBanners,isAdmin:true})
+        res.render('others',{topBanners,isAdmin:true,adminSide : true})
         }catch(e){
             console.log(e)
         }

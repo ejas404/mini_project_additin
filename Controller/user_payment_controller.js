@@ -9,6 +9,7 @@ const crypto = require('crypto')
 module.exports = {
 
     verifyPayment: async (req, res) => {
+        req.session.payment = null
         req.session.orderInstance = null
         try {
             const email = req.session.user
@@ -64,67 +65,69 @@ module.exports = {
 
     },
 
-     paymentFailure : async(req, res) => {
+    paymentFailure: async (req, res) => {
         console.log('failure')
+        req.session.payment = null
         req.session.orderInstance = null
-        const {order , payment} = req.body
+        const { order, payment } = req.body
         try {
-          const email = req.session.user
-          const user = await UserCollection.findOne({email})
-          const failedPayment = new PaymentCollection({
-            order_id: order.receipt,
-            user_id : user.user._id,
-            paymentId: payment.error.metadata.payment_id,
-            razorpayOrderId:payment.error.metadata.order_id,
-            isVerified : false
-          })
-          await failedPayment.save()
-          const orderUpdate = await OrderCollection.findOneAndUpdate({order_id : order.receipt}, {
-            $set: {
-              isCancelled: true,
-              orderStatus : 'failed'
-            }
-          })
-          res.json({success : true})
+            const email = req.session.user
+            const user = await UserCollection.findOne({ email })
+            const failedPayment = new PaymentCollection({
+                order_id: order.receipt,
+                user_id: user.user._id,
+                paymentId: payment.error.metadata.payment_id,
+                razorpayOrderId: payment.error.metadata.order_id,
+                isVerified: false
+            })
+            await failedPayment.save()
+            const orderUpdate = await OrderCollection.findOneAndUpdate({ order_id: order.receipt }, {
+                $set: {
+                    isCancelled: true,
+                    orderStatus: 'failed'
+                }
+            })
+            res.json({ success: true })
         } catch (e) {
-          console.log(e)
+            console.log(e)
         }
-      },
-      cancelOrder : async (req,res)=>{
-        try{
+    },
+    cancelOrder: async (req, res) => {
+        try {
             const email = req.session.user
             const order_id = req.params.id
-            const order = await OrderCollection.findOne({order_id})
-         
-            for(let each of order.items){
-                const productUpdate = await ProductCollection.findOneAndUpdate({product_id : each.product_id},{$inc :{productQuantity : each.quantity}})
+            const order = await OrderCollection.findOne({ order_id })
+
+            for (let each of order.items) {
+                const productUpdate = await ProductCollection.findOneAndUpdate({ product_id: each.product_id }, { $inc: { productQuantity: each.quantity } })
                 console.log(productUpdate)
             }
 
-            if(order.paymentMethod === 'COD'){
+            if (order.paymentMethod === 'COD' || order.paymentMethod === 'Wallet') {
                 req.session.codCancel = true
                 order.orderStatus = 'cancelled'
                 order.isCancelled = true
-    
+
                 await order.save()
-    
-               return res.redirect('/order-completed')
-            }else if (order.paymentMethod === 'UPI/Bank'){
+
+                return res.redirect('/order-completed')
+            } else if (order.paymentMethod === 'UPI/Bank') {
                 console.log(order.order_id)
-                const payment = await PaymentCollection.findOne({orderId : order.order_id})
+                const payment = await PaymentCollection.findOne({ orderId: order.order_id })
                 console.log(payment)
-                if(payment){
-                    const amount  = order.amountPayable
-                    const user = await UserCollection.findOne({email})
-                    if(!user.wallet){
+                if (payment) {
+                    const amount = order.amountPayable
+                    const user = await UserCollection.findOne({ email })
+                    if (!user.wallet) {
                         user.wallet = amount
-                    }else{
+                    } else {
                         user.wallet = user.wallet + amount
                     }
-
+                    payment.refund = true
+                    await payment.save()
                     await user.save()
-                }else{
-                   return res.send('cannot find payment contact authority')
+                } else {
+                    return res.send('cannot find payment contact authority')
                 }
             }
             order.orderStatus = 'cancelled'
@@ -133,10 +136,30 @@ module.exports = {
             await order.save()
 
             req.session.onlineCancel = true
-            return  res.redirect('/order-completed')
+            res.redirect('/order-completed')
+            // return  res.json({
+            //     success : true,
+            //     redirect : '/order-completed'
 
-        }catch(e){
+            // })
+
+        } catch (e) {
             console.log(e)
         }
-      }
+    },
+    dismissPayment: async (req,res) => {
+        req.session.payment = null
+        try {
+            const order = await OrderCollection.findOneAndUpdate({ order_id: req.body.order.receipt }, {
+                $set: {
+                    isCancelled: true,
+                    orderStatus : 'cancelled'
+                }
+            })
+            console.log('dismiss payment')
+            res.json({ success: true })
+        } catch (error) {
+            res.json({ success: false })
+        }
+    }
 }

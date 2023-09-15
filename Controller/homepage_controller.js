@@ -57,15 +57,14 @@ module.exports = {
 
 
             ])
-            console.log(product)
-            console.log('hai')
-            let rating;
+            let rating = null;
             if(product[0].productRating?.length){
              const productRating = product[0].productRating
              rating = productRating.reduce((acc, each)=> acc + each.value ,0)
              rating = Math.round(rating/productRating.length)
             
             }
+            console.log(`rating ${rating}`)
             const productName = (titleUpperCase(product[0].productName))
             if (req.session.user) {
                 const email = req.session.user

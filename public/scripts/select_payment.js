@@ -72,6 +72,14 @@ function useWallet() {
     if (total <= wallet) {
         walletMoney.innerText = wallet - total
         walletAmount = wallet
+    }else{
+        const wallet = document.getElementById('wallet')
+        const upi = document.getElementById('upi')
+
+        wallet.disabled = true
+        upi.checked = true
+        generateMessage('info','insufficient balance on wallet')
+
     }
 }
 
@@ -102,11 +110,10 @@ function checkoutPayment(value) {
     })
         .then(res => res.json())
         .then((res) => {
-            if (res.success) {
-                payment(res.orderInstance)
-            }
             if(res.success && res.wallet){
-                window.location.href = '/order-completed'
+               return window.location.href = '/order-completed'
+            }else if (res.success && res.online) {
+                payment(res.orderInstance)
             }
         })
 }
@@ -193,7 +200,7 @@ async function paymentFailed(payment, order) {
 
 async function cancelPayment(order) {
     try {
-        const response = await fetch('/payment/cancel', {
+        const response = await fetch('/payment/dismiss', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -203,7 +210,7 @@ async function cancelPayment(order) {
             })
         })
         const res = await response.json()
-        if (res.successStatus) {
+        if (res.success) {
             window.location.href = '/order-failed'
         } else {
             window.location.href = '/'

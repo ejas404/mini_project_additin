@@ -49,7 +49,7 @@ module.exports = {
             }
             console.log(dashboardData)
 
-            res.render('dashboard', { isAdmin: true, dashboardData })
+            res.render('dashboard', { isAdmin: true, dashboardData,adminSide  :true})
         } catch {
             console.log(e)
         }

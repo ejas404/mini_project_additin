@@ -44,11 +44,13 @@ body {
     width: 100%;
     top: 0;
 }
+
 .navIt {
     font-weight: bolder;
 }
+
 .nav-item {
-  padding-right: 1rem;
+    padding-right: 1rem;
 }
 
 .navbar>div {
@@ -152,10 +154,13 @@ nav img {
     top: 50%;
     left: 50%;
 }
-.productButtons , .wishlist{
+
+.productButtons,
+.wishlist {
     opacity: 0;
     transition: opacity 0.2s ease-in-out;
 }
+
 #productCard:hover .productButtons,
 #productCard:hover .wishlist {
     opacity: 1;
@@ -228,7 +233,7 @@ nav img {
     font-weight: bold;
 
     &:hover {
-        color: blue;
+        color: blue !important;
     }
 }
 
@@ -289,7 +294,8 @@ nav img {
     background-color: #edf0f7;
     margin: 2rem 10rem;
 }
-#orderTable td{
+
+#orderTable td {
     font-size: 1rem;
 }
 
@@ -298,20 +304,24 @@ nav img {
 .admin-sales-report {
     min-height: calc(100vh - 160px);
 }
+
 .admin-sales-report select {
     cursor: pointer;
 }
+
 .sales-selector select {
     color: black;
 }
+
 #pdfDownloadBtn {
     display: none;
 }
+
 .sales-rprt-back {
     background-color: var(--main);
     color: var(--white);
     position: fixed;
-    top:5rem;
+    top: 5rem;
     left: 1rem;
     padding: 1px 7px;
     font-size: 30px;
@@ -419,7 +429,7 @@ nav img {
     font-size: 15px;
 
     &:hover {
-        color: blue;
+        color: #fff;
     }
 }
 
@@ -786,7 +796,43 @@ textarea {
 
 .top-banner-lists>div {
     width: 60%;
-    background-color: var(--main);
+}
+
+.offer-bar {
+    background-color: #fff;
+    height: 4rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.offer-bar .img-box {
+    height: inherit;
+}
+
+.offer-bar .img-box img {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+}
+
+#offerTitle {
+    text-align: center;
+    font-size: 40px;
+    transition: color 2s;
+    background-image: -webkit-linear-gradient(92deg, #f35626, #feab3a);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-animation: hue 2s infinite linear;
+}
+
+@-webkit-keyframes hue {
+    from {
+        -webkit-filter: hue-rotate(0deg);
+    }
+
+    to {
+        -webkit-filter: hue-rotate(360deg);
+    }
 }
 
 /* .single-product-main{
@@ -920,8 +966,8 @@ textarea {
 }
 
 .wallet-pay-top {
-    width: inherit;  
-    background-image: linear-gradient(to right, #002442, #1a3787); 
+    width: inherit;
+    background-image: linear-gradient(to right, #002442, #1a3787);
     color: #fff;
     display: flex;
     justify-content: space-between;
@@ -950,7 +996,8 @@ textarea {
     padding: 10px 15px;
     box-shadow: -2px 2px 5px black;
 }
-.buy-placeorder{
+
+.buy-placeorder {
     position: sticky;
     width: 30%;
     margin-right: 3%;
@@ -1019,6 +1066,7 @@ textarea {
 .placeorder p {
     margin: 0;
 }
+
 .buy-placeorder p {
     margin: 0;
 }
@@ -1177,80 +1225,82 @@ textarea {
     margin-top: 3rem;
     font-size: 2rem;
 }
+
 /*----------------------------------------------------5 star rating-------------------------------------------------*/
 
-   /* use display:inline-flex to prevent whitespace issues. alternatively, you can put all the children of .rating-group on a single line */
-   .rating-group {
+/* use display:inline-flex to prevent whitespace issues. alternatively, you can put all the children of .rating-group on a single line */
+.rating-group {
     display: inline-flex;
-  }
-  
-  /* make hover effect work properly in IE */
-  .rating__icon {
-    pointer-events: none;
-  }
-  
-  /* hide radio inputs */
-  .rating__input {
-   position: absolute !important;
-   left: -9999px !important;
-  }
-  
-  /* hide 'none' input from screenreaders */
-  .rating__input--none {
-    display: none
-  }
+}
 
-  /* set icon padding and size */
-  .rating__label {
+/* make hover effect work properly in IE */
+.rating__icon {
+    pointer-events: none;
+}
+
+/* hide radio inputs */
+.rating__input {
+    position: absolute !important;
+    left: -9999px !important;
+}
+
+/* hide 'none' input from screenreaders */
+.rating__input--none {
+    display: none
+}
+
+/* set icon padding and size */
+.rating__label {
     cursor: pointer;
     padding: 0 0.1em;
     font-size: 2rem;
-  }
-  
-  /* set default star color */
-  .rating__icon--star {
-    color:#ddd;
-  }
+}
 
-  /* if any input is checked, make its following siblings grey */
-  .rating__input:checked ~ .rating__label .rating__icon--star {
+/* set default star color */
+.rating__icon--star {
     color: #ddd;
-  }
-  
-  /* make all stars orange on rating group hover */
-  .rating-group:hover .rating__label .rating__icon--star {
+}
+
+/* if any input is checked, make its following siblings grey */
+.rating__input:checked~.rating__label .rating__icon--star {
+    color: #ddd;
+}
+
+/* make all stars orange on rating group hover */
+.rating-group:hover .rating__label .rating__icon--star {
     color: orange;
-  }
+}
 
-  /* make hovered input's following siblings grey on hover */
-  .rating__input:hover ~ .rating__label .rating__icon--star {
+/* make hovered input's following siblings grey on hover */
+.rating__input:hover~.rating__label .rating__icon--star {
     color: #ddd;
-  }
-  .checked-star{
-    color: orange!important;
-  }
+}
+
+.checked-star {
+    color: orange !important;
+}
 
 /*-----------------------------------------------------default-------------------------------------------------------*/
 .search {
     width: 100%;
     position: relative;
     display: flex;
-  }
-  
-  .searchTerm {
+}
+
+.searchTerm {
     width: 100%;
     border: 3px solid var(--secondaryMain);
     border-right: none;
     padding: 5px;
     border-radius: 5px 0 0 5px;
     outline: none;
-  }
-  
-  .searchTerm:focus{
+}
+
+.searchTerm:focus {
     color: var(--secondaryMain);
-  }
-  
-  .searchButton {
+}
+
+.searchButton {
     width: 40px;
     height: 40px;
     border: 1px solid var(--secondaryMain);
@@ -1260,14 +1310,15 @@ textarea {
     border-radius: 0 5px 5px 0;
     cursor: pointer;
     font-size: 20px;
-  }
-  
-  /*Resize the wrap to see the search bar change!*/
-  .wrap{
+}
+
+/*Resize the wrap to see the search bar change!*/
+.wrap {
     width: 30%;
     position: relative;
-  }
-  #item-list{
+}
+
+#item-list {
     position: absolute;
     top: 40px;
     background-color: var(--white);
@@ -1276,13 +1327,14 @@ textarea {
     width: 100%;
     margin: 0;
     padding: 0;
-  }
-  #item-list li {
+}
+
+#item-list li {
     border: 1px solid var(--bg_gray);
     padding: 3px 10px;
     cursor: pointer;
 
-  }
+}
 
 
 h1 {
@@ -1363,7 +1415,7 @@ h1 {
     cursor: pointer;
     text-decoration: none;
 
-    &:hover{
+    &:hover {
         color: var(--white);
     }
 }
@@ -1456,35 +1508,39 @@ h1 {
     margin-top: 5px;
     color: rgb(28, 157, 5);
 }
+
 .orange {
     margin-top: 5px;
     color: rgb(214, 139, 0);
 }
+
 /*-----------------------------------------------------wallet-----------------------------------------------------*/
 
 
 .page-title {
-	text-align: left;
-    font-size: 20px ;
+    text-align: left;
+    font-size: 20px;
 }
+
 .amount-box img {
-	width: 70px;
+    width: 70px;
 }
 
 .amount {
-	font-size: 35px;
+    font-size: 35px;
 }
 
 .amount-box p {
-	margin-top: 10px;
-	margin-bottom: -10px;
+    margin-top: 10px;
+    margin-bottom: -10px;
 }
 
 .wallet-head {
-    background-color: var(--main);
+    background-image: linear-gradient(#1a3787, #223875);
     color: var(--white);
     padding: 1rem 10px;
 }
+
 .wallet-box-in {
     padding-top: 5em;
 }
@@ -1495,7 +1551,6 @@ h1 {
     max-width: 100%;
     position: relative;
     padding: 0;
-    padding-left: 16vw;
     display: flex;
     font-size: 12px;
     background-color: var(--main);

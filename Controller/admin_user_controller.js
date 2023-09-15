@@ -24,7 +24,7 @@ module.exports = {
 
         const userCoupons = await CouponCollection.find({user_id})
         console.log(moreDetails)
-        res.render('single-user', { user: moreDetails,coupons : userCoupons,isAdmin: true })
+        res.render('single-user', { user: moreDetails,coupons : userCoupons,isAdmin: true, adminSide  :true })
     },
     //to get user datas from the database
     userLists: async (req, res) => {
@@ -32,7 +32,7 @@ module.exports = {
         try {
             const userDatas = await UserCollection.find({})
 
-            res.render('userlists', { datas: userDatas, isAdmin: true })
+            res.render('userlists', { datas: userDatas, isAdmin: true ,adminSide  :true})
 
 
         } catch (e) {
@@ -65,7 +65,7 @@ module.exports = {
                 req.session.newCoupon = null;
                 res.render('create-coupon', {isAdmin : true,coupons, msg : 'coupon created successfully'})
             }
-            res.render('create-coupon', {isAdmin : true,coupons})
+            res.render('create-coupon', {isAdmin : true,coupons,adminSide : true})
         } catch (e) {
             console.log(e)
         }
@@ -103,5 +103,14 @@ module.exports = {
         } catch (e) {
             console.log(e)
         }
-    }
+    },
+    offerPage:  async (req, res) => {
+        try {
+        
+            res.render('offer', {isAdmin : true,adminSide : true})
+        } catch (e) {
+            console.log(e)
+        }
+
+    },
 }

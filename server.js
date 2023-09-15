@@ -20,7 +20,7 @@ const userRouter = require('./routers/user');
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use(express.static('public'))
-//app.use(nocache())
+app.use(nocache())
 
 app.use(session({
     secret: process.env.SECRET,

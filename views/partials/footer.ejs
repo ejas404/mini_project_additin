@@ -1,4 +1,8 @@
-<div class="footer container-fluid">
+<% if (locals.adminSide) { %>
+<div class="footer container-fluid" style="padding-left:16vw;">
+<% } else { %>
+    <div class="footer container-fluid" style="padding-left:10px">
+<% } %>
     <div class=" description">
         <p>Our mission is to have a long term <br> relationships of value with our customers by providing quality products and services to fulfill the specific customer requirements and expectations.</p>
     </div>

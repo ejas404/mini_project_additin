@@ -115,5 +115,12 @@ module.exports = {
             })
         }
         next()
+    },
+    paymentSubmit : (req,res,next)=> {
+        if(req.session.payment){
+            next()
+        }else{
+            res.redirect('/404-not-found')
+        }
     }
 }

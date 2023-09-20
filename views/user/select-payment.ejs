@@ -36,6 +36,7 @@
                             <input onclick="changeSubmit(this.value)" type="radio" id="wallet" name="paymentMethod" value="Wallet" >
                             <label class="me-1" for="wallet">Wallet</label><br>
 
+                            <% if (!locals.offerAvailable) { %>
                             <h4>Discount Coupons</h4>
                             
 
@@ -77,11 +78,20 @@
                             
                             </div>
 
+                            <% } else { %>
 
-                            <!-- <label for="coupon1">Coupon 1</label><br>
+                                <div>
+                                    
+                                    <input type="radio" id="offer" name="offer" data-offer="<%= offerAvailable.offerValue %> ,<%= offerAvailable.offerType %> " onclick="offer(this)" value="">
+                                    <label for="offer"><%= offerAvailable.offerTitle %> , <%= offerAvailable.offerContent %></label>
+                                    
+                                        
+                                </div>
 
-                            <input type="radio" id="coupon2" name="discountCoupon" value="Coupon 2">
-                            <label for="coupon2">Coupon 2</label><br> -->
+                            <% } %>
+
+
+                           
 
                             <div class="select-payment-total">
                                 <h5>Price Details</h5>

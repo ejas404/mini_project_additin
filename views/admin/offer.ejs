@@ -31,32 +31,45 @@
                 <h1>Introduce Offers</h1>
 
                     <p  class="green"><%= locals.msg %></p>
-                <form action="/admin/create-coupon" method="post">
+                <form action="/admin/offer" method="post" enctype="multipart/form-data">
 
-                    <label>Coupon Type:</label> <br>
-                    <input type="radio" id="percent" name="couponType" value="percent" required>
+                    <label>Offer Type :</label> <br>
+                    <input type="radio" id="percent" name="offerType" value="percent" required>
                     <label for="percent">Percent</label>
-                    <input type="radio" id="flat" name="couponType" value="flat" required>
+                    <input type="radio" id="flat" name="offerType" value="flat" required>
                     <label for="flat">Flat Price</label>
                     <br><br>
 
-                    <label for="couponName">Coupon Name:</label>
-                    <input type="text" id="couponName" name="couponName" pattern="^[a-z]+$" required>
+                    <label for="offerName">Offer Name:</label>
+                    <input type="text" id="offerName" name="offerName" pattern="^[a-z]+$" required>
                     <br><br>
 
-                    <label for="couponValue">Coupon Value:</label>
-                    <input type="number" id="couponValue" name="couponValue" min="1" required>
+                    <label for="offerValue">Offer Value:</label>
+                    <input type="number" id="offerValue" name="offerValue" min="1" required>
                     <br><br>
                     
-                    <label for="couponLimit">Coupon Limit:</label>
-                    <input type="number" id="couponLimit" name="couponLimit" min="1" required>
+                    <label for="offerLimit">Limit :</label>
+                    <input type="number" id="offerLimit" name="offerLimit" min="1" required>
                     <br><br>
 
+                    <label for="category">Category:</label><br>
+                        <select id="category" style="color: black; cursor: pointer;" name="category" required>
+                            <option value="" disabled selected>Select Category</option>
+                            <% for (let each of locals.category) {%>
+                                <option value="<%= each.categoryName %>">
+                                    <%= each.categoryName %>
+                                </option>
+                                <%}%>
+                                    <!-- Add more categories as needed -->
+                        </select>
 
 
                     <label for="expiryDays">Expiry Date (in days):</label>
                     <input type="number" id="expiryDays" name="expiryDays" min="1">
                     <br><br>
+
+                    <label for="file_uploader">Upload Image:</label><br>
+                    <input type="file" style="cursor: pointer;" id="file_uploader" name="img-file" accept=".jpg, .jpeg, .png" multiple><br><br>
 
                     
                     <input class="default-button mb-3" type="submit" value="Create Coupon">

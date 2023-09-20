@@ -1,5 +1,7 @@
 const UserCollection = require('../Model/user_details')
 const CouponCollection = require('../Model/coupon')
+const CategoryCollection = require('../Model/category')
+const OfferCollection = require('../Model/offer')
 
 module.exports = {
     userMoreDetails: async (req, res) => {
@@ -22,9 +24,9 @@ module.exports = {
 
         ])
 
-        const userCoupons = await CouponCollection.find({user_id})
+        const userCoupons = await CouponCollection.find({ user_id })
         console.log(moreDetails)
-        res.render('single-user', { user: moreDetails,coupons : userCoupons,isAdmin: true, adminSide  :true })
+        res.render('single-user', { user: moreDetails, coupons: userCoupons, isAdmin: true, adminSide: true })
     },
     //to get user datas from the database
     userLists: async (req, res) => {
@@ -32,7 +34,7 @@ module.exports = {
         try {
             const userDatas = await UserCollection.find({})
 
-            res.render('userlists', { datas: userDatas, isAdmin: true ,adminSide  :true})
+            res.render('userlists', { datas: userDatas, isAdmin: true, adminSide: true })
 
 
         } catch (e) {
@@ -58,14 +60,14 @@ module.exports = {
         res.redirect('/admin/userlists')
 
     },
-    createCouponPage:  async (req, res) => {
+    createCouponPage: async (req, res) => {
         try {
             const coupons = await CouponCollection.find({})
-            if(req.session.newCoupon){
+            if (req.session.newCoupon) {
                 req.session.newCoupon = null;
-                res.render('create-coupon', {isAdmin : true,coupons, msg : 'coupon created successfully'})
+                res.render('create-coupon', { isAdmin: true, coupons, msg: 'coupon created successfully' })
             }
-            res.render('create-coupon', {isAdmin : true,coupons,adminSide : true})
+            res.render('create-coupon', { isAdmin: true, coupons, adminSide: true })
         } catch (e) {
             console.log(e)
         }
@@ -74,27 +76,27 @@ module.exports = {
     createCoupon: async (req, res) => {
         try {
             console.log(req.body)
-            const {couponName,couponValue,couponLimit,couponType,expiryDays} = req.body
+            const { couponName, couponValue, couponLimit, couponType, expiryDays } = req.body
 
             let couponCode;
-            if(couponType === 'percent'){
+            if (couponType === 'percent') {
                 couponCode = `${couponName}${couponValue}%`
-            }else {
+            } else {
                 couponCode = `${couponName}${couponValue}`
             }
             let expiryDate;
-            if(expiryDays > 0){
-                const days = (1000*60*60*24)*Number(expiryDays)
-                expiryDate = Date.now()+days
+            if (expiryDays > 0) {
+                const days = (1000 * 60 * 60 * 24) * Number(expiryDays)
+                expiryDate = Date.now() + days
             }
 
-           
+
             const newCoupon = await CouponCollection.create({
-                    couponType,
-                    couponCode,
-                    couponValue,
-                    couponLimit,
-                    expiryDate,
+                couponType,
+                couponCode,
+                couponValue,
+                couponLimit,
+                expiryDate,
             })
 
             console.log(newCoupon)
@@ -104,13 +106,49 @@ module.exports = {
             console.log(e)
         }
     },
-    offerPage:  async (req, res) => {
+    offerPage: async (req, res) => {
         try {
-        
-            res.render('offer', {isAdmin : true,adminSide : true})
+            if(req.session.offerAdded){
+                req.session.offerAdded = null;
+                const category = await CategoryCollection.find({})
+                res.render('offer', { isAdmin: true, adminSide: true, category,msg : 'offer added successfully'})
+            }
+            const category = await CategoryCollection.find({})
+            res.render('offer', { isAdmin: true, adminSide: true, category })
         } catch (e) {
             console.log(e)
         }
 
     },
+    createOffer: async (req, res) => {
+        try {
+            const { offerName, offerValue, offerLimit, offerType, expiryDays,category } = req.body
+            const image = req.file.path;
+            
+            let expiryDate;
+            if (expiryDays > 0) {
+                const days = (1000 * 60 * 60 * 24) * Number(expiryDays)
+                expiryDate = Date.now() + days
+            }
+
+            let offer = await OfferCollection.findOneAndUpdate({},
+                {
+                    $set : {
+                        offerName,
+                        offerValue,
+                        offerLimit,
+                        offerType,
+                        expiryDate,
+                        category,
+                        image
+                    }
+                })
+        
+            req.session.offerAdded = true
+            res.redirect('/admin/offer')
+        } catch (e) {
+            console.log(e)
+        }
+
+    }
 }

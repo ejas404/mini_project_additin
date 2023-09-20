@@ -60,6 +60,7 @@ router.get('/product/:productname', adminProductController.singleProductPage)
 router.get('/create-coupon',adminUserController.createCouponPage)
 router.post('/create-coupon',adminUserController.createCoupon)
 router.get('/offer',adminUserController.offerPage)
+router.post('/offer',adminMiddleWare.uploadOfferImg.single('img-file'),adminUserController.createOffer)
 
 
 module.exports = router;

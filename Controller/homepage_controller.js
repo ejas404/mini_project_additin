@@ -2,7 +2,9 @@ const ProductCollection = require('../Model/product')
 const CategoryCollection = require('../Model/category')
 const BannerCollection = require('../Model/banner_details')
 const UserCollection = require('../Model/user_details')
+const OfferCollection = require('../Model/offer')
 const titleUpperCase = require('../public/scripts/title_uppercase')
+const offerCollection = require('../Model/offer')
 
 module.exports = {
     homepage: async (req, res) => {
@@ -130,6 +132,25 @@ module.exports = {
             const products = await ProductCollection.find({ isAvailable: true })
             const count = await ProductCollection.countDocuments({ isAvailable: true })
             const categories = await CategoryCollection.find()
+            const offer = await offerCollection.findOne()
+            let productOffer = null
+            if(offer){
+                let offerTitle = null
+                let  offerContent = `for any ${offer.category} products`
+                let offerImage = `/${offer.image.slice(7)}`
+                if(offer.offerType === 'flat'){
+                   offerTitle =  `flat ₹${offer.offerValue} off`
+                  
+                }else{
+                    offerTitle = `${offer.offerValue}% off`
+                }
+                productOffer = {
+                    offerTitle,
+                    offerContent,
+                    offerImage,
+                }
+              
+            }
             if (req.session.user) {
                 const cartAndWish = await UserCollection.aggregate([
                     {
@@ -145,9 +166,9 @@ module.exports = {
                         }
                     }
                 ])
-                res.render('products', { isUser: true, products, count, categories, cartAndWish ,navIt : 'product'})
+                res.render('products', { isUser: true, products, count, categories, cartAndWish ,navIt : 'product',productOffer})
             } else {
-                res.render('products', { products, count, categories, navIt : 'product' })
+                res.render('products', { products, count, categories, navIt : 'product',productOffer })
             }
 
         } catch (e) {
@@ -271,9 +292,29 @@ module.exports = {
             ])
 
             const products = await ProductCollection.find({ ...price, ...category, ...{ isAvailable: true } })
-            console.log(products)
+            
+            const offer = await OfferCollection.findOne({})
+            let productOffer = null
+            if(offer){
+                let offerTitle = null
+                let  offerContent = `for any ${offer.category} products`
+                let offerImage = `/${offer.image.slice(7)}`
+                if(offer.offerType === 'flat'){
+                   offerTitle =  `flat ₹${offer.offerValue} off`
+                  
+                }else{
+                    offerTitle = `${offer.offerValue}% off`
+                }
+                productOffer = {
+                    offerTitle,
+                    offerContent,
+                    offerImage,
+                }
+              
+            }
+
             const categories = await CategoryCollection.find()
-            res.render('products', { products, categories, isUser: true, cartAndWish })
+            res.render('products', { products, categories, isUser: true, cartAndWish, productOffer})
         } catch (e) {
             console.log(e)
         }

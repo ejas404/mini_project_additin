@@ -43,7 +43,7 @@
                                                     <h6>
                                                         <%= each.productName %>
                                                     </h6>
-                                                    <p class="product-price">
+                                                    <p class="product-price ind-rs">
                                                         <%= each.productPrice %>
                                                     </p>
                                                 </div>
@@ -56,7 +56,7 @@
                                                 <div class="cart-item-mid">
                                                     <div>
                                                         <% if(locals.cartIds?.includes(each.product_id)) { %>
-                                                            <a class="default-button px-2" href="/cart">Go to Cart -></a>
+                                                            <a class="default-button px-2 py-2" href="/cart">Go to Cart</a>
                                                         <% } else { %>
                                                             <button onclick="addToCart('<%= each.product_id %>',this)" class="default-button px-2">Add to Cart</button>
                                                         <% } %>

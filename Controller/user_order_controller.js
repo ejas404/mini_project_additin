@@ -11,6 +11,8 @@ const invoiceGenerate = require('../storage/invoicePdf')
 
 const { v4: uuidv4 } = require('uuid');
 const { ObjectId } = require('mongodb')
+const offerCollection = require('../Model/offer')
+const CategoryCollection = require('../Model/category')
 
 
 module.exports = {
@@ -63,7 +65,7 @@ module.exports = {
     },
     cartPayment: async (req, res) => {
         req.session.cartPaymentAddressId = req.body.address
-        rea.session.payment = true
+        res.session.payment = true
         res.redirect('/payment')
     },
 
@@ -125,13 +127,13 @@ module.exports = {
     },
     selectPayment: async (req, res) => {
         try {
-            const user = await UserCollection.findOne({email : req.session.user},{password : 0})
+            const user = await UserCollection.findOne({ email: req.session.user }, { password: 0 })
             if (req.session.cartOrder) {
                 const coupons = await CouponCollection.find({ used: { $nin: [user.user_id] } })
                 const total = req.session.cartOrder.total
                 const count = req.session.cartOrder.count
 
-                return res.render('select-payment', { isUser: true, coupons, total, count,user})
+                return res.render('select-payment', { isUser: true, coupons, total, count, user })
             }
             const order = req.session.orderDetails
             const product = await ProductCollection.findOne({ product_id: order.product_id })
@@ -140,8 +142,37 @@ module.exports = {
             total = total > 5000 ? total : total + 40;
 
             const count = 1
-            const coupons = await CouponCollection.find({ used: { $nin: [user.user_id] } })
-            return res.render('select-payment', { isUser: true, coupons, total, count,user })
+
+            const offer = await offerCollection.findOne({})
+            console.log('b4 offer')
+            console.log(offer)
+            let offerAvailable = null;
+            let coupons = null
+            if (offer) {
+                const category = await CategoryCollection.findOne({ categoryName: offer.category })
+                console.log(category)
+                
+                if (category.category_id === product.productCategory) {
+                    let offerTitle = null
+                    let  offerContent = `for this product`
+                    if(offer.offerType === 'flat'){
+                       offerTitle =  `flat ₹${offer.offerValue} off`
+                      
+                    }else{
+                        offerTitle = `${offer.offerValue}% off`
+                    }
+                    offerAvailable = {
+                        offerTitle,
+                        offerContent,
+                        offerValue : offer.offerValue,
+                        offerType : offer.offerType
+                    }
+                }else{
+                    coupons = await CouponCollection.find({ used: { $nin: [user.user_id] } })
+                }
+            }
+            
+            return res.render('select-payment', { isUser: true, coupons, total, count, user,offerAvailable })
         }
         catch (e) {
             req.session.cartOrder = null
@@ -352,12 +383,12 @@ module.exports = {
 
             if (coupon) {
                 newOrderData.coupon = coupon.couponCode
-                coupon.used.push( userDetails[0].user_id)
+                coupon.used.push(userDetails[0].user_id)
                 await coupon.save()
 
             }
             const newOrder = await OrderCollection.create(newOrderData)
-          
+
             req.session.orderDetails = null;
             req.session.cartOrder = null
             req.session.newOrder = newOrder.order_id
@@ -373,29 +404,29 @@ module.exports = {
                     res.json({
                         success: true,
                         orderInstance,
-                        online : true
+                        online: true
                     })
                 } catch (e) {
                     res.json({
                         success: false,
                         redirect: '/payment',
-                        msg : 'some error occured try after some time'
+                        msg: 'some error occured try after some time'
                     })
                 }
-            }else if (paymentMethod === 'Wallet') {
-                const user = await UserCollection.findOne({email : req.session.user})
-                if(amountPayable <= user.wallet){
+            } else if (paymentMethod === 'Wallet') {
+                const user = await UserCollection.findOne({ email: req.session.user })
+                if (amountPayable <= user.wallet) {
                     user.wallet = user.wallet - amountPayable
                     await user.save()
                     res.json({
                         success: true,
-                        wallet : true
+                        wallet: true
                     })
-                }else {
+                } else {
                     res.json({
                         success: false,
                         redirect: '/payment',
-                        msg : 'not enough amount on wallet'
+                        msg: 'not enough amount on wallet'
                     })
                 }
             }
@@ -408,16 +439,16 @@ module.exports = {
     },
     orderCompleted: (req, res) => {
         req.session.payment = null;
-        if(req.session.codCancel){
+        if (req.session.codCancel) {
             req.session.codCancel = null;
-            res.render('order-completed', { isUser: true , cod : true})
-        }else if(req.session.onlineCancel){
+            res.render('order-completed', { isUser: true, cod: true })
+        } else if (req.session.onlineCancel) {
             req.session.onlineCancel = null
-            res.render('order-completed', { isUser: true , online : true})
-        }else{
-            res.render('order-completed', {isUser: true}) 
+            res.render('order-completed', { isUser: true, online: true })
+        } else {
+            res.render('order-completed', { isUser: true })
         }
-      
+
     },
     orderFailed: (req, res) => {
         req.session.payment = null;
@@ -465,7 +496,7 @@ module.exports = {
                 orders.push(...combinedItems)
             }
 
-            res.render('my-orders', { dest: 'myOrder', isUser: true, orders, user,count : 3 })
+            res.render('my-orders', { dest: 'myOrder', isUser: true, orders, user, count: 3 })
         } catch (e) {
             console.log(e)
         }
@@ -504,17 +535,17 @@ module.exports = {
 
             orderDate = dateConvert(data.createdAt)
 
-            res.render('order-details', { isUser: true, products, order: data, orderDate})
+            res.render('order-details', { isUser: true, products, order: data, orderDate })
 
         }
         catch (e) {
             console.log(e)
-            if(e instanceof TypeError){
+            if (e instanceof TypeError) {
                 res.redirect('/404-not-found')
             }
         }
     },
-    
+
     invoice: async (req, res) => {
         try {
 
@@ -591,7 +622,7 @@ function dateConvert(timeStr) {
     return timeFormat
 }
 
- async function getTotalSum (email){
+async function getTotalSum(email) {
     try {
 
         const cartSum = await UserCollection.aggregate([

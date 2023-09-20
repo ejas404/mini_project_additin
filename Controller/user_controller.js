@@ -91,7 +91,7 @@ module.exports = {
             if (req.session.user) {
                 const user = await UserCollection.findOne({ email: req.session.user })
                 const address = await AddressCollection.find({ user_id: user.user_id })
-                res.render('user-profile', { user, address, dest: 'profile',isUser : true})
+                res.render('user-profile', { user, address, dest: 'profile',isUser : true ,  navIt : 'profile'})
             } else {
                 res.send('please login')
             }
@@ -200,7 +200,7 @@ module.exports = {
                 console.log('destroyed successfully')
             }
         })
-        res.redirect('/login')
+        res.redirect('/login',{navIt : 'login'})
     },
     resetPassword: async (req, res) => {
         try {
@@ -248,7 +248,7 @@ module.exports = {
     wallet : async (req,res)=>{
         try{
             const user = await UserCollection.findOne({email : req.session.user})
-            res.render('wallet', {user , isUser : true})
+            res.render('wallet', {user , isUser : true, navIt : 'wallet'})
         }catch(e){
             console.log(e)
         }

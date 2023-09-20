@@ -31,6 +31,9 @@ module.exports = {
     }),
     bannerUpload : multer ({
         storage : multerStorage.bannerStorage
+    }),
+    uploadOfferImg : multer({
+        storage : multerStorage.offerStorage
     })
   
 }

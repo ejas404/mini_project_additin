@@ -43,21 +43,28 @@ body {
     z-index: 20;
     width: 100%;
     top: 0;
+    border-bottom: 1px solid var(--bg_gray);
 }
 
 .navIt {
     font-weight: bolder;
+    scale: 1.1;
+    color:var(--main) !important;
+}
+.navIcon {
+    color:var(--main) !important;
+    scale: 1.2;
 }
 
 .nav-item {
     padding-right: 1rem;
 }
 
-.navbar>div {
+/* .navbar>div {
     width: 100%;
     height: inherit;
     border-bottom: 1px solid var(--bg_gray);
-}
+} */
 
 nav img {
     width: auto;
@@ -135,10 +142,15 @@ nav img {
     object-fit: cover;
 }
 
-.homepage .features .card {
-    background-color: var(--main);
-    color: var(--white);
-    max-width: 10rem;
+.homepage .features .cards {
+    color: var(--secondaryMain);
+    max-width: 8rem;
+    max-height: 7rem;
+    border-radius: 10px;
+}
+
+.features-lists p {
+    font-weight: bold;
 }
 
 .homepage-banner-2 {
@@ -175,6 +187,10 @@ nav img {
     background-color: #ffff;
     /* display: flex; */
 
+}
+
+.dashboard-row .card {
+    max-height: 7rem;
 }
 
 .admin-sidebar {
@@ -274,7 +290,7 @@ nav img {
 
 .dashboard-card-icon {
     position: absolute;
-    top: -10%;
+    top: -20%;
     left: 50%;
     transform: translateX(-50%);
     z-index: 10;
@@ -297,6 +313,9 @@ nav img {
 
 #orderTable td {
     font-size: 1rem;
+}
+.graph-box {
+    padding: 2rem 10rem 3rem 10rem;
 }
 
 /*---------------------------------------------------admin salesreport--------------------------------------------*/
@@ -360,6 +379,7 @@ nav img {
     padding: 10px 10px;
     max-height: 450px;
     top: 100px;
+    border-radius: 10px;
 
 
 }
@@ -792,6 +812,7 @@ textarea {
     margin-left: 10px;
     position: absolute;
     z-index: 50;
+    border-radius: 10px;
 }
 
 .top-banner-lists>div {
@@ -818,6 +839,7 @@ textarea {
 #offerTitle {
     text-align: center;
     font-size: 40px;
+    font-weight: bold;
     transition: color 2s;
     background-image: -webkit-linear-gradient(92deg, #f35626, #feab3a);
     -webkit-background-clip: text;
@@ -1017,7 +1039,8 @@ textarea {
     background-color: var(--white);
     margin: 20px 0;
     display: flex;
-
+    border-radius: 10px;
+    overflow: hidden;
 }
 
 .cart-item .cart-item-img {
@@ -1409,11 +1432,13 @@ h1 {
 .default-button {
     color: var(--white);
     background-color: var(--secondaryMain);
-    padding: 5px 2rem;
+    padding: 5px 1.5rem;
     font-size: 15px;
     font-weight: bold;
     cursor: pointer;
     text-decoration: none;
+    border-radius: 8px;
+
 
     &:hover {
         color: var(--white);
@@ -1428,6 +1453,7 @@ h1 {
     font-weight: bold;
     cursor: pointer;
     border: 1px solid var(--bg_gray);
+    border-radius: 8px;
 }
 
 .buy-now-btn {
@@ -1439,6 +1465,7 @@ h1 {
     font-size: 15px;
     font-weight: bold;
     cursor: pointer;
+    border-radius: 8px;
 }
 
 .border-white {
@@ -1592,6 +1619,12 @@ h1 {
     .admin-sidebar {
         display: none;
     }
+    .dashboard-right { 
+        margin: 0;
+    }
+    .graph-box {
+        padding: 2rem 0 3rem 0;
+    }
 
     .userlists-div,
     .productlist-div {
@@ -1621,7 +1654,8 @@ h1 {
 
     .footer {
         flex-direction: column;
-    }
+    }       
+
 
 
 
@@ -1930,7 +1964,8 @@ label {
 }
 
 .card-body {
-    padding-bottom: 0
+    padding-bottom: 0;
+    padding-top :0 ;
 }
 
 .card .text-muted {
@@ -2150,7 +2185,7 @@ input[type=range]::-webkit-slider-thumb {
 }
 
 @media(max-width: 991.5px) {
-    .navbar-nav {
+    /* .navbar-nav {
         min-width: 290px;
         position: absolute;
         left: -168px;
@@ -2160,7 +2195,7 @@ input[type=range]::-webkit-slider-thumb {
         background-image: none;
         z-index: 2;
         background-color: #1d1c1cb2
-    }
+    } */
 
     #filterbar {
         width: 36%

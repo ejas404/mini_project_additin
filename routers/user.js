@@ -95,9 +95,6 @@ userRouter.all('*',(req,res)=>{
   })
 
 
-
-//thisi os nothing
-
 //userRouter.get('/:productName',userProductController.singleProductPage)
 
 module.exports = userRouter

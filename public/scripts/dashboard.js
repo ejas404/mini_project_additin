@@ -30,7 +30,10 @@ const ctx = document.getElementById('orderChart');
                                 label: 'Order Status',
                                 data: orderData,
                                 backgroundColor: [
-                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(5, 181, 11, 1)',
+                                    'rgba(245, 66, 66, 1)',
+                                    'rgba(255, 200, 0, 1)'
+
                                 ],
                                 borderWidth: 1
                             }]

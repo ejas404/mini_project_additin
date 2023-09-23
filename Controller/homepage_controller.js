@@ -39,6 +39,12 @@ module.exports = {
             console.log(e)
         }
     },
+    contactPage : (req,res)=>{
+        if(req.session.user){
+          return  res.render('contact',{isUser : true})
+        }
+        res.render('contact')
+    },
     singleProductPage: async (req, res) => {
         try {
             console.log('hellor product')

@@ -58,7 +58,7 @@ module.exports = {
         if (req.session.user) {
             return res.render('contact', { isUser: true })
         }
-        res.render('contact',{navIt:'contact'})
+        res.render('contact', { navIt: 'contact' })
     },
     contact: async (req, res) => {
         try {
@@ -84,7 +84,7 @@ module.exports = {
 
                 const isRespond = await ContactCollection.findOneAndUpdate({ email: contactData.email }, { $set: { isRespond: true } })
                 console.log(isRespond)
-            }   
+            }
             res.redirect('/contact')
 
         } catch (e) {
@@ -264,32 +264,7 @@ module.exports = {
 
             }
             const products = await ProductCollection.find({ isAvailable: true }).sort(sortObj)
-            if (req.session.user) {
-                const cartAndWish = await UserCollection.aggregate([
-                    {
-                        $match: {
-                            email: req.session.user
-                        }
 
-                    },
-                    {
-                        $project: {
-                            cartIds: '$cart.product_id',
-                            wishListIds: '$wishlist.product_id'
-                        }
-                    }
-                ])
-                res.json({
-                    success: true,
-                    products,
-                    cartAndWish
-                })
-            } else {
-                res.json({
-                    success: true,
-                    products
-                })
-            }
 
         } catch (e) {
             console.log(e)
@@ -363,30 +338,62 @@ module.exports = {
                 }
             ])
 
-            const products = await ProductCollection.find({ ...price, ...category, ...{ isAvailable: true } })
-
-            const offer = await OfferCollection.findOne({})
-            let productOffer = null
-            if (offer) {
-                let offerTitle = null
-                let offerContent = `for any ${offer.category} products`
-                let offerImage = `/${offer.image.slice(7)}`
-                if (offer.offerType === 'flat') {
-                    offerTitle = `flat ₹${offer.offerValue} off`
-
-                } else {
-                    offerTitle = `${offer.offerValue}% off`
-                }
-                productOffer = {
-                    offerTitle,
-                    offerContent,
-                    offerImage,
-                }
-
+            let sort = req.query.sort
+            let sortSearch = null;
+            if (sort === 'productName') {
+                sortSearch = { productName: 1 }
+            } else if (sort === 'productPrice') {
+                sortSearch = { productPrice: 1 }
             }
 
-            const categories = await CategoryCollection.find()
-            res.render('products', { products, categories, isUser: true, cartAndWish, productOffer })
+            const products = await ProductCollection.find({ ...price, ...category, ...{ isAvailable: true } }).sort(sortSearch)
+
+            // const offer = await OfferCollection.findOne({})
+            // let productOffer = null
+            // if (offer) {
+            //     let offerTitle = null
+            //     let offerContent = `for any ${offer.category} products`
+            //     let offerImage = `/${offer.image.slice(7)}`
+            //     if (offer.offerType === 'flat') {
+            //         offerTitle = `flat ₹${offer.offerValue} off`
+
+            //     } else {
+            //         offerTitle = `${offer.offerValue}% off`
+            //     }
+            //     productOffer = {
+            //         offerTitle,
+            //         offerContent,
+            //         offerImage,
+            //     }
+
+            // }
+
+            if (req.session.user) {
+                const cartAndWish = await UserCollection.aggregate([
+                    {
+                        $match: {
+                            email: req.session.user
+                        }
+
+                    },
+                    {
+                        $project: {
+                            cartIds: '$cart.product_id',
+                            wishListIds: '$wishlist.product_id'
+                        }
+                    }
+                ])
+                res.json({
+                    success: true,
+                    products,
+                    cartAndWish
+                })
+            } else {
+                res.json({
+                    success: true,
+                    products
+                })
+            }
         } catch (e) {
             console.log(e)
         }

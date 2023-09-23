@@ -58,7 +58,7 @@ module.exports = {
         if (req.session.user) {
             return res.render('contact', { isUser: true })
         }
-        res.render('contact')
+        res.render('contact',{navIt:'contact'})
     },
     contact: async (req, res) => {
         try {

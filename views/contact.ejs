@@ -13,9 +13,33 @@
     <header style="position: fixed; top: 0;">
         <%- include('../partials/navbar') %>
     </header>
-    <main class="d-flex">
+    <main class="d-flex p-0">
         <!--Section: Contact v.2-->
-        <div class="px-5">
+        <div class="contact-left px-5">
+            <div>
+                <div class="my-5">
+                    Our mission is to have a long term
+                    relationships of value with our customers by providing quality products and services to fulfill the
+                    specific customer requirements and expectations.
+                </div>
+                <div class="col-md-12 text-center">
+                    <ul class="list-unstyled mb-0 d-flex align-items-center contactform-ul justify-content-between">
+                        <li><i class="fas fa-map-marker-alt fa-2x pt-4"></i>
+                            <p>Kerala TVM</p>
+                        </li>
+
+                        <li><i class="fas fa-phone mt-4 fa-2x"></i>
+                            <p>+12345678</p>
+                        </li>
+
+                        <li><i class="fas fa-envelope mt-4 fa-2x"></i>
+                            <p>ijasjaaass004@gmail.com</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="contact-right">
 
             <section class="mb-4 px-5">
 
@@ -29,7 +53,7 @@
                 <div class="row">
 
                     <!--Grid column-->
-                    <div class="col-md-9 mb-md-0 mb-5">
+                    <div class="col-md-12 mb-md-0 mb-5">
                         <form id="contactForm" name="contact-form" action="/contact" method="POST">
 
                             <!--Grid row-->
@@ -85,29 +109,16 @@
 
                         </form>
 
-                        <div class="text-center text-md-left">
-                            <a class="btn btn-primary"
-                                onclick="document.getElementById('contactForm').submit();">Send</a>
-                        </div>
+
                         <div class="status"></div>
                     </div>
                     <!--Grid column-->
 
                     <!--Grid column-->
-                    <div class="col-md-3 text-center">
-                        <ul class="list-unstyled mb-0">
-                            <li><i class="fas fa-map-marker-alt fa-2x"></i>
-                                <p>Kerala TVM</p>
-                            </li>
 
-                            <li><i class="fas fa-phone mt-4 fa-2x"></i>
-                                <p>+12345678</p>
-                            </li>
 
-                            <li><i class="fas fa-envelope mt-4 fa-2x"></i>
-                                <p>ijasjaaass004@gmail.com</p>
-                            </li>
-                        </ul>
+                    <div class="text-center text-md-right">
+                        <a class="default-button py-2" onclick="document.getElementById('contactForm').submit();">Send</a>
                     </div>
                     <!--Grid column-->
 
@@ -118,7 +129,6 @@
 
         </div>
     </main>
-    <%- include('../partials/footer')%>
         <%- include('../partials/bootstrap-script') %>
 </body>
 

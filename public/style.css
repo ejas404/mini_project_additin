@@ -1048,7 +1048,23 @@ textarea {
               transform: scale(1); } }
   
   /*# sourceMappingURL=style.css.map */
+/*-----------------------------------------------------contactform-----------------------------------------------*/
 
+.contactform-ul li{
+    font-size: 12px;
+}
+
+.contact-left{
+    background-color: var(--secondaryMain);
+    color: var(--white);
+    height:calc( 100vh - 3.5rem);
+    display: grid;
+    place-items: center;
+    flex: 1;
+}
+.contact-right{
+    flex: 1;
+}
 
 /*----------------------------------------------------payment-----------------------------------------------------*/
 .buy-now-box {
@@ -1514,7 +1530,7 @@ h1 {
 }
 
 .default-button {
-    color: var(--white);
+    color: var(--white) !important;
     background-color: var(--secondaryMain);
     padding: 5px 1.5rem;
     font-size: 15px;

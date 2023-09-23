@@ -1,3 +1,4 @@
+
 function deleteAddress(id, elem) {
     if (confirm('are youe sure to address this address ?')) {
         let toDelete = elem.closest('.address-box')
@@ -25,20 +26,21 @@ function deleteAddress(id, elem) {
 }
 
 
-
-let userData;
-let editProfileModale = document.getElementById('editProfileModale')
-let userDetailModale = document.getElementById('userDetailModale')
-let modaleBg = document.getElementById('modaleBg')
+let resetPass = null
+let userData = null
 let emailInput = document.getElementById('email')
+let nameInput = document.getElementById('name')
 
 //onclick function to show edit profile modale
 function editProfile() {
+    resetPass = null
     fetch('/user-data')
         .then(res => res.json())
         .then((res) => {
             if (res.success) {
-                userData = res.user
+                emailInput.value = res.user.email
+                nameInput.value = res.user.name
+                userData = res.user.password
             } else {
                 window.location.href = res.redirect
             }
@@ -51,6 +53,15 @@ const myForm = document.getElementById('editProfileForm');
 myForm.addEventListener('submit', async (event) => {
     event.preventDefault(); // Prevent the default form submission
 
+    if (resetPass) {
+        const confirmPassword = document.getElementById('confirmPassword')
+        const newPassword = document.getElementById('newPassword')
+
+        if (newPassword.value !== confirmPassword.value) {
+            document.getElementById('pError').textContent = ' "second password doesnt match as first one !!!" '
+            return
+        }
+    }
     // Get form data
     const formData = new FormData(myForm);
 
@@ -62,21 +73,36 @@ myForm.addEventListener('submit', async (event) => {
         formValues[key] = value;
     });
 
+    if (resetPass) {
+        formValues.resetPassword = true
+    }
 
+    const updateModale = document.getElementById('exampleModal')
+
+    updateModale.classList.remove('show');
+
+    // Reset the modal backdrop (optional)
+    document.querySelector('.modal-backdrop').remove();
+
+    // Reset the body overflow (optional)
+    document.body.classList.remove('modal-open');
 
     try {
         const response = await fetch('/edit-profile', {
-            method: 'POST',
-            headers : {
-                'Content-type':'application/json'
+            method: 'PUT',
+            headers: {
+                'Content-type': 'application/json'
             },
             body: JSON.stringify(formValues),
         });
 
         if (response.ok) {
             const data = await response.json();
-            // Do something with the data here
-            console.log(data);
+            if(data.success){
+                generateMessage('success', 'updated successfully')
+            }else{
+                generateMessage('danger', 'some error occured try later')
+            }
         } else {
             console.error('Request failed');
         }
@@ -91,31 +117,30 @@ const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
 
+function resetPassword() {
+    let modalBody = document.getElementById('modalBody')
+    modalBody.innerHTML = `
+     <label for="oldPassword">Old Password</label><br>
+    <input type="password" id="oldPassword" name="oldPassword" required><br>
+    <label for="newPassword">New Password</label><br>
+    <input type="password" id="newPassword" name="newPassword" required><br>
+    <label for="confirmPassword">Confirm Password</label><br>
+    <input type="password" id="confirmPassword" name="confirmPassword" required><br>
+    <p class="error-message" id = "pError"></p>`
 
+    resetPass = true
 
-
-//getting form data
-
-function update() {
-    const formData = {}
-    formData.name = document.getElementById('name').value
-    formData.email = document.getElementById('email').value
-    consle.log(formData)
-    fetch("/data-update", {
-        method: "POST",
-        body: JSON.stringify(formData),
-        headers: {
-            'Content-Type': 'application/json'
+    const oldPassword = document.getElementById('oldPassword')
+    oldPassword.addEventListener('blur', () => {
+        if (oldPassword.value !== userData) {
+            document.getElementById('pError').textContent = ' "please enter your correct password !!!" '
+        } else {
+            document.getElementById('pError').textContent = ''
         }
     })
-        .then(response => response.json())
-        .then(res => {
-            if (res.success) {
-                alert('updated')
-            }
-        })
-        .catch(error => {
 
-            console.error("Error:", error);
-        });
 }
+
+
+
+

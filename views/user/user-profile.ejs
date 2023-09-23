@@ -32,16 +32,17 @@
                                 <h5>Edit Profile</h5>
                             </div>
 
-                            <div class="modal-body">
-                                <label for="email">name</label><br>
-                                <input type="text" id="name" name="name"><br>
+                            <div class="modal-body" id="modalBody">
+                                <label for="name">name</label><br>
+                                <input type="text" id="name" name="name" pattern="^[a-zA-Z]+$" required><br>
                                 <label for="email">Email</label><br>
-                                <input type="text" id="email" name="email"><br>
+                                <input type="email" id="email" name="email" pattern="^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$" required><br>
 
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Save changes</button>
+                                <button onclick="resetPassword()" type="button" class="btn btn-danger">Reset Password</button>
+                                <button type="submit" class="btn btn-primary">Update</button>
                             </div>
                         </form>
                     </div>
@@ -60,7 +61,7 @@
                             </p>
                         </div>
                         <div class="d-flex align-items-end mb-2">
-                            <button type="button" onclick="editProfile()" class="btn btn-primary" data-toggle="modal"
+                            <button type="button" onclick="editProfile()" class="default-button " data-toggle="modal"
                                 data-target="#exampleModal">
                                 edit profile
                             </button>

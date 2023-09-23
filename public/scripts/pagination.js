@@ -15,8 +15,8 @@ function renderProducts(products,num,cart,wishlist){
 
     for (let each of products) {
         const productHtml = `
-            <div class="col-lg-4 col-md-6 pt-md-0 pt-3 text-center position-relative">
-                <a style="text-decoration: none;" class="" href="/singleproduct/${each.product_id}">
+            <div id = "productCard" class="col-lg-4 col-md-6 pt-md-0 pt-3 px-5 text-center position-relative">
+                <a style="text-decoration: none;" class="" href="/product/${each.product_id}">
                     <div style="height: 350px;" class="card d-flex flex-column align-items-center ">
                         <div class="card-img">
                             <img src="${each.productImg[0]}" alt="" height="100" id="shirt">
@@ -37,7 +37,6 @@ function renderProducts(products,num,cart,wishlist){
                         ? `<a class="default-button px-2 rounded d-block" href="/cart">Go to Cart -></a>`
                         : `<div class="pb-1 add-to-cart-btn" onclick="addToCart('${each.product_id}', this)"><i class="fa-solid fa-cart-plus" style="font-size: 25px;"></i></div>`
                     }
-                    <a class="buy-now-btn d-block rounded" style="text-decoration: none;" href="/buynow/${each.product_id}">Buy Now -></a>
                 </div>
                 <div class="wishlist position-absolute top-0 ms-1">
                     <i onclick="addToWishList('${each.product_id}', this)" id="biHrt" class="bi bi-heart${wishlist && wishlist.includes(each.product_id) ? '-fill' : ''} wishlist-icon"></i>

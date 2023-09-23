@@ -63,13 +63,13 @@ module.exports = {
         try {
             const existingUser = await UserCollection.findOne({ email: email })
             if (!existingUser) {
-                res.render('user-login', { message: 'invalid user' })
+                res.render('user-login', { message: 'invalid user',navIt : 'login' })
             } else {
                 if (existingUser.password === password && existingUser.email === email) {
                     req.session.user = email;
                     res.redirect('/')
                 } else {
-                    res.render('user-login', { message: 'incorrect user or password' })
+                    res.render('user-login', { message: 'incorrect user or password' ,navIt : 'login'})
                 }
             }
         } catch (e) {
@@ -83,7 +83,7 @@ module.exports = {
     },
 
     loginPage: async (req, res) => {
-        res.render('user-login', { h2: 'Login Now' })
+        res.render('user-login', { h2: 'Login Now' , navIt : 'login' })
     },
     profilePage: async (req, res) => {
         try {
@@ -200,7 +200,7 @@ module.exports = {
                 console.log('destroyed successfully')
             }
         })
-        res.redirect('/login',{navIt : 'login'})
+        res.redirect('/login')
     },
     resetPassword: async (req, res) => {
         try {
@@ -231,10 +231,27 @@ module.exports = {
     },
     userUpdate : async (req,res)=>{
         try{
-            console.log('hai')
+            console.log('b4 user update')
             console.log(req.body)
-            res.end('done')
-        }catch(e){console.log(e)}
+            const email = req.session.user
+           if(req.body?.resetPassword){
+                const password = req.body.newPassword
+                const userPassword = await UserCollection.findOneAndUpdate({email},{$set : {password}})
+           }else{
+                const {email : newEmail , name } = req.body
+                console.log(newEmail)
+                const userUpdate = await UserCollection.findOneAndUpdate({email},{$set : {email : newEmail , name}})
+           }
+
+           res.json({
+            success : true
+           })
+        }catch(e){
+            console.log(e)
+            res.json({
+                msg : e.message
+            })
+        }
     },
     otherPage : async (req,res)=>{
         let email = req.session.user

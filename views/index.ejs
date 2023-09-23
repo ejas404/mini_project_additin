@@ -20,11 +20,11 @@
                     <div class="carousel-inner">
                         <div class="carousel-item active">
                             <img style="max-height: 400px; object-fit: cover;" class="d-block w-100 img-fluid"
-                                src="<%= locals.topBanners[0].path[0] %>" alt="First slide">
+                                src="<%= locals.topBanners[0]?.path[0] %>" alt="First slide">
                         </div>
                         <div class="carousel-item">
                             <img style="max-height: 400px; object-fit: cover;" class="d-block img-fluid "
-                                src="<%= locals.topBanners[0].path[1] %>" alt="Second slide">
+                                src="<%= locals.topBanners[0]?.path[1] %>" alt="Second slide">
                         </div>
                     </div>
                     <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
@@ -103,7 +103,7 @@
             </div>
 
             <div id="products" class="product-cards container py-5">
-                <div class=" text-center">
+                <div class=" text-center mb-3">
                     <h1 class="double-underline poppins mb-5">Our Products</h1>
                 </div>
                 <div class="row gx-5" id="pagination-row" data-page-num="0">

@@ -65,7 +65,7 @@ module.exports = {
     },
     cartPayment: async (req, res) => {
         req.session.cartPaymentAddressId = req.body.address
-        res.session.payment = true
+        req.session.payment = true
         res.redirect('/payment')
     },
 
@@ -143,41 +143,43 @@ module.exports = {
 
             const count = 1
 
-            const offer = await offerCollection.findOne({})
-            console.log('b4 offer')
-            console.log(offer)
-            let offerAvailable = null;
+            // const offer = await offerCollection.findOne({})
+            // console.log('b4 offer')
+            // console.log(offer)
+            // let offerAvailable = null;
             let coupons = null
-            if (offer) {
-                const category = await CategoryCollection.findOne({ categoryName: offer.category })
-                console.log(category)
+            coupons = await CouponCollection.find({ used: { $nin: [user.user_id] } })
+            // if (offer) {
+            //     const category = await CategoryCollection.findOne({ categoryName: offer.category })
+            //     console.log(category)
                 
-                if (category.category_id === product.productCategory) {
-                    let offerTitle = null
-                    let  offerContent = `for this product`
-                    if(offer.offerType === 'flat'){
-                       offerTitle =  `flat ₹${offer.offerValue} off`
+            //     if (category.category_id === product.productCategory) {
+            //         let offerTitle = null
+            //         let  offerContent = `for this product`
+            //         if(offer.offerType === 'flat'){
+            //            offerTitle =  `flat ₹${offer.offerValue} off`
                       
-                    }else{
-                        offerTitle = `${offer.offerValue}% off`
-                    }
-                    offerAvailable = {
-                        offerTitle,
-                        offerContent,
-                        offerValue : offer.offerValue,
-                        offerType : offer.offerType
-                    }
-                }else{
-                    coupons = await CouponCollection.find({ used: { $nin: [user.user_id] } })
-                }
-            }
+            //         }else{
+            //             offerTitle = `${offer.offerValue}% off`
+            //         }
+            //         offerAvailable = {
+            //             offerTitle,
+            //             offerContent,
+            //             offerValue : offer.offerValue,
+            //             offerType : offer.offerType
+            //         }
+            //     }else{
+                   
+            //     }
+            // }
             
-            return res.render('select-payment', { isUser: true, coupons, total, count, user,offerAvailable })
+            return res.render('select-payment', { isUser: true, coupons, total, count, user })
         }
         catch (e) {
             req.session.cartOrder = null
-            res.render('/404-not-found')
             console.log(e)
+            res.status(404)
+            res.render('/404-not-found')
         }
     },
     couponUpdate: async (req, res) => {
@@ -587,6 +589,7 @@ module.exports = {
 
         } catch (e) {
             console.log(e)
+            res.redirect('/404-not-found')
         }
     }
 }

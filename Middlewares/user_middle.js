@@ -33,7 +33,7 @@ module.exports = {
             next()
         } catch (e) {
             console.log(e)
-            return res.render('user-login', { message: 'some error occured chek your email' })
+            return res.render('user-login', { message: 'some changes happened please login again' })
 
         }
     },

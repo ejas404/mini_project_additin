@@ -118,7 +118,7 @@ function checkoutPayment(value) {
         })
 }
 
-let failedRes;
+let failedRes = false;
 
 function payment(orderDetails) {
 
@@ -147,7 +147,7 @@ function payment(orderDetails) {
     const rzp = new Razorpay(options);
 
     rzp.on('payment.failed', function (response) {
-
+        failedRes = true
     })
     rzp.open();
 }
@@ -173,7 +173,8 @@ async function verifyPayment(payment, order) {
 
 async function paymentFailed(payment, order) {
     try {
-        console.log('hai')
+       
+        console.log('failed')
         const response = await fetch('/payment/fail', {
             method: 'POST',
             headers: {

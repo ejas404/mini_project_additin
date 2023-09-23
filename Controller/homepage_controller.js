@@ -41,6 +41,7 @@ module.exports = {
     },
     singleProductPage: async (req, res) => {
         try {
+            console.log('hellor product')
             const product_id = req.params.id
             const product = await ProductCollection.aggregate([
                 {
@@ -60,20 +61,37 @@ module.exports = {
 
             ])
             let rating = null;
-            if(product[0].productRating?.length){
+            let totalRating  = 0;
+            if(product[0]?.productRating?.length){
              const productRating = product[0].productRating
              rating = productRating.reduce((acc, each)=> acc + each.value ,0)
              rating = Math.round(rating/productRating.length)
+             totalRating = productRating.length
             
             }
-            console.log(`rating ${rating}`)
             const productName = (titleUpperCase(product[0].productName))
             if (req.session.user) {
+
+                const cartAndWish = await UserCollection.aggregate([
+                    {
+                        $match: {
+                            email: req.session.user
+                        }
+
+                    },
+                    {
+                        $project: {
+                            cartIds: '$cart.product_id',
+                            wishListIds: '$wishlist.product_id'
+                        }
+                    }
+                ])
+
                 const email = req.session.user
                 const user = await UserCollection.findOne({email, "cart.product_id": product_id})
-                return res.render('user-single-product', { product, productName, isUser: true, rating})
+                return res.render('user-single-product', { product, productName, isUser: true, rating , totalRating , cartAndWish})
             }
-            res.render('user-single-product', { product, productName,rating })
+            res.render('user-single-product', { product, productName,rating,totalRating})
         } catch (e) {
             if (e instanceof TypeError) {
                 console.log(e)

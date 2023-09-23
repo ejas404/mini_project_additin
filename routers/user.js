@@ -53,7 +53,7 @@ userRouter.delete('/delete-cart-item/:id',userMiddleware.isLoggedinMid,userMiddl
 userRouter.post('/add-to-wishlist/:id',userMiddleware.isLoggedinMid,userMiddleware.isBlockedMid,userProductController.addToWishList)
 userRouter.get('/coupon-update/:id', userOrderController.couponUpdate)
 userRouter.get('/user-data',userController.userData)
-userRouter.post('/edit-profile',userController.userUpdate)
+userRouter.put('/edit-profile',userController.userUpdate)
 userRouter.post('/update-rating',userProductController.rating)
 
 

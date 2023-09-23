@@ -87,6 +87,7 @@ module.exports = {
                     orderStatus: 'failed'
                 }
             })
+            console.log('paymentfailure completed')
             res.json({ success: true })
         } catch (e) {
             console.log(e)

@@ -64,6 +64,7 @@ module.exports = {
         try {
             const contactData = req.body
             const isExist = await ContactCollection.findOne({ email: contactData.email })
+            console.log(isExist)
             if (!isExist) {
                 const newContact = await ContactCollection.create(contactData)
                 const transporter = nodemailer.createTransport(senderConfig)
@@ -82,7 +83,8 @@ module.exports = {
                 await transporter.sendMail(mailOptions);
 
                 const isRespond = await ContactCollection.findOneAndUpdate({ email: contactData.email }, { $set: { isRespond: true } })
-            }
+                console.log(isRespond)
+            }   
             res.redirect('/contact')
 
         } catch (e) {

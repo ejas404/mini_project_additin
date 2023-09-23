@@ -18,6 +18,7 @@ const homepage_controller = require('../Controller/homepage_controller');
 userRouter.get('/', userHomepageController.homepage)
 userRouter.get('/products',userHomepageController.productsPage)
 userRouter.get('/contact',userHomepageController.contactPage)
+userRouter.post('/contact',userHomepageController.contact)
 userRouter.get('/products/filter',userHomepageController.filter)
 userRouter.get('/product/:id',userHomepageController.singleProductPage)
 userRouter.get('/paginate/:num',userHomepageController.pagination)

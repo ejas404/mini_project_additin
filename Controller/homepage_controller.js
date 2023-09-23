@@ -3,8 +3,23 @@ const CategoryCollection = require('../Model/category')
 const BannerCollection = require('../Model/banner_details')
 const UserCollection = require('../Model/user_details')
 const OfferCollection = require('../Model/offer')
+const ContactCollection = require('../Model/contact_users')
 const titleUpperCase = require('../public/scripts/title_uppercase')
 const offerCollection = require('../Model/offer')
+
+const nodemailer = require('nodemailer')
+
+//nodemailer authentication sender config
+const senderConfig = {
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
+
+    auth: {
+        user: process.env.EMAILID,
+        pass: process.env.EMAILPASSWORD
+    }
+};
 
 module.exports = {
     homepage: async (req, res) => {
@@ -30,20 +45,51 @@ module.exports = {
                     }
                 ])
 
-                res.render('index', { isUser: true, products, count, topBanners, cartAndWish,navIt : 'home' })
+                res.render('index', { isUser: true, products, count, topBanners, cartAndWish, navIt: 'home' })
             } else {
-                res.render('index', { products, count, topBanners, navIt : 'home' })
+                res.render('index', { products, count, topBanners, navIt: 'home' })
             }
 
         } catch (e) {
             console.log(e)
         }
     },
-    contactPage : (req,res)=>{
-        if(req.session.user){
-          return  res.render('contact',{isUser : true})
+    contactPage: (req, res) => {
+        if (req.session.user) {
+            return res.render('contact', { isUser: true })
         }
         res.render('contact')
+    },
+    contact: async (req, res) => {
+        try {
+            const contactData = req.body
+            const isExist = await ContactCollection.findOne({ email: contactData.email })
+            if (!isExist) {
+                const newContact = await ContactCollection.create(contactData)
+                const transporter = nodemailer.createTransport(senderConfig)
+
+                const mailOptions = {
+                    from: senderConfig.auth.user,
+                    to: contactData.email,
+                    subject: 'welcome to PawsNClaws',
+                    text: `Thank you for reaching out to us through our contact form. We appreciate your interest in PawsNClaws.
+
+                We have received your message and would like to assure you that our team is reviewing your inquiry. We understand the importance of your request and will make every effort to respond promptly.
+                
+                If your inquiry is time-sensitive, please feel free to reach out to us directly at 8129984474, and we will do our best to assist you as soon as possible.`
+                }
+
+                await transporter.sendMail(mailOptions);
+
+                const isRespond = await ContactCollection.findOneAndUpdate({ email: contactData.email }, { $set: { isRespond: true } })
+            }
+            res.redirect('/contact')
+
+        } catch (e) {
+            console.log(e)
+            res.redirect('/404-not-found')
+        }
+
     },
     singleProductPage: async (req, res) => {
         try {
@@ -67,13 +113,13 @@ module.exports = {
 
             ])
             let rating = null;
-            let totalRating  = 0;
-            if(product[0]?.productRating?.length){
-             const productRating = product[0].productRating
-             rating = productRating.reduce((acc, each)=> acc + each.value ,0)
-             rating = Math.round(rating/productRating.length)
-             totalRating = productRating.length
-            
+            let totalRating = 0;
+            if (product[0]?.productRating?.length) {
+                const productRating = product[0].productRating
+                rating = productRating.reduce((acc, each) => acc + each.value, 0)
+                rating = Math.round(rating / productRating.length)
+                totalRating = productRating.length
+
             }
             const productName = (titleUpperCase(product[0].productName))
             if (req.session.user) {
@@ -94,10 +140,10 @@ module.exports = {
                 ])
 
                 const email = req.session.user
-                const user = await UserCollection.findOne({email, "cart.product_id": product_id})
-                return res.render('user-single-product', { product, productName, isUser: true, rating , totalRating , cartAndWish})
+                const user = await UserCollection.findOne({ email, "cart.product_id": product_id })
+                return res.render('user-single-product', { product, productName, isUser: true, rating, totalRating, cartAndWish })
             }
-            res.render('user-single-product', { product, productName,rating,totalRating})
+            res.render('user-single-product', { product, productName, rating, totalRating })
         } catch (e) {
             if (e instanceof TypeError) {
                 console.log(e)
@@ -158,14 +204,14 @@ module.exports = {
             const categories = await CategoryCollection.find()
             const offer = await offerCollection.findOne()
             let productOffer = null
-            if(offer){
+            if (offer) {
                 let offerTitle = null
-                let  offerContent = `for any ${offer.category} products`
+                let offerContent = `for any ${offer.category} products`
                 let offerImage = `/${offer.image.slice(7)}`
-                if(offer.offerType === 'flat'){
-                   offerTitle =  `flat ₹${offer.offerValue} off`
-                  
-                }else{
+                if (offer.offerType === 'flat') {
+                    offerTitle = `flat ₹${offer.offerValue} off`
+
+                } else {
                     offerTitle = `${offer.offerValue}% off`
                 }
                 productOffer = {
@@ -173,7 +219,7 @@ module.exports = {
                     offerContent,
                     offerImage,
                 }
-              
+
             }
             if (req.session.user) {
                 const cartAndWish = await UserCollection.aggregate([
@@ -190,9 +236,9 @@ module.exports = {
                         }
                     }
                 ])
-                res.render('products', { isUser: true, products, count, categories, cartAndWish ,navIt : 'product',productOffer})
+                res.render('products', { isUser: true, products, count, categories, cartAndWish, navIt: 'product', productOffer })
             } else {
-                res.render('products', { products, count, categories, navIt : 'product',productOffer })
+                res.render('products', { products, count, categories, navIt: 'product', productOffer })
             }
 
         } catch (e) {
@@ -209,11 +255,11 @@ module.exports = {
                 sortObj.productPrice = 1
             } else {
                 const products = await ProductCollection.find({ productName: { $regex: sortField } })
-                   return res.json({
-                        success: true,
-                        products
-                    })
-    
+                return res.json({
+                    success: true,
+                    products
+                })
+
             }
             const products = await ProductCollection.find({ isAvailable: true }).sort(sortObj)
             if (req.session.user) {
@@ -316,17 +362,17 @@ module.exports = {
             ])
 
             const products = await ProductCollection.find({ ...price, ...category, ...{ isAvailable: true } })
-            
+
             const offer = await OfferCollection.findOne({})
             let productOffer = null
-            if(offer){
+            if (offer) {
                 let offerTitle = null
-                let  offerContent = `for any ${offer.category} products`
+                let offerContent = `for any ${offer.category} products`
                 let offerImage = `/${offer.image.slice(7)}`
-                if(offer.offerType === 'flat'){
-                   offerTitle =  `flat ₹${offer.offerValue} off`
-                  
-                }else{
+                if (offer.offerType === 'flat') {
+                    offerTitle = `flat ₹${offer.offerValue} off`
+
+                } else {
                     offerTitle = `${offer.offerValue}% off`
                 }
                 productOffer = {
@@ -334,11 +380,11 @@ module.exports = {
                     offerContent,
                     offerImage,
                 }
-              
+
             }
 
             const categories = await CategoryCollection.find()
-            res.render('products', { products, categories, isUser: true, cartAndWish, productOffer})
+            res.render('products', { products, categories, isUser: true, cartAndWish, productOffer })
         } catch (e) {
             console.log(e)
         }

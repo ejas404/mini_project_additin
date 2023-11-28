@@ -396,10 +396,12 @@ module.exports = {
             req.session.newOrder = newOrder.order_id
             if (paymentMethod === 'COD') {
                 res.redirect('/order-completed')
+            // if payemnt is online go for this --------------------
             } else if (paymentMethod === 'UPI/Bank') {
 
 
                 try {
+                    //this payement Online function is defined below
                     const orderInstance = await paymentOnline(amountPayable, newOrder.order_id)
                     req.session.orderInstance = orderInstance
                     console.log(orderInstance)
@@ -597,6 +599,8 @@ module.exports = {
 
 // helper functions-----------------------------------------------------------
 
+//order instance creating-----
+
 async function paymentOnline(amount, order_id) {
     const instance = new Razorpay({
         key_id: process.env.RAZORPAY_KEY_ID,
@@ -615,6 +619,10 @@ async function paymentOnline(amount, order_id) {
         throw new Error('order instance didnt created')
     }
 }
+
+
+
+
 
 
 function dateConvert(timeStr) {

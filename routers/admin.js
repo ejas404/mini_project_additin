@@ -17,6 +17,7 @@ router.get('/logout',adminController.logout)
 
 router.post('/sales-data',adminController.salesData)
 router.get('/createPdf',adminController.createPdf)
+
 router.use(adminMiddleWare.isAdmin)
 
 router.get('/userlists',adminUserController.userLists)

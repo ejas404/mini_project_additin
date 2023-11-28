@@ -83,6 +83,9 @@ module.exports = {
     },
 
     loginPage: async (req, res) => {
+        if(req.session.user){
+            res.redirect('/')
+        }
         res.render('user-login', { h2: 'Login Now' , navIt : 'login' })
     },
     profilePage: async (req, res) => {

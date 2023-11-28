@@ -7,7 +7,6 @@ const multerStorage = require('../storage/multer')
 
 module.exports = {
     isAdmin : (req,res,next)=>{
-        console.log('isAdmin middle ware')
         if(req.session.isAdmin){
              next()
         }else{

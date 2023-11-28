@@ -7,6 +7,9 @@
     <title>Document</title>
     <%- include('../partials/bootstrap-styles') %>
         <link rel="stylesheet" href="/style.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+        <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/cropper/2.3.4/cropper.min.css'>
+
 
 </head>
 
@@ -14,10 +17,51 @@
     <header>
         <%- include('../partials/navbar') %>
     </header>
-    <div class="back-button">
+    <!-- <div class="back-button">
         <a href="/admin/products"><i class="bi bi-arrow-left-short"></i></a>
-    </div>
+    </div> -->
     <div class="addproduct-container">
+        <div id="imageCropBox" class="">
+            <div class="modal-header">
+
+                <h5 class="modal-title" id="exampleModalLabel">Crop Image</h5>
+                <button type="button" onclick="closeCropBox()" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <section class="add-product-page">
+
+                <!-- leftbox -->
+                <div class="d-flex" style="height: inherit;">
+                    <div class="add-product-box-2">
+                        <div class="result"></div>
+                    </div>
+
+                    <!--rightbox-->
+                    <div class="add-parent-box">
+
+                        <div style="min-height: 5rem;">
+                            <div class="add-product-box-2 img-result hide">
+                                <!-- result of crop -->
+                                <img class="cropped" src="" alt="">
+                            </div>
+                        </div>
+                        <!-- input file -->
+                        <div class="add-product-box mt-5">
+                            <div class="add-product-options hide d-none">
+                                <label> Width</label>
+                                <input type="number" class="img-w" value="300" min="100" max="1200" />
+                            </div>
+                            <!-- save btn -->
+                            <div>
+                                <button class="btn btn-primary save mx-3">Crop</button>
+                                <!-- download btn -->
+                                <button onclick="saveImage()" class="download hide btn btn-dark">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
 
         <div class="form-addproduct">
             <h2>Add Product</h2>
@@ -27,13 +71,16 @@
                 <div class="form-addproduct-inner">
                     <div class="form-left">
                         <label for="product_name">Product Name:</label><br>
-                        <input type="text" id="product_name" name="product_name" pattern="^[a-zA-Z0-9\s]*$" required><br>
+                        <input type="text" id="product_name" name="product_name" pattern="^[a-zA-Z0-9\s]*$"
+                            required><br>
 
                         <label for="price">Price:</label><br>
-                        <input type="number" id="price" name="price" step="0.01" min="1" pattern="^[1-9][0-9]*$" required><br>
+                        <input type="number" id="price" name="price" step="0.01" min="1" pattern="^[1-9][0-9]*$"
+                            required><br>
 
                         <label for="weight">Weight:</label><br>
-                        <input type="number" id="weight" name="weight" step="0.01" min="1" pattern="^[1-9][0-9]*$" required><br>
+                        <input type="number" id="weight" name="weight" step="0.01" min="1" pattern="^[1-9][0-9]*$"
+                            required><br>
 
                         <label for="quantity">Quantity:</label><br>
                         <input type="number" id="quantity" name="quantity" pattern="^[1-9][0-9]*$" min="1" required><br>
@@ -41,6 +88,8 @@
                         <p id="error" class="<%= locals.class? locals.class : 'error-message' %>">
                             <%= locals.message %>
                         </p>
+
+                        <div id="imagePreview"></div>
 
                     </div>
                     <div class="form-right">
@@ -68,7 +117,8 @@
                         <textarea id="description" name="description" rows="4" cols="50" maxlength="499"></textarea><br>
 
                         <label for="file_uploader">File Uploader:</label><br>
-                        <input type="file" style="cursor: pointer;" id="file_uploader" name="img-file" accept=".jpg, .jpeg, .png" multiple><br>
+                        <input type="file" onchange="previewImages(event)" style="cursor: pointer;" id="file_uploader"
+                            name="img-file" accept=".jpg, .jpeg, .png" multiple><br>
 
                     </div>
                 </div>
@@ -77,7 +127,114 @@
 
         </div>
     </div>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/cropperjs/0.8.1/cropper.min.js'></script>
     <script src="/scripts/validate_num.js"></script>
+    <script src="/scripts/image_preview.js"></script>
+    <script>
+
+        let result = document.querySelector('.result'),
+            img_result = document.querySelector('.img-result'),
+            img_w = document.querySelector('.img-w'),
+            img_h = document.querySelector('.img-h'),
+            options = document.querySelector('.add-product-options'),
+            save = document.querySelector('.save'),
+            cropped = document.querySelector('.cropped'),
+            dwn = document.querySelector('.download'),
+            upload = document.querySelector('#file-input'),
+            cropper = '',
+            imgSrc = null,
+            imgName = null;
+
+
+        function selectImage(name, elem) {
+            imgName = name
+            document.getElementById('imageCropBox').style.display = 'block'
+            let img = document.createElement('img');
+            img.id = 'image';
+            img.src = elem.src;
+            console.log('b4 sel src')
+            console.log(img.src)
+            // clean result before
+            result.innerHTML = '';
+            // append new image
+            result.appendChild(img);
+            // show save btn and options
+            save.classList.remove('hide');
+            options.classList.remove('hide');
+            // init cropper
+            cropper = new Cropper(img);
+
+        }
+
+        // save on click
+        save.addEventListener('click', e => {
+            e.preventDefault();
+            // get result to data uri
+
+            imgSrc = cropper.getCroppedCanvas({
+                width: img_w.value // input value
+            }).toDataURL();
+            // remove hide class of img
+            cropped.classList.remove('hide');
+            img_result.classList.remove('hide');
+            // show image cropped
+            cropped.src = imgSrc;
+            dwn.classList.remove('hide');
+            // dwn.download = 'imagename.png';
+            // dwn.setAttribute('href', imgSrc);
+        });
+
+
+        function saveImage() {
+
+            if (imgSrc && imgName) {
+                // let file = new File([imgSrc], `${imgName}-${Date.now()}.png`, { type: "image/jpeg" })
+                let fileUploader = document.getElementById('file_uploader')
+                fetch(imgSrc)
+                    .then(res => res.blob())
+                    .then(blob => {
+
+                        let file = new File([blob], `${imgName}-${Date.now()}.png`, { type: "image/jpeg" })
+
+                        const dt = new DataTransfer()
+                        for (let each of fileUploader.files) {
+                            if (each.name !== imgName) {
+                                dt.items.add(each)
+                            }
+                        }
+                        dt.items.add(file)
+
+                        fileUploader.files = dt.files
+
+                        let previewDiv = document.getElementById('imagePreview')
+                        let res = ""
+
+                        for (let each of fileUploader.files) {
+                            console.log('file')
+                            console.log(each)
+                            let src = URL.createObjectURL(each)
+                            console.log(src)
+                            res += `<img src="${src}" onclick="selectImage('${each.name}', this)" class="previewImages">`
+                        }
+
+                        previewDiv.innerHTML = res
+
+
+                    })
+            }
+
+        }
+
+
+
+        function closeCropBox() {
+            document.getElementById('imageCropBox').style.display = 'none'
+            imgSrc = null
+            imgName = null
+        }
+
+
+    </script>
     <%- include('../partials/bootstrap-script') %>
         <%- include('../partials/footer')%>
 

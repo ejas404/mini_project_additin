@@ -14,6 +14,7 @@ const { v4: uuidv4 } = require('uuid');
 
 module.exports = {
     adminLogin: async (req, res) => {
+        console.log('admin login')
         const { email, password } = req.body
         try {
             const admin = await AdminCollection.findOne({})
@@ -37,6 +38,7 @@ module.exports = {
     },
 
     dashboard: async (req, res) => {
+        console.log('admin dashboard')
         try {
             const userCount = await UserCollection.countDocuments({})
             const orderCount = await OrderCollection.countDocuments({})

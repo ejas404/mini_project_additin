@@ -8,7 +8,8 @@
     <%- include('../partials/bootstrap-styles') %>
         <link rel="stylesheet" href="/style.css">
         <script src="https://code.jquery.com/jquery-3.7.0.js"
-            integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+            integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" 
+            crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -18,12 +19,13 @@
     <div class="container">
         <div class="">
             <div class="container-fliud">
-                <div class="wrapper row">
+                <div class=" row">
                     <div class="preview col-md-6">
 
                         <div class="product-images">
-                            <div class="main-image"><img onclick="sayHai()" id="main"
-                                    src="<%= locals.product[0].productImg[0] %>" alt=""></div>
+                            <div class="main-image">
+                                <img onclick="sayHai()" id="main" src="<%= locals.product[0].productImg[0] %>" alt="">
+                            </div>
                             <div class="child-images">
 
                                 <% for (let i=1; i< locals.product[0].productImg.length ;i++) { %>
@@ -39,7 +41,7 @@
                     <div class="details col-md-6">
                         <div class="">
                             <a href="/">
-                                <div class="d-flex align-items-center back-button-single" >
+                                <div class="d-flex align-items-center back-button-single">
                                     <p><i class="bi bi-arrow-left-short" style="font-size: 2rem;"></i></p>
                                     <p class=" m-0 pb-3" style="font-size: 1.1rem;">Back</p>
                                 </div>

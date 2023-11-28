@@ -34,7 +34,8 @@
                 <div class=" p-4">
 
                     <div class="row g-0">
-                        <% for (let img of topBanners.path) {%>
+                        <% if (locals.topBanners?.path[0]) { %>
+                        <% for (let img of locals.topBanners.path) {%>
                             <div class="col-sm-6">
                                 <div class="card shadow" style="width: 15rem;">
                                     <img class="card-img-top" src="<%= img %>" style="height: 6rem;"
@@ -45,6 +46,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <% } %>
                             <% } %>
                     </div>
                 </div>

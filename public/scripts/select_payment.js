@@ -84,6 +84,9 @@ function useWallet() {
 }
 
 
+//---------------------------------------check out payment front end----------------------------------//
+
+
 
 function checkoutPayment(value) {
     console.log(value)
@@ -138,8 +141,6 @@ function payment(orderDetails) {
             }
         },
         handler: function (response) {
-            console.log('this is b4 response')
-            console.log(response)
             verifyPayment(response, orderDetails)
         }
     };
@@ -151,6 +152,9 @@ function payment(orderDetails) {
     })
     rzp.open();
 }
+
+
+// to verify the payment
 
 async function verifyPayment(payment, order) {
     const response = await fetch('/payment/verify', {
@@ -170,6 +174,8 @@ async function verifyPayment(payment, order) {
         window.location.href = '/order-failed'
     }
 }
+
+// if the payment failed 
 
 async function paymentFailed(payment, order) {
     try {
@@ -198,6 +204,8 @@ async function paymentFailed(payment, order) {
         console.log(e)
     }
 }
+
+// cancel payment remove the order instance
 
 async function cancelPayment(order) {
     try {

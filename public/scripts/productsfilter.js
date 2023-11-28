@@ -28,49 +28,57 @@ function sortedProducts(products, cartAndWish) {
     let rowProducts = ""
 
     for (let each of products) {
-        let itemCol = `  <div class="col-lg-4 col-md-6 pt-md-0 pt-3 position-relative">
-                        <a style="text-decoration: none;" href="/product/${each.product_id} ">
-                            <div style="height: 350px;"
-                                class="card d-flex flex-column align-items-center">
-
-                                <div class="card-img"> <img src='${each.productImg[0]}' alt=""
-                                        height="100" id="shirt"> </div>
-                                <div class="product-name">
-                                    ${each.productName} 
-                                </div>
-                                <div class="card-body pt-0">
-
-                                    <div class="d-flex align-items-center price">
-                                        <div class="del mr-2"><span class="text-dark"
-                                                style="font-size: 15px;">Rs.${Number(each.productPrice) + 1000}</span></div>
-                                        <div class="font-weight-bold "
-                                            style="font-weight: bold; margin-left: 5px;">Rs.
-                                            ${each.productPrice} 
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                       
-                        <div class="productButtons ps-2 position-absolute d-flex justify-content-between" style="top: 90%; width: 90%;">
-                            ${cartAndWish && cartAndWish[0]?.cartIds && cartAndWish[0]?.cartIds.includes(each.product_id) ? `
-                                <a class="default-button px-2 rounded d-block" href="/cart">Go to Cart -></a>
-                            ` : `
-                                <div class="pb-1 add-to-cart-btn" onclick="addToCart('${each.product_id}',this)">
-                                    <i class="fa-solid fa-cart-plus" style="font-size: 25px;"></i>
-                                </div>
-                                <a class="buy-now-btn d-block " style="text-decoration: none;" href="/buynow/${each.product_id}">Buy Now -></a>
-                            `}
+        let itemCol = `   <div class="col-lg-4 col-md-6">
+        <div class="wrapper position-relative">
+            <div class="wishlist-heart-group">
+                <input name="${each.product_id}" id="${each.product_id}" type="checkbox" ${cartAndWish && cartAndWish[0]?.wishListIds?.includes(each.product_id) ? 'checked' : ''
+        }/>
+                <label for="${each.product_id}" data-hover-text="${each.product_id}">
+                    <svg xmlns:dc="http://purl.org/dc/elements/1.1/"
+                        xmlns:cc="http://creativecommons.org/ns#"
+                        xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+                        xmlns:svg="http://www.w3.org/2000/svg"
+                        xmlns="http://www.w3.org/2000/svg"
+                        xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+                        xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+                        version="1.1" x="0px" y="0px" viewBox="0 0 100 100">
+                        <g transform="translate(0,-952.36218)">
+                            <path style="color:#000000;enable-background:accumulate;"
+                                d="m 34.166665,972.36218 c -11.41955,0 -19.16666,8.91891 -19.16666,20.27029 0,19.45943 15,27.56753 35,39.72973 20.00001,-12.1622 34.99999,-20.2703 34.99999,-39.72973 0,-11.35137 -7.7471,-20.27029 -19.16665,-20.27029 -7.35014,0 -13.39148,4.05405 -15.83334,6.48647 -2.44185,-2.43241 -8.48319,-6.48647 -15.83334,-6.48647 z"
+                                fill="transparent" id="heart-path" stroke="#ffff"
+                                stroke-width="5" marker="none" visibility="visible"
+                                display="inline" overflow="visible" />
+                        </g>
+                    </svg>
+                </label>
+            </div>
+            <div class="container m-0 p-0">
+                <div class="top">
+                    <img class="my-auto" src="${each.productImg[0]}" alt="">
+                </div>
+                <div class="bottom ${cartAndWish && cartAndWish[0]?.cartIds && cartAndWish[0]?.cartIds.includes(each.product_id) ? 'clicked' : ''
+        }">
+                    <div class="left">
+                        <div class="details">
+                            <h6>${each.productName}</h6>
+                            <p class="ind-rs">${each.productPrice}</p>
                         </div>
-                        <div class="wishlist position-absolute top-0 ms-1">
-                            ${cartAndWish && cartAndWish[0]?.wishListIds?.includes(each.product_id) ? `
-                                <i onclick="addToWishList('${each.product_id}',this)" id="biHrt" class="bi bi-heart-fill wishlist-icon"></i>
-                            ` : `
-                                <i onclick="addToWishList('${each.product_id}',this)" id="biHrt" class="bi bi-heart wishlist-icon"></i>
-                            `}
+                        <div class="buy" onclick="addToCart('${each.product_id}',this,'card')">
+                            <i class="material-icons" style="color: #fff;">add_shopping_cart</i>
                         </div>
-
-                    </div>`
+                    </div>
+                    <div class="right">
+                        <div class="done"><a href="/cart"><i class="material-icons">shopping_cart_checkout</i></a></div>
+                        <div class="details">
+                            <h1></h1>
+                            <p class="mt-3"><strong>Go to cart</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+`
 
         rowProducts += itemCol
     }

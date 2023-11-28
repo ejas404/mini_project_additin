@@ -99,15 +99,17 @@ nav img {
 .homepage-banner img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit:cover;
+}
+.carousel-item{
+    height: 20rem;
 }
 
-.homepage .features .cards {
-    color: var(--secondaryMain);
+/* .homepage .features .cards {
     max-width: 8rem;
     max-height: 7rem;
     border-radius: 10px;
-}
+} */
 
 .features-lists p {
     font-weight: bold;
@@ -145,7 +147,7 @@ nav img {
 }
 
 .wrapper {
-    width: 300px;
+    max-width: 300px;
     height: 400px;
     background: white;
     margin: auto;
@@ -892,6 +894,7 @@ main>.add-address input {
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
 
 }
 
@@ -936,6 +939,63 @@ main>.add-address input {
     color: var(--white);
     font-weight: bold;
 }
+
+#imagePreview img{
+    width: auto;
+    height: 50px;
+    overflow: hidden;
+}
+
+
+#imageCropBox{
+    position: absolute;
+    height: 80vh;
+    width: 70vw;
+    z-index: 50;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: -3px 3px 5spx black;
+    /* display: none; */
+}
+
+.add-product-page {
+	margin: 1em auto;
+	max-width: 768px;
+	height: 100%;
+}
+
+.add-product-box {
+	padding: 0.5em;
+	width: 100%;
+	margin:0.5em;
+    height: inherit;
+}
+
+.add-product-box-2 {
+	padding: 0.5em;
+	width: calc(100%/2 - 1em);
+    max-height: 60vh;
+}
+
+.add-product-options label,
+.add-product-options input{
+	width:4em;
+	padding:0.5em 1em;
+}
+
+.hide {
+	visibility: hidden;
+}
+
+#imageCropBox img {
+	max-width: 100%;
+}
+
+
+
+
+
+
 
 /*-------------------------------------------------category box---------------------------------------------------*/
 
@@ -1151,11 +1211,11 @@ textarea {
     flex-direction: column;
 }
 
-@media screen and (max-width: 996px) {
+/* @media screen and (max-width: 996px) {
     .preview {
         margin-bottom: 20px;
     }
-}
+} */
 
 .preview-pic {
     -webkit-box-flex: 1;
@@ -2036,6 +2096,9 @@ h1 {
 
     #productSearchBar {
         flex-grow: 1;
+    }
+    .carousel-item{
+        height: 10rem;
     }
 
 }

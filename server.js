@@ -31,6 +31,7 @@ app.use(session({
 app.set('view engine','ejs')
 app.set('views',['./views/user','./views/admin','./views'])
 
+
 //requests starts with /admin will be connected to adminRouter
 app.use('/admin', adminRouter);
 
@@ -38,7 +39,10 @@ app.use('/admin', adminRouter);
 app.use('/',userRouter)
 
 
-
+app.all('*',(req,res)=>{
+  res.status(404)
+  res.redirect('/404-not-found')
+})
 
 
 db.once('open', () => {

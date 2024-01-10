@@ -152,8 +152,6 @@
             let img = document.createElement('img');
             img.id = 'image';
             img.src = elem.src;
-            console.log('b4 sel src')
-            console.log(img.src)
             // clean result before
             result.innerHTML = '';
             // append new image
@@ -173,7 +171,7 @@
 
             imgSrc = cropper.getCroppedCanvas({
                 width: img_w.value // input value
-            }).toDataURL();
+            }).toDataURL(); 
             // remove hide class of img
             cropped.classList.remove('hide');
             img_result.classList.remove('hide');
@@ -200,20 +198,18 @@
                         for (let each of fileUploader.files) {
                             if (each.name !== imgName) {
                                 dt.items.add(each)
+                            }else{
+                                dt.items.add(file)
                             }
                         }
-                        dt.items.add(file)
-
+                      
                         fileUploader.files = dt.files
 
                         let previewDiv = document.getElementById('imagePreview')
                         let res = ""
 
                         for (let each of fileUploader.files) {
-                            console.log('file')
-                            console.log(each)
                             let src = URL.createObjectURL(each)
-                            console.log(src)
                             res += `<img src="${src}" onclick="selectImage('${each.name}', this)" class="previewImages">`
                         }
 

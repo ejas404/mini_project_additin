@@ -1882,7 +1882,7 @@ h1 {
 }
 
 .default-button {
-    color: var(--white) !important;
+    color: #fff;
     background-color: var(--secondaryMain);
     padding: 5px 1.5rem;
     font-size: 15px;

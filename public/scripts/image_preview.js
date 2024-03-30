@@ -11,15 +11,3 @@ function previewImages(event){
    previewDiv.innerHTML = res
 }
 
-
-// function removeImg(name,elem){
-//     let fileUploader = document.getElementById('file_uploader')
-//     const dt = new DataTransfer()
-//     for(let each of fileUploader.files){
-//         if(each.name !== name){
-//             dt.items.add(each)
-//         }
-//     }
-
-//     fileUploader.files = dt.files
-// }

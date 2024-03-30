@@ -6,6 +6,7 @@ const CouponCollection = require('../Model/coupon')
 
 
 const Razorpay = require('razorpay')
+
 const PDFDocument = require("../storage/pdfTable");
 const invoiceGenerate = require('../storage/invoicePdf')
 
@@ -572,6 +573,8 @@ module.exports = {
                     }
                 }
             ])
+
+            console.log('pfd order details printed')
 
             console.log(orderProducts)
 

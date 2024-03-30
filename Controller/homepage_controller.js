@@ -64,7 +64,6 @@ module.exports = {
         try {
             const contactData = req.body
             const isExist = await ContactCollection.findOne({ email: contactData.email })
-            console.log(isExist)
             if (!isExist) {
                 const newContact = await ContactCollection.create(contactData)
                 const transporter = nodemailer.createTransport(senderConfig)
@@ -271,10 +270,8 @@ module.exports = {
         }
     },
     filter: async (req, res) => {
-        console.log(req.query)
         try {
             if (Object.keys(req.query).length === 0) {
-                console.log("No filters selected");
                 return res.redirect('/products');
             }
 
@@ -323,21 +320,6 @@ module.exports = {
                 price = { productPrice: { $exists: true } }
             }
 
-            const cartAndWish = await UserCollection.aggregate([
-                {
-                    $match: {
-                        email: req.session.user
-                    }
-
-                },
-                {
-                    $project: {
-                        cartIds: '$cart.product_id',
-                        wishListIds: '$wishlist.product_id'
-                    }
-                }
-            ])
-
             let sort = req.query.sort
             let sortSearch = null;
             if (sort === 'productName') {
@@ -348,25 +330,6 @@ module.exports = {
 
             const products = await ProductCollection.find({ ...price, ...category, ...{ isAvailable: true } }).sort(sortSearch)
 
-            // const offer = await OfferCollection.findOne({})
-            // let productOffer = null
-            // if (offer) {
-            //     let offerTitle = null
-            //     let offerContent = `for any ${offer.category} products`
-            //     let offerImage = `/${offer.image.slice(7)}`
-            //     if (offer.offerType === 'flat') {
-            //         offerTitle = `flat ₹${offer.offerValue} off`
-
-            //     } else {
-            //         offerTitle = `${offer.offerValue}% off`
-            //     }
-            //     productOffer = {
-            //         offerTitle,
-            //         offerContent,
-            //         offerImage,
-            //     }
-
-            // }
 
             if (req.session.user) {
                 const cartAndWish = await UserCollection.aggregate([
@@ -400,9 +363,7 @@ module.exports = {
     },
     search: async (req, res) => {
         try {
-            console.log('hai')
             const productNames = await ProductCollection.find({ isAvailable: true }, { productName: 1, _id: 0 })
-            console.log(productNames)
             res.json({
                 success: true,
                 productNames

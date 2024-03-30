@@ -3,12 +3,16 @@
 const filterForm = document.getElementById('productFilterForm')
 filterForm.addEventListener('submit', (e) => {
     e.preventDefault()
+    alert('search')
     const reqQuery = new URLSearchParams(new FormData(filterForm)).toString()
+    console.log('query')
     console.log(reqQuery)
     fetch(`/products/filter?${reqQuery}`)
         .then(res => res.json())
         .then((res) => {
             if (res.success) {
+                console.log('response')
+                console.log(res)
                 sortedProducts(res.products, res.cartAndWish)
             }
         })

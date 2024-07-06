@@ -17,7 +17,7 @@ jobs:
         run: npm install           
 
   deploy:
-    runs-on: [pnc]
+    runs-on: pnc
     needs: build
     steps:
       - name: Restart server

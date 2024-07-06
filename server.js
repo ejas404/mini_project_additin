@@ -48,6 +48,7 @@ app.all('*',(req,res)=>{
 db.once('open', () => {
     app.listen(PORT, () => {
       console.log(`Server listening to port ${PORT}`)
+      console.log('Actions works')
       //exp()
     })
   })

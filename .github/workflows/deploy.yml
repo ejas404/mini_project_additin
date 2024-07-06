@@ -11,15 +11,15 @@ jobs:
     steps:
       - name: Checkout source
         uses: actions/checkout@v3
-      - name: Pull from github
-        run: git pull 
-      - name: Install dependencies
-        run: npm install           
-
+      
   deploy:
     runs-on: pnc
     needs: build
     steps:
+      - name: Pull from github
+        run: git pull 
+      - name: Install dependencies
+        run: npm install           
       - name: Restart server
         run: pm2 restart all
       - name: Restart nginx

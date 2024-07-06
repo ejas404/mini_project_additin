@@ -1,0 +1,26 @@
+name: CICD
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest # Changed from 'pnc' to 'ubuntu-latest' for a common runner
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+      - name: Pull from github
+        run: git pull 
+      - name: Install dependencies
+        run: npm install           
+
+  deploy:
+    runs-on: [pnc]
+    needs: build
+    steps:
+      - name: Restart server
+        run: pm2 restart all
+      - name: Restart nginx
+        run: sudo systemctl restart nginx

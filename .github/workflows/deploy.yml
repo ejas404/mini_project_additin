@@ -3,7 +3,7 @@ name: CICD
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   build:
@@ -17,7 +17,7 @@ jobs:
         run: npm install           
 
   deploy:
-    runs-on: self-hosted
+    runs-on: pnc
     needs: build
     steps:
       - name: Restart server

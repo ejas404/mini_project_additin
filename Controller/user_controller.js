@@ -9,16 +9,16 @@ const titleUpperCase = require('../public/scripts/title_uppercase')
 const nodemailer = require('nodemailer')
 
 //email configuration of sender
-const senderConfig = {
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: true,
+// const senderConfig = {
+//     host: "smtp.gmail.com",
+//     port: 465,
+//     secure: true,
 
-    auth: {
-        user: process.env.EMAILID,
-        pass: process.env.EMAILPASSWORD
-    }
-};
+//     auth: {
+//         user: process.env.EMAILID,
+//         pass: process.env.EMAILPASSWORD
+//     }
+// };
 
 // random otp generator
 function generateOTP() {

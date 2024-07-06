@@ -1,9 +1,9 @@
 const UserCollection = require("../Model/user_details")
 
-const accountSid = process.env.TWILIO_SID
-const authToken = process.env.TWILIO_AUTH_TOKEN
+// const accountSid = process.env.TWILIO_SID
+// const authToken = process.env.TWILIO_AUTH_TOKEN
 
-const client = require('twilio')(accountSid, authToken);
+// const client = require('twilio')(accountSid, authToken);
 
 function generateOTP() {
     // Generate a random 6-digit number between 100000 and 999999
